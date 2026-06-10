@@ -1,11 +1,1022 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Site</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Five Structural Failures in VGCL | Tazwar Ahnaf Enan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css" />
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-2: #f8f9fa;
+      --bg-3: #f0f2f5;
+      --border: #dde1e7;
+      --border-2: #c8cdd6;
+      --text: #1b1d21;
+      --text-dim: #5a6170;
+      --navy: #0f3460;
+      --link: #1a56a0;
+      --red: #b22e22;
+      --green: #1e6b38;
+      --amber: #7a5a18;
+      --blue-bg: #eef3fb;
+      --red-bg: #fdf3f2;
+      --green-bg: #f1faf4;
+      --amber-bg: #fdf8ee;
+      --code-bg: #f3f4f6;
+      --code-text: #1b1d21;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+      font-size: 16px;
+      line-height: 1.78;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: var(--link);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .site-header {
+      border-bottom: 1px solid var(--border);
+      padding: 0.9rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+    }
+
+    .site-header .logo {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.82rem;
+      color: var(--navy);
+      font-weight: 500;
+    }
+
+    .site-header nav a {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      margin-left: 1.5rem;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .site-header nav a:hover {
+      color: var(--navy);
+    }
+
+    .hero {
+      max-width: 840px;
+      margin: 3.5rem auto 0;
+      padding: 0 2rem 2.5rem;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .hero h1 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: clamp(1.75rem, 4.5vw, 2.6rem);
+      font-weight: 600;
+      line-height: 1.2;
+      color: var(--text);
+      margin-bottom: 1.2rem;
+      letter-spacing: -0.02em;
+    }
+
+    .hero .byline {
+      font-size: 0.88rem;
+      color: var(--text-dim);
+      margin-bottom: 1rem;
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      padding: 0.18em 0.55em;
+      border: 1px solid var(--border-2);
+      border-radius: 3px;
+      color: var(--text-dim);
+      margin-right: 0.35rem;
+      background: var(--bg-2);
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      gap: 3rem;
+    }
+
+    @media (max-width: 800px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .toc-sidebar {
+        display: none;
+      }
+    }
+
+    .toc-sidebar {
+      padding-top: 2.5rem;
+      position: sticky;
+      top: 4.5rem;
+      align-self: start;
+      max-height: calc(100vh - 5rem);
+      overflow-y: auto;
+    }
+
+    .toc-sidebar h3 {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+    }
+
+    .toc-sidebar a {
+      display: block;
+      font-size: 0.76rem;
+      color: var(--text-dim);
+      padding: 0.2rem 0 0.2rem 0.7rem;
+      border-left: 2px solid var(--border);
+      line-height: 1.4;
+    }
+
+    .toc-sidebar a:hover {
+      color: var(--navy);
+      border-left-color: var(--navy);
+      text-decoration: none;
+    }
+
+    .toc-sidebar a.sub {
+      padding-left: 1.3rem;
+      font-size: 0.71rem;
+    }
+
+    article {
+      padding: 2.5rem 0 5rem;
+    }
+
+    section {
+      margin-bottom: 3.5rem;
+    }
+
+    h2 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 1.45rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 1.1rem;
+      padding-bottom: 0.45rem;
+      border-bottom: 1px solid var(--border);
+      letter-spacing: -0.01em;
+    }
+
+    h3 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 1.07rem;
+      font-weight: 600;
+      color: var(--text);
+      margin: 2rem 0 0.65rem;
+    }
+
+    p {
+      margin-bottom: 1.05rem;
+      color: var(--text);
+    }
+
+    strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .critique-type {
+      display: inline-block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.67rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.15em 0.6em;
+      border-radius: 3px;
+      margin-bottom: 0.75rem;
+      font-weight: 500;
+    }
+
+    .ct-structural {
+      color: var(--navy);
+      background: var(--blue-bg);
+      border: 1px solid #c5d6f0;
+    }
+
+    .ct-statistical {
+      color: var(--red);
+      background: var(--red-bg);
+      border: 1px solid #f0c8c3;
+    }
+
+    .ct-engineering {
+      color: var(--amber);
+      background: var(--amber-bg);
+      border: 1px solid #e8d8a8;
+    }
+
+    .ct-methodological {
+      color: var(--green);
+      background: var(--green-bg);
+      border: 1px solid #b8dfc6;
+    }
+
+    .callout {
+      border-radius: 4px;
+      padding: 1.1rem 1.4rem;
+      margin: 1.5rem 0;
+      font-size: 0.93rem;
+    }
+
+    .callout.math {
+      background: var(--blue-bg);
+      border-left: 3px solid #3a6fbe;
+    }
+
+    .callout.warn {
+      background: var(--red-bg);
+      border-left: 3px solid var(--red);
+    }
+
+    .callout.note {
+      background: var(--amber-bg);
+      border-left: 3px solid #b8882a;
+    }
+
+    .callout.fix {
+      background: var(--green-bg);
+      border-left: 3px solid var(--green);
+    }
+
+    .callout-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.67rem;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      font-weight: 500;
+      margin-bottom: 0.6rem;
+    }
+
+    .callout.math .callout-title {
+      color: #1a4080;
+    }
+
+    .callout.warn .callout-title {
+      color: var(--red);
+    }
+
+    .callout.note .callout-title {
+      color: #8a6018;
+    }
+
+    .callout.fix .callout-title {
+      color: var(--green);
+    }
+
+    .callout p {
+      font-size: 0.9rem;
+      margin-bottom: 0.45rem;
+    }
+
+    .callout p:last-child {
+      margin-bottom: 0;
+    }
+
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1.1rem 1.4rem;
+      overflow-x: auto;
+      margin: 1.5rem 0;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.81rem;
+      line-height: 1.62;
+      color: var(--code-text);
+    }
+
+    code {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.83em;
+      background: var(--bg-3);
+      padding: 0.12em 0.4em;
+      border-radius: 3px;
+      color: var(--navy);
+      border: 1px solid var(--border);
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+      font-size: inherit;
+      color: inherit;
+      border: none;
+    }
+
+    .kw {
+      color: #0f3460;
+      font-weight: 500;
+    }
+
+    .fn {
+      color: #1a56a0;
+    }
+
+    .st {
+      color: #1e6b38;
+    }
+
+    .nu {
+      color: #7a3010;
+    }
+
+    .cm {
+      color: #7a8090;
+      font-style: italic;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      margin: 1.5rem 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+
+    thead tr {
+      border-bottom: 2px solid var(--border-2);
+    }
+
+    thead th {
+      text-align: left;
+      padding: 0.55rem 0.9rem;
+      font-weight: 600;
+      color: var(--text-dim);
+      font-size: 0.75rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+    }
+
+    tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    td {
+      padding: 0.55rem 0.9rem;
+      vertical-align: top;
+    }
+
+    td.ok {
+      color: var(--green);
+      font-weight: 500;
+    }
+
+    td.bad {
+      color: var(--red);
+      font-weight: 500;
+    }
+
+    td.warn {
+      color: var(--amber);
+      font-weight: 500;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.73rem;
+      color: var(--text-dim);
+      line-height: 1.9;
+      background: var(--bg-2);
+    }
+
+    .katex {
+      font-size: 1em !important;
+    }
+
+    .katex-display {
+      margin: 1.4rem 0;
+      overflow-x: auto;
+    }
+  </style>
 </head>
+
 <body>
-    <h1>Hello World</h1>
+
+  <header class="site-header">
+    <div class="logo"><a href="https://tazwaryayyyy.github.io/"
+        style="color:inherit;text-decoration:none;">tazwaryayyyy</a></div>
+    <nav>
+      <a href="#infrastructure">Infrastructure</a>
+      <a href="#vgcl">VGCL</a>
+      <a href="#critiques">Critiques</a>
+    </nav>
+  </header>
+
+  <div class="hero">
+    <h1>Five Structural Failures in Verification-Guided Curriculum Learning</h1>
+    <div class="byline">Tazwar Ahnaf Enan</div>
+    <div>
+      <span class="tag">curriculum learning</span>
+      <span class="tag">statistical testing</span>
+      <span class="tag">mechanistic interpretability</span>
+      <span class="tag">AI infrastructure</span>
+    </div>
+  </div>
+
+  <div class="main-grid">
+    <aside class="toc-sidebar">
+      <h3>Contents</h3>
+      <a href="#infrastructure">1. Infrastructure Wall</a>
+      <a href="#haleu" class="sub">HALEU Deficit</a>
+      <a href="#pwb" class="sub">Photonic Wire Bonding</a>
+      <a href="#ferc" class="sub">FERC Grid Access</a>
+      <a href="#egs" class="sub">EGS Seismicity</a>
+      <a href="#vgcl">2. The VGCL Thesis</a>
+      <a href="#spec-rift">3. Spec Rift</a>
+      <a href="#noise-floor">4. Noise Floor</a>
+      <a href="#adversarial">5. Adversarial Harness</a>
+      <a href="#oracle">6. Oracle Fidelity</a>
+      <a href="#taxonomy">7. Taxonomy Problem</a>
+      <a href="#remediation">8. Remediation</a>
+      <a href="#test-time">9. Test-Time Compute</a>
+    </aside>
+
+    <article>
+
+      <!-- =====================================================
+         SECTION 1: INFRASTRUCTURE
+         ===================================================== -->
+      <section id="infrastructure">
+        <h2>1. The Physical Infrastructure Wall</h2>
+
+        <p>Three separate constraints blocked gigawatt-scale AI infrastructure in 2024-2025, and they have different
+          physical origins with different resolution timelines. Conflating them leads to bad strategic bets about
+          whether an algorithmic substitute is solving the actual problem or a convenient proxy.</p>
+
+        <h3 id="haleu">HALEU Enrichment Deficit</h3>
+
+        <p>Advanced reactor designs targeting high energy density require High-Assay Low-Enriched Uranium: uranium
+          enriched to 5-20% U-235, compared to the 3-5% in conventional light-water reactors. Both Kairos Power fluoride
+          salt and TerraPower Natrium sodium fast reactor designs depend on it. Total Western LEU enrichment capacity
+          sits at roughly 25.4 million SWU per year: Urenco's four-facility network across the UK, Netherlands, Germany,
+          and New Mexico contributes approximately 17.9 million SWU; Orano's Georges Besse II in Tricastin adds about
+          7.5 million. Include Japan Nuclear Fuel Limited at Rokkasho and you get another ~1.05 million SWU, pushing the
+          allied total to roughly 26.5 million. None of those facilities produce HALEU at commercial scale.
+          Reconfiguration needs regulatory approval, physical cascade modifications, and new UF6 handling infrastructure
+          rated for higher-enrichment material.</p>
+
+        <p>Centrus Energy holds the only US commercial HALEU demonstration license. Their Piketon, Ohio plant runs at
+          approximately 900 kg/year. Centrus has stated a target of 12 metric tonnes per year post-2030. That figure is
+          a 13.3x scale-up from current demonstrated output, contingent on DOE program funding and physical facility
+          expansion. It is a target in a funding proposal, not a licensed production capacity.</p>
+
+        <p>The transport problem compounds the enrichment problem. NRC regulations for HALEU shipments reduce cask
+          payload by 44.2% relative to LEU configurations (2,277 kg down to 1,271 kg per cask) because of criticality
+          safety margins at higher enrichment. A reactor with a 5 MT annual fuel requirement ships roughly twice as many
+          casks as an equivalent LEU system. Purpose-designed HALEU transport casks solve this, but no commercial cask
+          design was licensed at the time of writing.</p>
+
+        <h3 id="pwb">Photonic Wire Bonding Throughput Wall</h3>
+
+        <p>Co-packaged optics architectures for next-generation AI accelerator interconnects need photonic wire bonding:
+          two-photon polymerization lithography writing 3D polymer waveguide structures between optical components, one
+          bond at a time. Current commercial PWB tools achieve 10-50 bonds per hour in production. Some systems cite an
+          engineered ceiling around 100 bonds per hour. Commercial viability at wafer-scale interconnect density
+          requires each bond in under 30 seconds sustained across thousands of bonds per wafer. No production-grade
+          system is there.</p>
+
+        <p>The fundamental constraint isn't write speed. It's alignment tolerance. PWB must hit coupling windows on the
+          order of 1-2 microns between misaligned photonic components. At wafer scale, placement errors accumulate, and
+          every bond requires a fresh alignment search before the write cycle begins. The search-plus-write cycle is the
+          bottleneck, not laser throughput.</p>
+
+        <p>The bond material is a cured polymer waveguide with CTE exceeding 50&times;10&#8315;&sup6;/K. Silicon runs at
+          2.6&times;10&#8315;&sup6;/K; indium phosphide at approximately 4.6&times;10&#8315;&sup6;/K. The interfacial
+          thermal stress across a 125 K excursion (modeling the &minus;40&deg;C to 85&deg;C operating range) is:</p>
+
+        <div class="callout math">
+          <div class="callout-title">Thermal Stress</div>
+          <p>Simplified 1D (lower bound):</p>
+          <p>$$\tau_\text{approx} = \Delta\alpha \cdot \Delta T \cdot E_\text{polymer}$$</p>
+          <p>The biaxial correction adds $E/(1-\nu)$. At polymer Poisson ratio $\nu \approx 0.35\text{--}0.40$, the
+            actual interfacial stress runs roughly 1.54&ndash;1.61$\times$ the simplified estimate. Field reliability
+            data from photonic integration pilot programs shows non-trivial failure rates under accelerated thermal
+            cycling. The failure mode is structurally determined by CTE mismatch and doesn't go away through process
+            tuning.</p>
+        </div>
+
+        <p>Parallel lithography systems are under development but not commercially deployed. This is a
+          serial-versus-parallel process problem, not a laser power or precision optics problem.</p>
+
+        <h3 id="ferc">FERC Grid Access and the Co-Location Framework</h3>
+
+        <p>In November 2024, FERC rejected the amended Interconnection Service Agreement between Talen Energy and Amazon
+          Web Services for a 960 MW nuclear co-location arrangement at Susquehanna. The core objection: the
+          behind-the-meter arrangement let a single customer consume generation without contributing to transmission
+          cost recovery, shifting costs to other PJM ratepayers. That ruling established that co-location needs
+          front-of-meter treatment or equivalent cost recovery. Any analysis treating this as a permanent dead-end
+          stopped reading before 2025.</p>
+
+        <p>On June 11, 2025, Talen and Amazon announced a restructured 17-year front-of-meter PPA for up to 1,920 MW
+          through 2042, structured to address the cost-recovery objection. The $18 billion total value circulated in
+          press coverage hasn't been confirmed by primary filings. On December 18, 2025, FERC issued an omnibus order
+          directing PJM to establish new transmission service categories for co-located load configurations. PJM filed
+          its compliance proposal on February 23, 2026, targeting July 31, 2026 as the effective date. As of this
+          writing, the framework is pending final FERC approval. Nuclear co-location isn't dead; it just requires
+          front-of-meter structuring, which adds cost and contract complexity.</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Constraint</th>
+                <th>Origin</th>
+                <th>Timeline</th>
+                <th>Algorithmic Substitute</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>HALEU enrichment capacity</td>
+                <td>Physical + Regulatory</td>
+                <td class="warn">2028-2032+</td>
+                <td class="bad">No</td>
+              </tr>
+              <tr>
+                <td>PWB serial throughput</td>
+                <td>Engineering (serial process)</td>
+                <td class="warn">3-5 years (parallel systems)</td>
+                <td class="bad">No</td>
+              </tr>
+              <tr>
+                <td>FERC co-location rules</td>
+                <td>Regulatory</td>
+                <td class="ok">Framework in progress (H2 2026)</td>
+                <td class="bad">No</td>
+              </tr>
+              <tr>
+                <td>EGS seismicity risk</td>
+                <td>Geophysical</td>
+                <td class="bad">Uncertain</td>
+                <td class="bad">No</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="egs">EGS Seismicity as a Deployment Blocker</h3>
+
+        <p>Fervo Energy's commercial EGS projects in Nevada have demonstrated consistent baseload generation at utility
+          scale. Current LCOE runs $90-140/MWh depending on drilling depth, rock permeability, and site conditions;
+          Fervo's reported drilling cost is approximately $4.8 million per doublet. The deployment constraint is
+          geomechanical: fluid injection at pressure changes pore pressure in surrounding rock, which can activate
+          pre-existing faults. The 2017 Pohang, South Korea event (Mw 5.5) resulted in project abandonment after causing
+          structural damage and injuring 135 people. Permitting near populated areas now requires seismic hazard
+          assessments that extend development timelines by 2-4 years. This doesn't scale away with better drilling.</p>
+      </section>
+
+      <!-- =====================================================
+         SECTION 2: VGCL
+         ===================================================== -->
+      <section id="vgcl">
+        <h2>2. The VGCL Thesis</h2>
+
+        <p>VGCL is a training-time bet: if physical infrastructure constrains compute for the next 3-5 years, get more
+          capability per FLOP by targeting the training distribution at the model's current failure modes rather than
+          sampling uniformly from a static dataset. The loop runs in three phases. Identify categories where the current
+          model fails against a verification oracle. Generate new training problems targeting those categories using a
+          capable external model. Fine-tune, re-evaluate, repeat. The compounding claim is that each round changes the
+          failure distribution, which changes the curriculum, which hits the next failure mode.</p>
+
+        <p>The analogy to AlphaGo, AlphaZero, and AlphaProof is structurally apt: all three operate in closed
+          environments with unambiguous feedback. AlphaProof (DeepMind, 2024) extends this to formal mathematics via
+          Lean 4 type-checking. For code generation, the Python interpreter serves the same role. The critical bet is
+          that this loop produces <em>generalization</em> rather than memorization of the curriculum distribution. That
+          requires empirical verification. The five critiques below describe how the current design fails to provide it.
+        </p>
+      </section>
+
+      <!-- =====================================================
+         CRITIQUES
+         ===================================================== -->
+      <section id="critiques">
+        <h2 id="spec-rift">3. The Specification Rift</h2>
+        <div><span class="critique-type ct-structural">Structural</span></div>
+
+        <p>The model everyone wants to run and the model you can actually run on a Kaggle T4 are not the same
+          experiment. This isn't just a resource constraint, it changes what any positive result can claim.</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Parameter</th>
+                <th>Public Roadmap</th>
+                <th>Practical Spec (Phase 0)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Base model</td>
+                <td>Two identical 7B models</td>
+                <td class="warn">Qwen 2.5 1.5B-Instruct</td>
+              </tr>
+              <tr>
+                <td>Curriculum size</td>
+                <td>1,000-5,000 problems</td>
+                <td class="warn">200 problems, 3 epochs</td>
+              </tr>
+              <tr>
+                <td>Evaluation</td>
+                <td>HumanEval + MBPP + LiveCodeBench</td>
+                <td class="warn">HumanEval + MBPP only</td>
+              </tr>
+              <tr>
+                <td>Training infrastructure</td>
+                <td>Dedicated GPU cluster</td>
+                <td class="warn">Kaggle T4 (15 GB VRAM)</td>
+              </tr>
+              <tr>
+                <td>Curriculum generator</td>
+                <td>Separate, stronger model</td>
+                <td class="warn">Claude API (rate-limited)</td>
+              </tr>
+              <tr>
+                <td>Oracle</td>
+                <td>Multi-phase verification pipeline</td>
+                <td class="warn">Standard Python test suite</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>The 7B-to-1.5B reduction is hardware-driven. Qwen 2.5 7B-Instruct at fine-tuning batch size 1 with gradient
+          checkpointing requires 16-18 GB VRAM. The 1.5B model fits within 15 GB. The claim that 1.5B is the right model
+          because it has "proportionally less code-specific instruction data" than 3B is a post-hoc rationalization.
+          Both carry the same Instruct fine-tuning pipeline across the family. What actually changes is the
+          per-parameter update magnitude: at fixed learning rate, a 300K token fine-tune perturbs the 1.5B weight
+          configuration more than the 7B one because the gradient update magnitude is constant while the number of
+          parameters being updated is smaller. The token fraction is the same ($300{,}000 / 18 \times 10^{12} \approx
+          1.67 \times 10^{-8}$ of pre-training volume regardless of size), but the per-parameter perturbation is not.
+          The pre-training gravity argument is real. The model-size reasoning is just the wrong mechanism for it.</p>
+
+        <p>A positive result from the practical spec doesn't demonstrate that the roadmap spec works. Curriculum volume,
+          model scale, and oracle sophistication each interact with the training signal in ways that don't scale
+          trivially.</p>
+      </section>
+
+      <section id="noise-floor">
+        <h2>4. The Measurement Instrument Has the Wrong Noise Floor</h2>
+        <div><span class="critique-type ct-statistical">Statistical</span></div>
+
+        <p>The entire measurement resolution argument is built on the wrong statistical test.</p>
+
+        <p>The experiment compares two arms: curriculum-trained vs. control, each evaluated on the same benchmark. The
+          question is whether curriculum training achieves a higher pass rate. That's a two-sample proportion test. The
+          document uses $\sigma_\text{meas}$ throughout, that's the standard deviation of a single evaluation run,
+          which characterizes measurement stability for one arm. The relevant quantity for the comparison is
+          $\text{SE}_\text{diff}$, the standard error of the difference between two independent arm estimates. Those
+          quantities differ by $\sqrt{2}$:</p>
+
+        <div class="callout math">
+          <div class="callout-title">The sqrt(2) Error</div>
+          <p>Single-arm measurement std (what this document uses):</p>
+          <p>$$\sigma_\text{meas} = \sqrt{\frac{p(1-p)}{n}}$$</p>
+          <p>Standard error of the two-arm difference (what the experiment needs):</p>
+          <p>$$\text{SE}_\text{diff} = \sqrt{\frac{p(1-p)}{n} + \frac{p(1-p)}{n}} = \sqrt{2}\;\sigma_\text{meas}$$</p>
+          <p>The 2$\sigma$ minimum detectable difference is $2 \cdot \text{SE}_\text{diff}$, not $2 \cdot
+            \sigma_\text{meas}$. Every detection threshold in this document is $\sqrt{2} \approx 1.41\times$ smaller
+            than correct.</p>
+        </div>
+
+        <p>Running the corrected numbers at $p = 0.5$:</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Benchmark ($n$)</th>
+                <th>$\sigma_\text{meas}$</th>
+                <th>$\text{SE}_\text{diff}$</th>
+                <th>Corrected 2$\sigma$ threshold</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>HumanEval (164)</td>
+                <td>3.90 pp</td>
+                <td>5.52 pp</td>
+                <td class="bad">11.04 pp</td>
+              </tr>
+              <tr>
+                <td>HumanEval + MBPP-raw (538)</td>
+                <td>2.16 pp</td>
+                <td>3.05 pp</td>
+                <td class="warn">6.10 pp</td>
+              </tr>
+              <tr>
+                <td>HumanEval + MBPP-san (421)</td>
+                <td>2.44 pp</td>
+                <td>3.45 pp</td>
+                <td class="warn">6.89 pp</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout warn">
+          <div class="callout-title">Consequence</div>
+          <p>The document claims: "at $n=538$, a genuine improvement of 4.31 pp becomes marginally distinguishable from
+            noise." The corrected threshold is 6.10 pp. Statistical power to detect a 5 pp improvement at $n=538$,
+            two-sided $\alpha=0.05$: 37.5%. That's close enough to a coin flip that a null result tells you almost
+            nothing. The experiment at $n=538$ cannot reliably detect the effect it's looking for.</p>
+        </div>
+
+        <p>One additional thing to nail down: MBPP (Austin et al., 2021) has three common evaluation variants. The
+          original 374-problem test set gives $n=538$. The 257-problem sanitized subset (which removes ambiguous and
+          low-quality problems, more commonly used in published benchmarks) gives $n=421$ and shifts the 2$\sigma$
+          threshold to 6.89 pp. The EvalPlus MBPP+ version has 378 problems. The experiment spec must state which split
+          is used before the fact, not after, because the detection threshold depends on it.</p>
+
+        <h3>The Variance Correction Runs One Direction</h3>
+
+        <p>The heterogeneous difficulty correction is noted correctly in passing: HumanEval's stratified problem
+          difficulty means the binomial variance is an overestimate, and the proper model is a Poisson-Binomial with
+          per-problem success probabilities $p_i$:</p>
+
+        <p>$$\text{Var}(X) = \sum_{i=1}^{n} p_i(1-p_i) \;\leq\; \frac{n}{4}$$</p>
+
+        <p>The upper bound is achieved only when all $p_i = 0.5$; with heterogeneous difficulties, variance is lower.
+          That direction of the correction is right. But the variance expression for non-independent outcomes is:</p>
+
+        <p>$$\text{Var}(X) = \sum_{i=1}^{n} p_i(1-p_i) \;+\; 2\sum_{i < j} \text{Cov}(X_i,\, X_j)$$</p>
+
+            <p>A curriculum engine doesn't improve problems independently. It improves categories. If the model learns
+              to handle recursive data structures, it improves on all recursive data structure problems together,
+              positive within-category correlation. At $m=50$ targeted problems with uniform $p=0.5$ and intra-category
+              correlation $\rho=0.3$, the covariance addition is $\rho \cdot m(m-1) \cdot p(1-p) = 0.3 \times 2{,}450
+              \times 0.25 = 183.8$, versus an independence contribution of $m \cdot p(1-p) = 12.5$. Effective variance
+              within that block is 196.3 instead of 12.5, a 3.96$\times$ sigma inflation. The net correction direction
+              is unknown without empirical correlation data from this model family on this benchmark. The "upper bound"
+              framing is one-sided.</p>
+
+            <p>Also: the expected 2-5 pp curriculum improvement range is load-bearing and unsourced. If the true effect
+              is 10 pp, $n=538$ works fine. If it's 0.5 pp, $n=2{,}000$ is still not enough. That range needs to come
+              from published curriculum fine-tuning results at comparable scale and compute, not from prior expectation.
+            </p>
+      </section>
+
+      <section id="adversarial">
+        <h2>5. The Adversarial Harness Cannot Distinguish Reasoning from Pattern Extension</h2>
+        <div><span class="critique-type ct-structural">Structural</span></div>
+
+        <p>The curriculum generation loop prompts a generator model to write harder problems in category X based on
+          where the current model fails. The generator doesn't have access to the model's internal failure mechanism,
+          it produces problems that are textually similar to the failure category as it appears in its training
+          distribution. If the current model fails at dynamic programming, the generator writes more DP problems. Some
+          of those will genuinely test the missing computation. Some will be solvable by pattern-matching to DP
+          templates the model already knows from pre-training, without requiring the reasoning step that caused the
+          failure.</p>
+
+        <p>The Python interpreter cannot distinguish between those two outcomes. Both pass. The oracle doesn't care
+          whether the model understood the algorithm or found a structural template producing correct output on the test
+          cases. This is the Curry-Howard gap: syntactic pattern extension and logical reasoning generalization produce
+          identical behavioral outputs under test-suite evaluation.</p>
+
+        <p>What would surface this: the model improves on the specific categories in the curriculum but fails on
+          structurally isomorphic problems in domains not represented in the curriculum, improving on Python DP
+          problems but not equivalent problems in a different syntactic framing. That requires a category transfer check
+          in the evaluation protocol, which isn't in the Phase 0 spec. AlphaZero sidesteps this because self-play
+          generates positions requiring actual policy evaluation; there's no pretraining distribution to pattern-match
+          against. A language model generating code problems doesn't have that property.</p>
+      </section>
+
+      <section id="oracle">
+        <h2>6. Phase 3 Oracle Fidelity vs. Simulation Speed</h2>
+        <div><span class="critique-type ct-engineering">Engineering</span></div>
+
+        <p>For Phase 3 (molecular discovery), the DFT latency critique is right about the constraint and wrong about the
+          failure mode. Yes, raw DFT on drug-sized molecules runs 8-72 hours per query. Running that synchronously
+          inside a live generation loop isn't a viable architecture. But that's not how production materials science ML
+          systems are built.</p>
+
+        <p>The standard architecture uses machine learning interatomic potentials (MLIPs): neural networks trained on
+          DFT computations that evaluate molecular energy and forces at approximately $10^5\times$ the speed of the
+          underlying DFT code. CHGNet (Deng et al., 2023) and MatterSim (Microsoft, 2024) are two recent examples. A
+          curriculum loop using an MLIP as the oracle runs at millisecond latency per evaluation, not hours. The DFT
+          latency critique attacks a naive pipeline that no production materials science ML system actually uses.</p>
+
+        <p>The real failure mode for Phase 3 is different. Curriculum engines push toward the edges of the current
+          model's capability distribution. In the molecular domain, that means the generator produces candidate
+          structures in regions of chemical space where the model currently fails, which are exactly the regions where
+          MLIPs are least accurate, because MLIPs are trained on DFT data from chemically reasonable structures and
+          extrapolate poorly to unusual geometries, exotic bonding environments, and unexplored coordination
+          chemistries. The curriculum learns to produce structures with low MLIP-predicted energy not because they're
+          genuinely stable and interesting molecules, but because they exploit gaps in the MLIP's coverage. The oracle
+          itself gets adversarially probed by the curriculum generator.</p>
+
+        <div class="callout note">
+          <div class="callout-title">Active Learning as a Partial Response</div>
+          <p>The standard engineering response to MLIP distributional failure is uncertainty-aware active learning: run
+            the curriculum loop against the MLIP, compute epistemic uncertainty via ensemble disagreement or MC dropout,
+            and route high-uncertainty structures to actual DFT validation rather than trusting the MLIP score. FLARE
+            (Vandermause et al., 2020), MACE-MP-0 (Batatia et al., 2023), and SevenNet (Park et al., 2024) implement
+            this. The uncertainty gate partially addresses oracle gaming by flagging structures in poorly-covered
+            regions before accepting their predicted properties.</p>
+          <p>But a sufficiently adversarial curriculum generator might find structures in low-uncertainty MLIP regions
+            where the model is confident but systematically wrong, interpolation errors rather than extrapolation
+            errors. Whether that materializes in Phase 3 depends on the specific MLIP's coverage and the generator's
+            capacity. Phase 3 needs to specify: which MLIP version is the oracle, what uncertainty metric triggers DFT
+            fallback, which DFT code handles validation, and how DFT-validated signal flows back to the curriculum
+            generator. Without those four specifications, the oracle architecture is undefined.</p>
+        </div>
+      </section>
+
+      <section id="taxonomy">
+        <h2>7. The Failure Taxonomy Problem</h2>
+        <div><span class="critique-type ct-methodological">Methodological</span></div>
+
+        <p>The curriculum loop requires categorizing failures to generate a targeted curriculum. Human-assigned problem
+          categories (HumanEval labels by algorithm type: sorting, DP, string manipulation, graph traversal) may not
+          correspond to the model's internal failure modes. A model might fail on graph traversal problems not because
+          it lacks graph reasoning but because it consistently makes off-by-one errors in adjacency list indexing. Both
+          failures appear as "graph traversal" in the human taxonomy but require different curriculum responses.</p>
+
+        <p>The inverse is also real. Two problems in different human categories might share a single neural failure
+          mode,
+          failing at pointer arithmetic in C-style simulations and failing at matrix indexing could share a
+          representational deficit in how the model tracks positional state. A curriculum treating them as separate
+          categories generates redundant training signal.</p>
+
+        <p>The correct taxonomy is model-architecture-dependent. The same surface category can involve different
+          internal computations in different model families because attention patterns, positional encoding schemes, and
+          MLP specialization differ by architecture. There's no static problem taxonomy that's simultaneously correct
+          for Qwen 2.5, Llama 3, and Mistral. Phase 0 needs either a mechanism for discovering the model-specific
+          failure taxonomy, which is a research contribution in itself, or an explicit acknowledgment that
+          human-assigned categories are a proxy with unknown accuracy.</p>
+      </section>
+
+      <!-- =====================================================
+         SECTION 8: REMEDIATION
+         ===================================================== -->
+      <section id="remediation">
+        <h2 id="remediation">8. What Actually Needs to Change Before Running Phase 0</h2>
+
+        <p>Pre-register the statistical test before running anything. The experiment requires a two-sample proportion
+          test with a specific sample size calculation based on desired power and the pre-registered minimum detectable
+          effect. Using $\text{SE}_\text{diff}$:</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>$\delta$ (true improvement)</th>
+                <th>Power at $n = 538$</th>
+                <th>Power at $n = 2{,}000$</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>3 pp</td>
+                <td class="bad">16.6%</td>
+                <td class="bad">47.5%</td>
+              </tr>
+              <tr>
+                <td>4 pp</td>
+                <td class="bad">25.9%</td>
+                <td class="warn">71.6%</td>
+              </tr>
+              <tr>
+                <td>5 pp</td>
+                <td class="bad">37.5%</td>
+                <td class="ok">88.5%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>At $n=2{,}000$ and a genuine 5 pp effect, power is 88.5%. At $n=2{,}000$ and a 3 pp effect, it's 47.5%,
+          still close to a coin flip. The 2-5 pp prior determines whether $n=2{,}000$ is enough. Until that prior is
+          sourced from empirical literature, the required sample size can't be determined. Expanding to 2,000 problems
+          is within reach: HumanEval (164) plus MBPP-raw (374) gives 538; add a fixed-at-experiment-start subset of
+          LiveCodeBench (2024-2025 window, approximately 400 problems) plus HumanEval+ from EvalPlus (164 augmented
+          problems) and you're there. Fix the LiveCodeBench subset before training to prevent contamination from future
+          updates.</p>
+
+        <p>Add the category transfer check. Run evaluation on a held-out problem set from a different syntactic domain
+          covering the same algorithmic categories targeted in the curriculum. If the model improves on Python DP in the
+          curriculum but not on equivalent problems in Go or Rust, the improvement is pattern extension. This adds one
+          evaluation call per training round and provides interpretive clarity that no amount of additional benchmark
+          coverage gives you.</p>
+
+        <p>Run the LogitLens diagnostic before and after fine-tuning (see Section 10). Check whether probability mass on
+          correct tokens builds from early layers (learning the reasoning computation) or appears only in late layers
+          (surface output adjustment). Two hours of implementation, one forward hook per $N$ layers, separates two
+          outcomes that behavioral evaluation can't separate. It's the highest-leverage addition to the protocol
+          relative to cost.</p>
+
+        <p>For Phase 3, specify the oracle architecture before designing the experiment: which MLIP version, what
+          uncertainty threshold triggers DFT validation, which DFT code runs it, how the DFT-validated signal flows back
+          to the curriculum generator. Active learning raises the bar for adversarial exploitation; it doesn't eliminate
+          the failure mode. Make that explicit in the design.</p>
+
+        <p>On auto-formalization: for the mathematics domain, converting problem statements to Lean 4 and using the
+          proof assistant's type checker as the oracle partially addresses the Curry-Howard gap. Current LLM-based
+          auto-formalization success rates on simple propositions run 40-60% (wide range, benchmark-dependent, varies
+          significantly by problem complexity and mathlib version). It's an incomplete solution at the edges of
+          formalization coverage, but it provides unambiguous feedback within its scope. More relevant for Phases 2 and
+          3 than Phase 0, where the Python interpreter already does this.</p>
+      </section>
+
+      <!-- =====================================================
+         SECTION 9: TEST-TIME COMPUTE
+         ===================================================== -->
+      <section id="test-time">
+        <h2>9. The Test-Time Compute Problem</h2>
+
+        <p>Independent of VGCL's internal validity issues, there's a competitive framing question. Running pass@100 on
+          HumanEval (164 problems, 100 samples each, approximately 400 tokens per generation) costs roughly $164 \times
+          100 \times 2 \times 1.5 \times 10^9 \times 400 \approx 2.0 \times 10^{16}$ FLOPs at 1.5B scale. Phase 0
+          curriculum training over 300K tokens at 3 epochs costs approximately $6 \times 1.5 \times 10^9 \times 9 \times
+          10^5 \approx 2.7 \times 10^{15}$ FLOPs. The inference run is about 7.3$\times$ the training run. They're
+          within one order of magnitude of each other, not "substantially different budgets."</p>
+
+        <p>What actually differs is improvement magnitude. Best-of-100 inference gets roughly 30 pp gain on HumanEval;
+          curriculum training at Phase 0 scale is expected to deliver 2-5 pp. The FLOP efficiency of test-time compute
+          is demonstrably higher at this scale for this benchmark. A model scoring 50% with greedy decoding reaches 80%+
+          with repeated sampling and test-time verification, the o1 and o3 model series formalize this: inference
+          compute allocated to extended chain-of-thought generation and internal verification steps rather than a single
+          greedy pass.</p>
+
+        <p>The stronger case for VGCL isn't efficiency, it's orthogonality. Test-time compute increases the probability
+          of solving a problem the model already knows how to approach given enough tries. Curriculum training changes
+          what the model knows how to approach. On the capability axis they're not substitutes. On the compute budget
+          axis they are, and test-time compute wins at Phase 0 scale. That framing needs to be explicit in any VGCL cost
+          justification.</p>
+      </section>
+
+    </article>
+  </div>
+
+  <footer>
+    <p>Contact Info: <a href="mailto:tazwardevp@gmail.com"></a>tazwardevp@gmail.com</a></p>
+    <p style="margin-top:0.6rem; font-size:0.7rem;">
+
+    </p>
+  </footer>
+
 </body>
+
 </html>
