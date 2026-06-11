@@ -724,20 +724,20 @@
         <p>The entire measurement resolution argument is built on the wrong statistical test.</p>
 
         <p>The experiment compares two arms: curriculum-trained vs. control, each evaluated on the same benchmark. The
-          question is whether curriculum training achieves a higher pass rate. That's a two-sample proportion test. The
-          document uses $\sigma_\text{meas}$ throughout, that's the standard deviation of a single evaluation run,
+          question is whether curriculum training achieves a higher pass rate. That's a two-sample proportion test. I
+          was using $\sigma_\text{meas}$ throughout. That's the standard deviation of a single evaluation run,
           which characterizes measurement stability for one arm. The relevant quantity for the comparison is
           $\text{SE}_\text{diff}$, the standard error of the difference between two independent arm estimates. Those
           quantities differ by $\sqrt{2}$:</p>
 
         <div class="callout math">
           <div class="callout-title">The sqrt(2) Error</div>
-          <p>Single-arm measurement std (what this document uses):</p>
+          <p>Single-arm measurement std (what I was using):</p>
           <p>$$\sigma_\text{meas} = \sqrt{\frac{p(1-p)}{n}}$$</p>
           <p>Standard error of the two-arm difference (what the experiment needs):</p>
           <p>$$\text{SE}_\text{diff} = \sqrt{\frac{p(1-p)}{n} + \frac{p(1-p)}{n}} = \sqrt{2}\;\sigma_\text{meas}$$</p>
           <p>The 2$\sigma$ minimum detectable difference is $2 \cdot \text{SE}_\text{diff}$, not $2 \cdot
-            \sigma_\text{meas}$. Every detection threshold in this document is $\sqrt{2} \approx 1.41\times$ smaller
+            \sigma_\text{meas}$. Every threshold I had is $\sqrt{2} \approx 1.41\times$ smaller
             than correct.</p>
         </div>
 
@@ -778,8 +778,7 @@
 
         <div class="callout warn">
           <div class="callout-title">Consequence</div>
-          <p>The document claims: "at $n=538$, a genuine improvement of 4.31 pp becomes marginally distinguishable from
-            noise." The corrected threshold is 6.10 pp. Statistical power to detect a 5 pp improvement at $n=538$,
+          <p>I had the threshold at 4.31 pp for $n=538$. The corrected number is 6.10 pp. Statistical power to detect a 5 pp improvement at $n=538$,
             two-sided $\alpha=0.05$: 37.5%. That's close enough to a coin flip that a null result tells you almost
             nothing. The experiment at $n=538$ cannot reliably detect the effect it's looking for.</p>
         </div>
@@ -792,7 +791,7 @@
 
         <h3>The Variance Correction Runs One Direction</h3>
 
-        <p>The heterogeneous difficulty correction is noted correctly in passing: HumanEval's stratified problem
+        <p>HumanEval's stratified problem
           difficulty means the binomial variance is an overestimate, and the proper model is a Poisson-Binomial with
           per-problem success probabilities $p_i$:</p>
 
