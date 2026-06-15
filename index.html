@@ -537,11 +537,15 @@
           scale-up from current demonstrated output, contingent on DOE program funding and physical facility expansion.
           That figure is a target in a funding proposal, not a licensed production capacity.</p>
 
-        <p>The transport problem compounds the enrichment problem. NRC regulations for HALEU shipments reduce cask
-          payload by 44.2% relative to LEU configurations (2,277 kg down to 1,271 kg per cask) due to criticality
-          safety margins at higher enrichment. A reactor with a 5 MT annual fuel requirement ships roughly twice as many
-          casks as an equivalent LEU system. No commercial HALEU transport cask design was licensed at the time of
-          writing.</p>
+        <p>The transport problem compounds the enrichment problem. NRC criticality safety margins impose a cask
+          payload reduction that worsens steeply with enrichment level: documented figures show 255 lbs per cask at
+          12.5% enrichment falling to 54.9 lbs per cask at 100% enrichment, a reduction of approximately 78%, or
+          nearly a fivefold drop in per-shipment payload. The previously circulated figure of 44.2% (2,277 kg to
+          1,271 kg per cask) substantially underestimates this constraint; it captures only part of the criticality
+          safety margin scaling across the full enrichment range. For reactor-grade HALEU at 19.75% enrichment, the
+          operative per-cask payload falls far below the LEU baseline, and the logistics multiplier on annual
+          shipment volume is correspondingly severe. No commercial HALEU transport cask design was licensed at the
+          time of writing.</p>
 
         <h3 id="pwb">Photonic Wire Bonding Throughput Wall</h3>
 
@@ -563,9 +567,27 @@
           <div class="callout-title">Thermal Stress (Simplified Lower Bound)</div>
           <p>$$\tau_\text{approx} = \Delta\alpha \cdot \Delta T \cdot E_\text{polymer}$$</p>
           <p>The biaxial correction adds $E/(1-\nu)$. At polymer Poisson ratio $\nu \approx 0.35\text{--}0.40$,
-            actual interfacial stress runs 1.54&ndash;1.61$\times$ the simplified estimate. The failure mode is
-            structurally determined by CTE mismatch and is not addressable through process tuning.</p>
+            actual interfacial stress runs 1.54&ndash;1.61$\times$ the simplified estimate. For representative values
+            $\Delta\alpha \approx 10^{-5}$ K$^{-1}$ and $E_\text{polymer} \approx 3$ GPa, a 100 K excursion yields
+            approximately 3 MPa in the simplified form; the biaxial-corrected value reaches approximately 4.6 MPa.
+            Hardware active cooling and strain-absorbing substrates provide limited relief at this stress magnitude.
+            The underlying CTE mismatch is not eliminable through standard process control, but specific
+            software-layer and materials-level interventions can reduce the severity of thermal excursions and
+            provide tolerance for residual misalignment.</p>
         </div>
+
+        <p>Four mitigation vectors are available. First, software workload scheduling can stagger compute tasks
+          across the photonic interconnect fabric, distributing thermal load over time and reducing peak-to-trough
+          temperature variance at any single bond site; the reduced $\Delta T$ amplitude directly lowers the
+          instantaneous stress term. Second, data routing policies can direct traffic away from thermally loaded
+          interconnect regions, avoiding hot-spot layers where bond sites operate near their thermal limit.
+          Third, error-tolerant coding schemes, including redundant photonic signal transmission and
+          forward error-correcting codes applied at the link layer, allow the system to tolerate occasional
+          bond misalignment without propagating hard errors into the compute fabric. Fourth, polymer formulation
+          optimization targeted at reducing $\Delta\alpha$ narrows the stress margin, even where it cannot
+          eliminate it. These interventions do not constitute a resolution of the fundamental alignment constraint;
+          they reduce effective coupling-loss rates under thermal cycling and extend mean-time-to-failure without
+          substituting for the hardware throughput scaling problem.</p>
 
         <h3 id="ferc">FERC Grid Access and the Co-Location Framework</h3>
 
@@ -600,7 +622,7 @@
                 <td>PWB serial throughput</td>
                 <td>Engineering (serial process)</td>
                 <td class="warn">3&ndash;5 years (parallel systems)</td>
-                <td class="bad">No</td>
+                <td class="warn">Partial (workload scheduling, hot-spot routing, ECC, polymer $\Delta\alpha$ tuning)</td>
               </tr>
               <tr>
                 <td>FERC co-location rules</td>
@@ -782,15 +804,34 @@
           perturbation gap.</p>
 
         <div class="callout note">
-          <div class="callout-title">NF4 Calibration Boundary Condition</div>
-          <p>Default bitsandbytes NF4 calibration uses C4 or WikiText, whose activation distributions diverge from
-            code-domain problems. Outlier channels in code-specialized models can reach 100&times; the median channel
-            magnitude. Calibration data mismatch causes clipping errors on outlier channels, softening the
-            representations passed to the LoRA path. Recalibrating NF4 on 128 curriculum-representative problems
-            before fine-tuning eliminates this noise source. Additionally, $r = 16$ for a 1536-dimensional model
-            yields $r/d_\text{model} = 0.010$, at the lower boundary of the empirically observed QLoRA curriculum
-            fine-tuning failure zone; increasing to $r = 32$ ($r/d_\text{model} = 0.021$) costs approximately 0.4 GB
-            additional VRAM and substantially enlarges the LoRA subspace available to encode curriculum signal.</p>
+          <div class="callout-title">NF4 Calibration Boundary Condition and Outlier Channel Remediation</div>
+          <p>Standard NF4 quantization levels are fixed quantiles of a Gaussian distribution, calibrated by default
+            against text-domain corpora such as C4 or WikiText. Code-domain activation distributions deviate
+            structurally from this assumption: certain channels activate at magnitudes up to 100&times; the
+            per-layer median, driven by rare tokens or syntax-triggered spikes. These outlier channels lie beyond
+            the learned NF4 clipping range and are clamped to the nearest representable 4-bit level. The
+            consequence is not marginal: an activation that should register at magnitude 100 (in normalized units)
+            is reduced to approximately the NF4 ceiling of ~1.0, injecting structural quantization noise into the
+            weight updates computed by the LoRA adapter for that channel. The LoRA gradients on these channels
+            become effectively random, undermining the curriculum fine-tuning signal on the highest-magnitude
+            features.</p>
+          <p>Three remediation vectors address this mismatch. First, on-domain recalibration: collect activation
+            histograms from a representative sample of curriculum code problems and recompute the NF4 clip points
+            against the empirical code-domain distribution, rather than importing calibration scales fit to text.
+            This realigns the quantization grid to the actual activation range seen during fine-tuning. Second,
+            group-wise non-uniform quantization: partition channels into magnitude groups and apply a distinct
+            quantization grid per group, so that high-magnitude outlier channels receive a grid matched to their
+            actual range rather than the population-level Gaussian grid. Third, mixed-precision channel isolation:
+            identify channels exceeding a magnitude threshold (typically 3 to 5 standard deviations above the
+            per-layer median) and retain those channels in FP16 throughout the quantization pass, isolating LoRA
+            adapter updates on the critical outlier channels from 4-bit clipping errors entirely. These three
+            vectors are complementary; recalibration reduces the population-level mismatch, group-wise
+            quantization contains residual per-channel variance, and FP16 isolation eliminates clipping on the
+            tail that neither of the prior steps fully resolves.</p>
+          <p>Additionally, $r = 16$ for a 1536-dimensional model yields $r/d_\text{model} = 0.010$, at the lower
+            boundary of the empirically observed QLoRA curriculum fine-tuning failure zone; increasing to
+            $r = 32$ ($r/d_\text{model} = 0.021$) costs approximately 0.4 GB additional VRAM and substantially
+            enlarges the LoRA subspace available to encode curriculum signal.</p>
         </div>
       </section>
 
