@@ -472,6 +472,8 @@
       <span class="tag">statistical testing</span>
       <span class="tag">mechanistic interpretability</span>
       <span class="tag">AI infrastructure</span>
+      <span class="tag">architectural patching</span>
+      <span class="tag">operational audit</span>
     </div>
   </div>
 
@@ -912,15 +914,26 @@
           <p><strong>Enforcement and monitoring protocol.</strong> During fine-tuning, continuous per-parameter
             update monitoring must track $\|\Delta\theta_i\|$ against the 7B reference baseline at each gradient
             step. Automated alerts are triggered at 80% of the ceiling (approximately $1.22\times$ the 7B reference
-            update magnitude), providing a warning interval before the critical threshold is breached. Any gradient
-            step at which $\|\Delta\theta_i\|$ reaches or exceeds $1.53\times$ the 7B reference magnitude triggers
-            an immediate checkpoint rollback to the last verified stable state; fine-tuning resumes from the
-            rolled-back checkpoint with the learning rate reduced by a factor of 0.5. Successive rollbacks within
-            the same training phase indicate that the learning rate schedule itself is miscalibrated for the
-            1.5B pre-training gravity regime and must be re-parameterized before training continues. Any curriculum
-            fine-tuning campaign on Qwen 2.5 1.5B that does not implement this rollback mechanism is operating
-            outside verified parameter-stability bounds and cannot make valid claims about pre-training gravity
-            confinement.</p>
+            update magnitude), providing a warning interval before the critical threshold is breached. Static
+            checkpoint rollback with a fixed 0.5 learning rate multiplier upon crossing the 1.53x ceiling is
+            rejected as the primary enforcement mechanism: code-domain gradient distributions are highly dynamic,
+            and a rigid rollback rule activates on large-but-valid gradient steps produced during genuinely
+            complex reasoning computations. This triggers repeated rollback cycles that exponentially decay the
+            effective learning rate toward zero and stall optimization velocity entirely without resolving the
+            underlying gradient magnitude; the training run enters a degenerate state where the optimizer can
+            neither advance nor recover. The replacement enforcement mechanism is a dynamic adaptive gradient
+            clipping formulation based on the running median of the update norm history:
+            $$\text{Clip Threshold}_t = \text{median}\!\left(\|\Delta\theta_{t-k:t}\|\right) + 3 \cdot \text{MAD}\!\left(\|\Delta\theta_{t-k:t}\|\right)$$
+            where $k$ is a trailing window of 100 gradient steps and MAD denotes the median absolute deviation
+            of the norm history within that window. Update steps exceeding this threshold are scaled down
+            proportionally by the factor $\text{Clip Threshold}_t / \|\Delta\theta_t\|$ rather than triggering
+            a rollback; this preserves optimization continuity by attenuating the anomalous step while allowing
+            fine-tuning to proceed without resetting momentum state or reverting accumulated parameter updates.
+            The window length $k$ defaults to 100 steps and should be reduced to 50 for curricula containing
+            fewer than 200 training problems, so the running median reflects recent gradient history rather
+            than early-phase initialization artifacts. Any curriculum fine-tuning campaign on Qwen 2.5 1.5B
+            that does not implement this adaptive clipping mechanism is operating outside verified
+            parameter-stability bounds and cannot make valid claims about pre-training gravity confinement.</p>
         </div>
       </section>
 
