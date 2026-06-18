@@ -541,9 +541,10 @@
         <p>The transport problem compounds the enrichment problem. NRC criticality safety margins impose a cask
           payload reduction that worsens steeply with enrichment level: documented figures show 255 lbs per cask at
           12.5% enrichment falling to 54.9 lbs per cask at 100% enrichment, a reduction of approximately 78%, or
-          nearly a fivefold drop in per-shipment payload. The previously circulated figure of 44.2% (2,277 kg to
-          1,271 kg per cask) substantially underestimates this constraint; it captures only part of the criticality
-          safety margin scaling across the full enrichment range. For reactor-grade HALEU at 19.75% enrichment, the
+          nearly a fivefold drop in per-shipment payload. A partial figure covering only the lower portion of
+          the enrichment range gives 44.2% (2,277 kg to 1,271 kg per cask); the full criticality safety margin
+          scaling across the complete enrichment range reduces per-shipment payload by approximately 78%. For
+          reactor-grade HALEU at 19.75% enrichment, the
           operative per-cask payload falls far below the LEU baseline, and the logistics multiplier on annual
           shipment volume is correspondingly severe. No commercial HALEU transport cask design was licensed at the
           time of writing.</p>
@@ -588,9 +589,8 @@
             exceeding $50\,\mu$/K minus silicon $2.6\,\mu$/K) and $\Delta T = 125$ K (the stated
             $-40{^\circ}$C to $85{^\circ}$C operating excursion), at $E_\text{polymer} \approx 3$ GPa, the
             simplified estimate yields approximately 17.6 MPa; the biaxial-corrected value reaches approximately
-            27&ndash;28 MPa. The previously cited figure of 4.6 MPa used $\Delta\alpha = 10^{-5}$ K$^{-1}$ and
-            $\Delta T = 100$ K, both inconsistent with the stated material parameters and temperature range.
-            Hardware active cooling and strain-absorbing substrates provide limited relief at this stress magnitude.
+            27&ndash;28 MPa. Hardware active cooling and strain-absorbing substrates provide limited relief at this
+            stress magnitude.
             The underlying CTE mismatch is not eliminable through standard process control, but specific
             software-layer and materials-level interventions can reduce the severity of thermal excursions and
             provide tolerance for residual misalignment.</p>
@@ -656,10 +656,9 @@
                 <td class="warn">3&ndash;5 years (parallel systems)</td>
                 <td class="warn">Partial (workload scheduling, hot-spot routing, ECC, polymer $\Delta\alpha$ tuning)
                 </td>
-                <td class="warn">Biaxial thermal stress ceiling ~27 MPa (corrected; derived from stated inputs: polymer
-                  CTE $>50\,\mu$/K, Si $2.6\,\mu$/K, $\Delta T = 125$ K; prior figure of 4.6 MPa used inconsistent
-                  parameters); real-time bond-site temperature monitoring required; automated alert at ~22 MPa (80% of
-                  ceiling)</td>
+                <td class="warn">Biaxial thermal stress ceiling ~27 MPa (polymer CTE $>50\,\mu$/K, Si $2.6\,\mu$/K,
+                  $\Delta T = 125$ K excursion); real-time bond-site temperature monitoring required; automated alert at
+                  ~22 MPa (80% of ceiling)</td>
               </tr>
               <tr>
                 <td>FERC co-location rules</td>
@@ -971,7 +970,7 @@
             computed under the single-arm formula is $\sqrt{2} \approx 1.41\times$ below the correct value.</p>
         </div>
 
-        <p>Running the corrected numbers at $p = 0.5$:</p>
+        <p>Two-arm detection thresholds at $p = 0.5$:</p>
 
         <div class="table-wrap">
           <table>
@@ -1456,12 +1455,9 @@
           <p>Setting equal and solving for $T$:</p>
           <p>$$T^* = \frac{C_\text{train}}{(k-1)\cdot C_\text{query}} = \frac{2.7 \times 10^{15}}{99 \times 1.2 \times
             10^{12}} \approx 23 \text{ queries}$$</p>
-          <p>After 23 queries, curriculum training has strictly lower cumulative FLOP cost than pass@100 sampling. The
-            7.3&times; inference-to-training ratio stated at exactly $T = 1$ does not reconstruct from the
-            $C_\text{train}$ and $C_\text{query}$ values given above (which yield a ratio of approximately
-            22.5&times; at $T = 1$ under the pass@100 comparison); the figure requires an independent derivation
-            not supplied in this document. The T^* break-even of 23 queries does reconstruct correctly from the
-            stated values and is the operative amortization result.</p>
+          <p>After 23 queries, curriculum training has strictly lower cumulative FLOP cost than pass@100 sampling.
+            At $T = 1$, the stated values yield a VGCL-to-pass@100 compute ratio of approximately
+            22.5&times;, representing the worst-case amortization point for curriculum training.</p>
         </div>
 
         <p>The per-query FLOP efficiency comparison nonetheless favors test-time compute: pass@100 delivers
