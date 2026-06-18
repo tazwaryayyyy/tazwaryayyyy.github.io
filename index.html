@@ -472,8 +472,6 @@
       <span class="tag">statistical testing</span>
       <span class="tag">mechanistic interpretability</span>
       <span class="tag">AI infrastructure</span>
-      <span class="tag">architectural patching</span>
-      <span class="tag">operational audit</span>
     </div>
   </div>
 
@@ -528,7 +526,8 @@
         <p>Advanced reactor designs targeting high energy density require High-Assay Low-Enriched Uranium: uranium
           enriched to 5&ndash;20% U-235, compared to the 3&ndash;5% in conventional light-water reactors. Both Kairos
           Power fluoride salt and TerraPower Natrium sodium fast reactor designs depend on it. Total Western LEU
-          enrichment capacity sits at roughly 25.4 million SWU per year: Urenco's four-facility network across the UK,
+          enrichment capacity sits at approximately 26.5 million SWU per year: Urenco's four-facility network across the
+          UK,
           Netherlands, Germany, and New Mexico contributes approximately 17.9 million SWU; Orano's Georges Besse II at
           Tricastin adds about 7.5 million. Japan Nuclear Fuel Limited at Rokkasho contributes another ~1.05 million
           SWU. None of those facilities produce HALEU at commercial scale; reconfiguration requires regulatory approval,
@@ -549,18 +548,20 @@
           shipment volume is correspondingly severe. No commercial HALEU transport cask design was licensed at the
           time of writing.</p>
 
-        <p>Against this transport backdrop, the Centrus Piketon cascade has progressed through three operationally
-          confirmed throughput milestones that now function as structural baseline constraints for deployment
-          planning under the June 16, 2026 temporal anchor: 3 metric tonnes per year as of September 2024,
-          8 metric tonnes per year as of December 2025, and a current operational target of 10 metric tonnes per
-          year as of June 2026. These figures represent observed cascade performance under the DOE HALEU Operations
-          Contract (HOCP) and constitute the floor for near-term supply modeling; they are not projection targets.
-          Continuous monitoring of the HALEU supply chain is required against these milestones, with automated
-          alerts triggered at 80% of the active throughput threshold (approximately 8 MT/year against the current
-          10 MT/year target). The gap between the 10 MT/year operational ceiling and the 12 MT/year post-2030
-          trajectory remains contingent on DOE funding authorization and physical facility expansion; the 2026
-          throughput baseline is the operative constraint for any reactor deployment timeline extending into the
-          near term.</p>
+        <p>Against this transport backdrop, DOE HALEU supply availability under the HALEU Operations Contract
+          (HOCP) has advanced through three confirmed allocation milestones that function as near-term supply
+          constraints for deployment planning: 3 metric tonnes made available as of September 2024, 8 metric
+          tonnes as of December 2025, and a current allocation target of 10 metric tonnes as of June 2026. These
+          figures represent HOCP program supply volumes sourced from government surplus and downblended stockpile
+          material, not from Piketon cascade enrichment output; Piketon's confirmed new-enrichment rate remains
+          approximately 900 kg/year. The allocation schedule and the cascade output are operationally distinct:
+          surplus-sourced allocations bridge near-term reactor demonstration demand that the Piketon cascade cannot
+          yet cover at scale. Continuous monitoring of the HALEU supply chain is required against these milestones,
+          with automated alerts triggered at 80% of the active availability threshold (approximately 8 MT against
+          the current 10 MT target). The gap between the 10 MT allocation ceiling and the 12 MT/year post-2030
+          Piketon cascade expansion target remains contingent on DOE funding authorization and physical facility
+          expansion; the 2026 allocation baseline is the operative supply constraint for any reactor deployment
+          timeline extending into the near term.</p>
 
         <h3 id="pwb">Photonic Wire Bonding Throughput Wall</h3>
 
@@ -582,9 +583,13 @@
           <div class="callout-title">Thermal Stress (Simplified Lower Bound)</div>
           <p>$$\tau_\text{approx} = \Delta\alpha \cdot \Delta T \cdot E_\text{polymer}$$</p>
           <p>The biaxial correction adds $E/(1-\nu)$. At polymer Poisson ratio $\nu \approx 0.35\text{--}0.40$,
-            actual interfacial stress runs 1.54&ndash;1.61$\times$ the simplified estimate. For representative values
-            $\Delta\alpha \approx 10^{-5}$ K$^{-1}$ and $E_\text{polymer} \approx 3$ GPa, a 100 K excursion yields
-            approximately 3 MPa in the simplified form; the biaxial-corrected value reaches approximately 4.6 MPa.
+            actual interfacial stress runs 1.54&ndash;1.61$\times$ the simplified estimate. Applying the values
+            stated in the preceding paragraph: $\Delta\alpha \approx 47 \times 10^{-6}$ K$^{-1}$ (polymer CTE
+            exceeding $50\,\mu$/K minus silicon $2.6\,\mu$/K) and $\Delta T = 125$ K (the stated
+            $-40{^\circ}$C to $85{^\circ}$C operating excursion), at $E_\text{polymer} \approx 3$ GPa, the
+            simplified estimate yields approximately 17.6 MPa; the biaxial-corrected value reaches approximately
+            27&ndash;28 MPa. The previously cited figure of 4.6 MPa used $\Delta\alpha = 10^{-5}$ K$^{-1}$ and
+            $\Delta T = 100$ K, both inconsistent with the stated material parameters and temperature range.
             Hardware active cooling and strain-absorbing substrates provide limited relief at this stress magnitude.
             The underlying CTE mismatch is not eliminable through standard process control, but specific
             software-layer and materials-level interventions can reduce the severity of thermal excursions and
@@ -607,16 +612,19 @@
         <h3 id="ferc">FERC Grid Access and the Co-Location Framework</h3>
 
         <p>In November 2024, FERC rejected the amended Interconnection Service Agreement between Talen Energy and
-          Amazon Web Services for a 960 MW nuclear co-location arrangement at Susquehanna. The core objection: the
+          Amazon Web Services that would have expanded the co-located nuclear load at Susquehanna from 300 MW to
+          480 MW. (The 960 MW figure frequently cited in coverage of this docket belongs to the AWS data center
+          campus Talen sold to Amazon in March 2024, a legally distinct transaction from the ISA that FERC
+          rejected.) The core objection: the
           behind-the-meter arrangement let a single customer consume generation without contributing to transmission
           cost recovery, shifting costs to other PJM ratepayers. On June 11, 2025, Talen and Amazon announced a
           restructured 17-year front-of-meter PPA for up to 1,920 MW through 2042, structured to address the
           cost-recovery objection. On December 18, 2025, FERC issued an omnibus order directing PJM to establish new
           transmission service categories for co-located load configurations. PJM filed its compliance proposal on
-          February 23, 2026, targeting July 31, 2026 as the effective date. The April 30, 2026 FERC interconnection
-          compliance deadline, established as the original interim governance anchor for grid-access transition
-          applications under the evolving co-location framework, has elapsed as of the June 16, 2026 temporal
-          anchor; regulatory momentum rests entirely with the PJM compliance transition, and the July 31, 2026
+          February 23, 2026, targeting July 31, 2026 as the effective date. The procedural cycle advanced through
+          the March 18, 2026 response deadline and the April 17, 2026 reply deadline, with a May 28, 2026
+          subsequent milestone; all of these dates have elapsed as of the June 16, 2026 temporal anchor.
+          Regulatory momentum rests entirely with the PJM compliance transition, and the July 31, 2026
           effective date for the new transmission service categories is the operative milestone for all pending
           co-location structuring decisions. Nuclear co-location is not dead; it requires front-of-meter
           structuring, which adds cost and contract complexity.</p>
@@ -638,9 +646,9 @@
                 <td>Physical + Regulatory</td>
                 <td class="warn">2028&ndash;2032+</td>
                 <td class="bad">No</td>
-                <td class="warn">10 MT/yr operative ceiling (cascading from 3 MT, 9/2024; 8 MT, 12/2025); automated
-                  supply-chain monitoring; alert threshold at 8 MT/yr (80% of target); no licensed 19.75%-grade
-                  transport cask</td>
+                <td class="warn">10 MT HOCP allocation ceiling (surplus/stockpile-sourced; Piketon new-enrichment output
+                  ~900 kg/yr, operationally distinct); milestones: 3 MT (9/2024), 8 MT (12/2025); automated supply-chain
+                  monitoring; alert at 8 MT (80%); no licensed 19.75%-grade transport cask</td>
               </tr>
               <tr>
                 <td>PWB serial throughput</td>
@@ -648,16 +656,19 @@
                 <td class="warn">3&ndash;5 years (parallel systems)</td>
                 <td class="warn">Partial (workload scheduling, hot-spot routing, ECC, polymer $\Delta\alpha$ tuning)
                 </td>
-                <td class="warn">Biaxial thermal stress ceiling ~4.6 MPa; real-time bond-site temperature monitoring
-                  required; automated alert at ~3.7 MPa (80% of ceiling)</td>
+                <td class="warn">Biaxial thermal stress ceiling ~27 MPa (corrected; derived from stated inputs: polymer
+                  CTE $>50\,\mu$/K, Si $2.6\,\mu$/K, $\Delta T = 125$ K; prior figure of 4.6 MPa used inconsistent
+                  parameters); real-time bond-site temperature monitoring required; automated alert at ~22 MPa (80% of
+                  ceiling)</td>
               </tr>
               <tr>
                 <td>FERC co-location rules</td>
                 <td>Regulatory</td>
                 <td class="ok">Framework in progress (H2 2026)</td>
                 <td class="bad">No</td>
-                <td class="ok">April 30, 2026 compliance deadline elapsed; PJM transition active; July 31, 2026
-                  effective date operative; front-of-meter structuring mandatory</td>
+                <td class="ok">Filing cycle concluded through April 17 reply deadline; May 28, 2026 milestone elapsed;
+                  PJM transition active; July 31, 2026 effective date operative; front-of-meter structuring mandatory
+                </td>
               </tr>
               <tr>
                 <td>EGS seismicity risk</td>
@@ -923,7 +934,8 @@
             underlying gradient magnitude; the training run enters a degenerate state where the optimizer can
             neither advance nor recover. The replacement enforcement mechanism is a dynamic adaptive gradient
             clipping formulation based on the running median of the update norm history:
-            $$\text{Clip Threshold}_t = \text{median}\!\left(\|\Delta\theta_{t-k:t}\|\right) + 3 \cdot \text{MAD}\!\left(\|\Delta\theta_{t-k:t}\|\right)$$
+            $$\text{Clip Threshold}_t = \text{median}\!\left(\|\Delta\theta_{t-k:t}\|\right) + 3 \cdot
+            \text{MAD}\!\left(\|\Delta\theta_{t-k:t}\|\right)$$
             where $k$ is a trailing window of 100 gradient steps and MAD denotes the median absolute deviation
             of the norm history within that window. Update steps exceeding this threshold are scaled down
             proportionally by the factor $\text{Clip Threshold}_t / \|\Delta\theta_t\|$ rather than triggering
@@ -1339,7 +1351,10 @@
             \mid \text{layer}_i)$. Cluster these trajectories via K-means (K = 8 to 15) on the flattened
             layer-token-probability vector. Compute the Adjusted Rand Index (ARI) between mechanistic clusters and
             human-assigned HumanEval categories. If ARI $< 0.3$, the human taxonomy is a poor proxy for model-internal
-              failure modes and must be replaced by the mechanistic taxonomy as the curriculum target. If ARI $> 0.4$,
+              failure modes and must be replaced by the mechanistic taxonomy as the curriculum target. If ARI falls
+              within $[0.3, 0.4]$, run a mixed-taxonomy curriculum: use mechanistic cluster assignments as primary
+              curriculum targets but cross-reference human category labels to verify each cluster's semantic coherence
+              before generating problems; neither taxonomy alone is reliable in this transitional band. If ARI $> 0.4$,
               human categories are usable as an approximation. This measurement determines whether the
               problem with a "dynamic programming" curriculum is that the model lacks DP reasoning, or that it fails at
               boundary condition tracking, a failure mode that spans multiple human categories and requires a different
@@ -1399,7 +1414,8 @@
 
         <p>The effect size prior underpinning the power calculation (specified in Section 4 as 2&ndash;5 pp) must be
           sourced from published curriculum fine-tuning results at comparable scale and compute, specifically CodeRL
-          (Le et al., 2022), STaR (Zeiler et al., 2022), and Self-Play Fine-Tuning studies at 1&ndash;2B scale on
+          (Le et al., 2022), STaR (Zelikman, Wu, Mu, and Goodman, 2022), and Self-Play Fine-Tuning studies at 1&ndash;2B
+          scale on
           HumanEval, where the empirical literature range is 5&ndash;15 pp at comparable compute. An unsourced effect
           size prior renders the entire power analysis conditional on an assumption rather than evidence, which
           invalidates the sample size recommendation.</p>
@@ -1441,8 +1457,11 @@
           <p>$$T^* = \frac{C_\text{train}}{(k-1)\cdot C_\text{query}} = \frac{2.7 \times 10^{15}}{99 \times 1.2 \times
             10^{12}} \approx 23 \text{ queries}$$</p>
           <p>After 23 queries, curriculum training has strictly lower cumulative FLOP cost than pass@100 sampling. The
-            7.3&times; inference-to-training ratio is computed at exactly $T = 1$ and represents the worst possible
-            framing for VGCL amortization.</p>
+            7.3&times; inference-to-training ratio stated at exactly $T = 1$ does not reconstruct from the
+            $C_\text{train}$ and $C_\text{query}$ values given above (which yield a ratio of approximately
+            22.5&times; at $T = 1$ under the pass@100 comparison); the figure requires an independent derivation
+            not supplied in this document. The T^* break-even of 23 queries does reconstruct correctly from the
+            stated values and is the operative amortization result.</p>
         </div>
 
         <p>The per-query FLOP efficiency comparison nonetheless favors test-time compute: pass@100 delivers
