@@ -557,12 +557,10 @@
           material, not from Piketon cascade enrichment output; Piketon's confirmed new-enrichment rate remains
           approximately 900 kg/year. The allocation schedule and the cascade output are operationally distinct:
           surplus-sourced allocations bridge near-term reactor demonstration demand that the Piketon cascade cannot
-          yet cover at scale. Continuous monitoring of the HALEU supply chain is required against these milestones,
-          with automated alerts triggered at 80% of the active availability threshold (approximately 8 MT against
-          the current 10 MT target). The gap between the 10 MT allocation ceiling and the 12 MT/year post-2030
-          Piketon cascade expansion target remains contingent on DOE funding authorization and physical facility
-          expansion; the 2026 allocation baseline is the operative supply constraint for any reactor deployment
-          timeline extending into the near term.</p>
+          yet cover at scale. Continuous monitoring of the HALEU supply chain is required against these milestones.
+          The next operative supply threshold for automated monitoring is the 10 MT HOCP allocation ceiling itself;
+          the December 2025 milestone of 8 MT has already been reached, making real-time tracking of the gap
+          between the 10 MT ceiling and the post-2030 Piketon cascade expansion the active constraint.</p>
 
         <h3 id="pwb">Photonic Wire Bonding Throughput Wall</h3>
 
@@ -647,8 +645,9 @@
                 <td class="warn">2028&ndash;2032+</td>
                 <td class="bad">No</td>
                 <td class="warn">10 MT HOCP allocation ceiling (surplus/stockpile-sourced; Piketon new-enrichment output
-                  ~900 kg/yr, operationally distinct); milestones: 3 MT (9/2024), 8 MT (12/2025); automated supply-chain
-                  monitoring; alert at 8 MT (80%); no licensed 19.75%-grade transport cask</td>
+                  ~900 kg/yr, operationally distinct); milestones: 3 MT (9/2024), 8 MT (12/2025, reached); automated
+                  supply-chain monitoring; alert threshold at 10 MT ceiling; no licensed 19.75%-grade transport cask
+                </td>
               </tr>
               <tr>
                 <td>PWB serial throughput</td>
@@ -1041,6 +1040,11 @@
 
           $$\text{DEFF} = 1 + (m-1)\rho = 1 + 49 \times 0.3 = 15.7$$
 
+          <p>The Kish (1965) formula assumes equal cluster sizes; HumanEval categories range from approximately 15 to
+            45 problems per category, requiring the unequal-cluster correction
+            $\text{DEFF} = 1 + \left(\sum_k m_k^2 / \sum_k m_k - 1\right)\rho$, which produces a modestly higher
+            effective DEFF than the equal-cluster approximation.</p>
+
           <h3 id="power">Power Collapse at $n = 2{,}000$</h3>
 
           <p>The effective sample size after DEFF correction:</p>
@@ -1064,6 +1068,18 @@
               additional 1,462 problems provide almost no statistical benefit because the curriculum structure
               introduces
               correlated sampling that the power calculation ignores.</p>
+            <p>At the literature-calibrated ICC range of 0.50&ndash;0.70 for structured LLM reasoning tasks, DEFF
+              rises to 25.5&ndash;35.3 and effective power falls to 7.7&ndash;9.1%: the experiment is functionally
+              incapable of detecting its target effect at any plausible intra-category correlation value.</p>
+          </div>
+
+          <div class="callout warn">
+            <div class="callout-title">Required Sample Size for 80% Power</div>
+            <p>At $\rho = 0.3$ and $\delta = 5$ pp ($\alpha = 0.05$, two-sided), 80% power requires
+              $n_\text{eff} \approx 1{,}562$, yielding $n_\text{req} = \text{DEFF} \times 1{,}562 = 15.7 \times
+              1{,}562 \approx 24{,}523$ problems. At $\rho = 0.5$, $n_\text{req}$ rises to 39,827. The 2,000-problem
+              evaluation suite in Section 8 addresses contamination control, not statistical power; these are distinct
+              problems with separate solutions.</p>
           </div>
 
           <p>The covariance addition for the targeted block is $\rho \cdot m(m-1) \cdot p(1-p) = 0.3 \times 2{,}450
@@ -1162,6 +1178,14 @@
           synthesis. Correct output is produced on the specific test cases by instantiating a pre-training template,
           not by constructing the algorithmic solution.</p>
 
+        <p><strong>Path C (Compressed Reasoning Shortcut):</strong> the network executes a truncated version of the
+          required algorithm, concentrating intermediate state representations in late layers rather than distributing
+          computation across the MLP chain. Correct outputs result on training-distribution problems; the shortcut
+          collapses under distribution shift. Path C is observationally equivalent to Path A under test-suite
+          evaluation and mechanistically similar to Path B under LogitLens analysis, because late-layer concentration
+          of probability mass is its defining feature. The LogitLens protocol as specified cannot distinguish Path A
+          from Path C without a distribution-shift ablation.</p>
+
         <p>These paths are observationally equivalent under test-suite evaluation and mechanistically distinguishable.
           The curriculum generation loop compounds this problem: the generator model produces problems that are
           textually similar to the failure category as it appears in its training distribution, without access to the
@@ -1206,6 +1230,13 @@
           internal computation toward reasoning or deepens template mode. The diagnostic requires one forward hook per
           layer and a held-out set of correctly and incorrectly solved problems; it separates two outcomes that
           behavioral evaluation cannot separate.</p>
+
+        <p>Before using the LogitLens diagnostic on curriculum-trained models, the test-retest reliability of the
+          reasoning/template classification must be established on the base model. Run the base model on the same 200
+          held-out problems twice under different random seeds. Compute Cohen's &kappa; for agreement between the two
+          classification runs. If &kappa; &lt; 0.60, the protocol cannot produce reproducible mechanistic conclusions
+          and must be replaced by an attribution-graph approach (e.g., sparse autoencoder transcoder decomposition of
+          residual flows) before any mechanistic claims are made.</p>
 
         <h3 id="patching">Causal Activation Patching Protocol</h3>
 
@@ -1460,6 +1491,13 @@
             22.5&times;, representing the worst-case amortization point for curriculum training.</p>
         </div>
 
+        <p>The T* = 23 figure applies strictly to Phase 0 training volume (200 problems, 3 epochs, 300K tokens).
+          At roadmap scale, T* scales proportionally: at 1,000 problems (1.5M tokens, 3 epochs),
+          $C_\text{train} = 1.35 \times 10^{16}$ FLOPs and T* = 113 queries; at 5,000 problems, T* = 568 queries.
+          The deployment rule $T > 100$ is calibrated to the 1,000-problem training configuration, not Phase 0.
+          The T* = 23 figure describes a training cost that is lower than 23 inference passes, but does not by
+          itself justify deployment.</p>
+
         <p>The per-query FLOP efficiency comparison nonetheless favors test-time compute: pass@100 delivers
           approximately 30 pp improvement per query at a cost of $k \cdot C_\text{query}$ per query; curriculum
           training delivers a permanent 5 pp improvement at a one-time cost amortized over $T$. For any finite $T$,
@@ -1474,6 +1512,13 @@
           $p_\text{base}$ from 0 to $\delta > 0$ if the curriculum successfully teaches the required computation.
           This is where test-time compute and curriculum training are not substitutes but complements on the
           capability axis.</p>
+
+        <p>Identifying problem classes where $p_\text{base} &lt; 0.05$ requires running the base model at pass@k
+          for sufficiently large k. At k = 100 over 2,000 evaluation problems at 1.5B scale
+          ($C_\text{query} = 1.2 \times 10^{12}$ FLOPs per sample), the identification measurement costs
+          $2{,}000 \times 100 \times 1.2 \times 10^{12} = 2.4 \times 10^{17}$ FLOPs: 89&times; the Phase 0
+          curriculum training budget. Any cost-justification argument for VGCL that does not account for this
+          identification measurement is analytically incomplete.</p>
 
         <div class="callout fix">
           <div class="callout-title">Decision Rule</div>
