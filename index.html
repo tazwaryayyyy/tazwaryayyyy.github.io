@@ -4,38 +4,48 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Architectural Patching: VGCL Cognitive Frameworks | Enan</title>
+  <meta name="description"
+    content="Tazwar Ahnaf Enan: technical documents on AI coordination systems and biological-silicon computing." />
+  <title>Tazwar Ahnaf Enan</title>
+
+  <!-- IBM Plex Sans (300–700) + IBM Plex Mono (400–600) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap"
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css" />
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
-    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script>
+
   <style>
+    /* =========================================================
+       DESIGN TOKENS
+    ========================================================= */
     :root {
       --bg: #ffffff;
-      --bg-2: #f8f9fa;
-      --bg-3: #f0f2f5;
-      --border: #dde1e7;
-      --border-2: #c8cdd6;
+      --bg-muted: #f8f9fa;
+      --bg-muted-2: #f0f2f5;
       --text: #1b1d21;
-      --text-dim: #5a6170;
-      --navy: #0f3460;
+      --text-sec: #5a6170;
+      --text-dim: #8892a4;
+      --accent: #0f3460;
       --link: #1a56a0;
-      --red: #b22e22;
-      --green: #1e6b38;
-      --amber: #7a5a18;
-      --blue-bg: #eef3fb;
-      --red-bg: #fdf3f2;
-      --green-bg: #f1faf4;
-      --amber-bg: #fdf8ee;
-      --code-bg: #f3f4f6;
-      --code-text: #1b1d21;
+      --border: #dde1e7;
+      --border-med: #c8cdd6;
+      --mono: 'IBM Plex Mono', 'Courier New', monospace;
+      --sans: 'IBM Plex Sans', system-ui, sans-serif;
+      --bar-h: 54px;
+
+      --ok-bg: #f1faf4;
+      --ok-fg: #1e6b38;
+      --ok-bd: #b8dfc8;
+      --warn-bg: #fdf3f2;
+      --warn-fg: #b22e22;
+      --warn-bd: #f0c8c4;
     }
 
+
+    /* =========================================================
+       RESET
+    ========================================================= */
     *,
     *::before,
     *::after {
@@ -46,15 +56,16 @@
 
     html {
       scroll-behavior: smooth;
+      font-size: 15px;
     }
 
     body {
+      font-family: var(--sans);
       background: var(--bg);
       color: var(--text);
-      font-family: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
-      font-size: 16px;
-      line-height: 1.78;
+      line-height: 1.7;
       -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
     a {
@@ -66,1476 +77,590 @@
       text-decoration: underline;
     }
 
-    .site-header {
-      border-bottom: 1px solid var(--border);
-      padding: 0.9rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
+    a:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-med);
+    }
+
+
+    /* =========================================================
+       TOP BAR
+       Fixed 54px. Contains only nav links to the two documents.
+       No logo, no clock, no status.
+    ========================================================= */
+    .top-bar {
+      position: fixed;
       top: 0;
-      background: rgba(255, 255, 255, 0.96);
-      backdrop-filter: blur(4px);
-      z-index: 100;
-    }
-
-    .site-header .logo {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 0.82rem;
-      color: var(--navy);
-      font-weight: 500;
-    }
-
-    .site-header nav a {
-      font-size: 0.8rem;
-      color: var(--text-dim);
-      margin-left: 1.5rem;
-      font-family: 'IBM Plex Mono', monospace;
-    }
-
-    .site-header nav a:hover {
-      color: var(--navy);
-    }
-
-    .hero {
-      max-width: 1060px;
-      margin: 3.5rem auto 0;
-      padding: 0 2rem 2.5rem calc(200px + 3rem + 2rem);
-      border-bottom: 2px solid var(--border);
-    }
-
-    .hero h1 {
-      font-family: 'IBM Plex Sans', sans-serif;
-      font-size: clamp(1.75rem, 4.5vw, 2.6rem);
-      font-weight: 600;
-      line-height: 1.2;
-      color: var(--text);
-      margin-bottom: 1.2rem;
-      letter-spacing: -0.02em;
-    }
-
-    .hero .byline {
-      font-size: 0.88rem;
-      color: var(--text-dim);
-      margin-bottom: 1rem;
-    }
-
-    .tag {
-      display: inline-block;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 0.68rem;
-      padding: 0.18em 0.55em;
-      border: 1px solid var(--border-2);
-      border-radius: 3px;
-      color: var(--text-dim);
-      margin-right: 0.35rem;
-      background: var(--bg-2);
-    }
-
-    .main-grid {
-      display: grid;
-      grid-template-columns: 200px 1fr;
-      max-width: 1060px;
-      margin: 0 auto;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      height: var(--bar-h);
+      background: rgba(255, 255, 255, 0.97);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
       padding: 0 2rem;
-      gap: 3rem;
+      gap: 0;
     }
 
-    @media (max-width: 800px) {
-      .main-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .toc-sidebar {
-        display: none;
-      }
-
-      .hero {
-        padding-left: 2rem;
-      }
+    /* Nav link group */
+    .tb-nav {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      list-style: none;
     }
 
-    .toc-sidebar {
-      padding-top: 2.5rem;
-      position: sticky;
-      top: 4.5rem;
-      align-self: start;
-      max-height: calc(100vh - 5rem);
-      overflow-y: auto;
+    .tb-nav li+li::before {
+      content: '';
+      display: inline-block;
+      width: 1px;
+      height: 16px;
+      background: var(--border-med);
+      margin: 0 1.25rem;
+      vertical-align: middle;
     }
 
-    .toc-sidebar h3 {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 0.65rem;
-      color: var(--text-dim);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-bottom: 0.8rem;
+    .tb-nav a {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      color: var(--text-sec);
+      white-space: nowrap;
+      transition: color 0.12s;
     }
 
-    .toc-sidebar a {
-      display: block;
-      font-size: 0.76rem;
-      color: var(--text-dim);
-      padding: 0.2rem 0 0.2rem 0.7rem;
-      border-left: 2px solid var(--border);
-      line-height: 1.4;
-    }
-
-    .toc-sidebar a:hover {
-      color: var(--navy);
-      border-left-color: var(--navy);
+    .tb-nav a:hover {
+      color: var(--accent);
       text-decoration: none;
     }
 
-    .toc-sidebar a.sub {
-      padding-left: 1.3rem;
-      font-size: 0.71rem;
+    /* Small arrow prefix on each nav link */
+    .tb-nav a::before {
+      content: '\2192\00a0';
+      color: var(--text-dim);
+      font-size: 0.6rem;
     }
 
-    article {
-      padding: 2.5rem 0 5rem;
+
+    /* =========================================================
+       LAYOUT
+    ========================================================= */
+    .layout {
+      padding-top: var(--bar-h);
+      min-height: 100vh;
     }
 
-    section {
-      margin-bottom: 3.5rem;
+    /* Reading column: 840px max, centered */
+    .main {
+      max-width: 840px;
+      margin: 0 auto;
+      padding: 4.5rem 2rem 7rem;
     }
 
-    h2 {
-      font-family: 'IBM Plex Sans', sans-serif;
-      font-size: 1.45rem;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 1.1rem;
-      padding-bottom: 0.45rem;
-      border-bottom: 1px solid var(--border);
-      letter-spacing: -0.01em;
+
+    /* =========================================================
+       DOCUMENT HEADER
+       Name only. All eyebrows, baselines, and temporal labels removed.
+    ========================================================= */
+    .doc-header {
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 2.5rem;
+      margin-bottom: 3rem;
     }
 
-    h3 {
-      font-family: 'IBM Plex Sans', sans-serif;
-      font-size: 1.07rem;
-      font-weight: 600;
-      color: var(--text);
-      margin: 2rem 0 0.65rem;
+    .doc-name {
+      font-family: var(--sans);
+      font-size: clamp(1.9rem, 5.5vw, 2.6rem);
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1.08;
+      letter-spacing: -0.028em;
+    }
+
+
+    /* =========================================================
+       SECTION STRUCTURE
+    ========================================================= */
+    .section {
+      margin-bottom: 3.75rem;
+      scroll-margin-top: calc(var(--bar-h) + 1.5rem);
+    }
+
+    /* Hairline rule beneath (no eyebrow text above it) */
+    .sec-rule {
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 2.25rem;
     }
 
     p {
-      margin-bottom: 1.05rem;
-      color: var(--text);
-    }
-
-    strong {
-      color: var(--text);
-      font-weight: 600;
-    }
-
-    .critique-type {
-      display: inline-block;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 0.67rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 0.15em 0.6em;
-      border-radius: 3px;
-      margin-bottom: 0.75rem;
-      font-weight: 500;
-    }
-
-    .ct-structural {
-      color: var(--navy);
-      background: var(--blue-bg);
-      border: 1px solid #c5d6f0;
-    }
-
-    .ct-statistical {
-      color: var(--red);
-      background: var(--red-bg);
-      border: 1px solid #f0c8c3;
-    }
-
-    .ct-engineering {
-      color: var(--amber);
-      background: var(--amber-bg);
-      border: 1px solid #e8d8a8;
-    }
-
-    .ct-methodological {
-      color: var(--green);
-      background: var(--green-bg);
-      border: 1px solid #b8dfc6;
-    }
-
-    .callout {
-      border-radius: 4px;
-      padding: 1.1rem 1.4rem;
-      margin: 1.5rem 0;
-      font-size: 0.93rem;
-    }
-
-    .callout.math {
-      background: var(--blue-bg);
-      border-left: 3px solid #3a6fbe;
-    }
-
-    .callout.warn {
-      background: var(--red-bg);
-      border-left: 3px solid var(--red);
-    }
-
-    .callout.note {
-      background: var(--amber-bg);
-      border-left: 3px solid #b8882a;
-    }
-
-    .callout.fix {
-      background: var(--green-bg);
-      border-left: 3px solid var(--green);
-    }
-
-    .callout-title {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 0.67rem;
-      letter-spacing: 0.09em;
-      text-transform: uppercase;
-      font-weight: 500;
-      margin-bottom: 0.6rem;
-    }
-
-    .callout.math .callout-title {
-      color: #1a4080;
-    }
-
-    .callout.warn .callout-title {
-      color: var(--red);
-    }
-
-    .callout.note .callout-title {
-      color: #8a6018;
-    }
-
-    .callout.fix .callout-title {
-      color: var(--green);
-    }
-
-    .callout p {
       font-size: 0.9rem;
-      margin-bottom: 0.45rem;
+      line-height: 1.8;
+      color: var(--text);
+      margin-bottom: 0.9rem;
     }
 
-    .callout p:last-child {
+    p:last-child {
       margin-bottom: 0;
     }
 
-    pre {
-      background: var(--code-bg);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 1.1rem 1.4rem;
-      overflow-x: auto;
-      margin: 1.5rem 0;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 0.81rem;
-      line-height: 1.62;
-      color: var(--code-text);
+
+    /* =========================================================
+       IDENTITY BLOCK
+    ========================================================= */
+    .identity-block {
+      border-left: 3px solid var(--accent);
+      padding-left: 1.6rem;
     }
 
-    code {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 0.83em;
-      background: var(--bg-3);
-      padding: 0.12em 0.4em;
-      border-radius: 3px;
-      color: var(--navy);
-      border: 1px solid var(--border);
+    .identity-block p {
+      font-size: 0.88rem;
+      color: var(--text-sec);
+      line-height: 1.82;
     }
 
-    pre code {
-      background: none;
-      padding: 0;
-      font-size: inherit;
-      color: inherit;
-      border: none;
+    .identity-block p+p {
+      margin-top: 0.65rem;
     }
 
-    .kw {
-      color: #0f3460;
-      font-weight: 500;
+
+    /* =========================================================
+       SYSTEM PORTALS INDEX
+       [nn] asymmetric index number / content block layout.
+    ========================================================= */
+    .portals-list {
+      list-style: none;
     }
 
-    .fn {
-      color: #1a56a0;
-    }
-
-    .st {
-      color: #1e6b38;
-    }
-
-    .nu {
-      color: #7a3010;
-    }
-
-    .cm {
-      color: #7a8090;
-      font-style: italic;
-    }
-
-    .table-wrap {
-      overflow-x: auto;
-      margin: 1.5rem 0;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.875rem;
-    }
-
-    thead tr {
-      border-bottom: 2px solid var(--border-2);
-    }
-
-    thead th {
-      text-align: left;
-      padding: 0.55rem 0.9rem;
-      font-weight: 600;
-      color: var(--text-dim);
-      font-size: 0.75rem;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      font-family: 'IBM Plex Mono', monospace;
-    }
-
-    tbody tr {
+    .portal-entry {
+      display: grid;
+      grid-template-columns: 3.5rem 1fr;
+      gap: 0 1.5rem;
+      padding: 1.75rem 0;
       border-bottom: 1px solid var(--border);
     }
 
-    tbody tr:last-child {
+    .portal-entry:first-child {
+      border-top: 1px solid var(--border);
+    }
+
+    /* Mono index number */
+    .portal-idx {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: var(--text-dim);
+      letter-spacing: 0.06em;
+      padding-top: 0.15rem;
+      user-select: none;
+    }
+
+    /* Asymmetric bold header: heavy sans vs. narrow mono index */
+    .portal-title {
+      font-family: var(--sans);
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.25;
+      letter-spacing: -0.015em;
+      margin-bottom: 0.5rem;
+    }
+
+    .portal-scope {
+      font-family: var(--sans);
+      font-size: 0.82rem;
+      color: var(--text-sec);
+      line-height: 1.75;
+      margin-bottom: 0.8rem;
+    }
+
+    /* Tags: sharp corners, no border-radius */
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .tag {
+      font-family: var(--mono);
+      font-size: 0.56rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border: 1px solid var(--border-med);
+      background: var(--bg-muted-2);
+      color: var(--text-dim);
+    }
+
+    /* Raw blue terminal link */
+    .portal-link {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--link);
+      letter-spacing: 0.02em;
+    }
+
+    .portal-link:hover {
+      text-decoration: underline;
+    }
+
+
+    /* =========================================================
+       FOOTER
+       Minimal. Contains only the 3-column network table.
+       No signatures, no revision strings.
+    ========================================================= */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      background: var(--bg-muted);
+      padding: 1.75rem 2rem 2rem;
+    }
+
+    /* 3-column network table */
+    .footer-net {
+      width: 100%;
+      max-width: 840px;
+      margin: 0 auto;
+      border-collapse: collapse;
+      font-size: 0.78rem;
+    }
+
+    .footer-net thead th {
+      font-family: var(--mono);
+      font-size: 0.55rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      padding: 0 0 0.55rem;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      background: transparent;
+    }
+
+    .footer-net tbody td {
+      padding: 0.55rem 0;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+      color: var(--text);
+      font-size: 0.8rem;
+    }
+
+    .footer-net tbody tr:last-child td {
       border-bottom: none;
     }
 
-    td {
-      padding: 0.55rem 0.9rem;
-      vertical-align: top;
-    }
-
-    td.ok {
-      color: var(--green);
+    /* First column: network name, sans */
+    .footer-net td:first-child {
+      font-family: var(--sans);
       font-weight: 500;
+      color: var(--text-sec);
+      width: 22%;
+      padding-right: 1.5rem;
     }
 
-    td.bad {
-      color: var(--red);
+    /* Second column: handle, mono accent */
+    .footer-net td:nth-child(2) {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--accent);
       font-weight: 500;
+      width: 30%;
+      padding-right: 1.5rem;
     }
 
-    td.warn {
-      color: var(--amber);
-      font-weight: 500;
+    /* Third column: URL link, mono blue */
+    .footer-net td:last-child {
+      font-family: var(--mono);
+      font-size: 0.68rem;
     }
 
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 2rem;
-      text-align: center;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 0.73rem;
-      color: var(--text-dim);
-      line-height: 1.9;
-      background: var(--bg-2);
+    .footer-net td:last-child a {
+      color: var(--link);
     }
 
-    .katex {
-      font-size: 1em !important;
+
+    /* =========================================================
+       RESPONSIVE
+    ========================================================= */
+    @media (max-width: 768px) {
+      .main {
+        padding: 3rem 1.5rem 5rem;
+      }
+
+      .top-bar {
+        padding: 0 1.5rem;
+      }
+
+      .portal-entry {
+        grid-template-columns: 3rem 1fr;
+        gap: 0 1rem;
+      }
     }
 
-    .katex-display {
-      margin: 1.4rem 0;
-      overflow-x: auto;
+    @media (max-width: 560px) {
+      .main {
+        padding: 2.5rem 1.25rem 4rem;
+      }
+
+      .top-bar {
+        padding: 0 1.25rem;
+      }
+
+      .doc-name {
+        font-size: 1.75rem;
+      }
+
+      .portal-entry {
+        grid-template-columns: 2.75rem 1fr;
+        gap: 0 0.75rem;
+        padding: 1.35rem 0;
+      }
+
+      .portal-title {
+        font-size: 0.9rem;
+      }
+
+      /* Stack footer table on very small screens */
+      .footer-net,
+      .footer-net thead,
+      .footer-net tbody,
+      .footer-net tr,
+      .footer-net th,
+      .footer-net td {
+        display: block;
+      }
+
+      .footer-net thead {
+        display: none;
+      }
+
+      .footer-net tbody tr {
+        padding: 0.65rem 0;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .footer-net tbody tr:last-child {
+        border-bottom: none;
+      }
+
+      .footer-net tbody td {
+        border-bottom: none;
+        padding: 0.1rem 0;
+        width: 100%;
+      }
     }
   </style>
 </head>
 
 <body>
 
-  <header class="site-header">
-    <div class="logo"><a href="https://tazwaryayyyy.github.io/"
-        style="color:inherit;text-decoration:none;">tazwaryayyyy</a></div>
-
+  <!-- =========================================================
+       TOP BAR
+       Contains nav links to the two published documents only.
+  ========================================================= -->
+  <header class="top-bar" role="banner">
+    <nav aria-label="Published documents">
+      <ul class="tb-nav">
+        <li>
+          <a href="./vgcl-cognitive-curriculum.html">
+            VGCL: Cognitive Curriculum Frameworks
+          </a>
+        </li>
+        <li>
+          <a href="./wetware-silicon-convergence.html">
+            Wetware-Silicon Convergence
+          </a>
+        </li>
+      </ul>
+    </nav>
   </header>
 
-  <div class="hero">
-    <h1>Architectural Patching of VGCL Cognitive Frameworks</h1>
-    <div class="byline">Tazwar Ahnaf Enan &middot; June, 2026</div>
-    <div>
-      <span class="tag">curriculum learning</span>
-      <span class="tag">statistical testing</span>
-      <span class="tag">mechanistic interpretability</span>
-      <span class="tag">AI infrastructure</span>
-    </div>
-  </div>
 
-  <div class="main-grid">
-    <aside class="toc-sidebar">
-      <h3>Contents</h3>
-      <a href="#infrastructure">1. Infrastructure Context</a>
-      <a href="#haleu" class="sub">HALEU Deficit</a>
-      <a href="#pwb" class="sub">Photonic Wire Bonding</a>
-      <a href="#ferc" class="sub">FERC Grid Access</a>
-      <a href="#egs" class="sub">EGS Seismicity</a>
-      <a href="#vgcl">2. The VGCL Thesis</a>
-      <a href="#spec-rift">3. Specification Rift</a>
-      <a href="#gravity" class="sub">Pre-Training Gravity</a>
-      <a href="#qlora" class="sub">QLoRA Feasibility</a>
-      <a href="#noise-floor">4. Statistical Cascade</a>
-      <a href="#deff" class="sub">DEFF Correction</a>
-      <a href="#power" class="sub">Power Collapse</a>
-      <a href="#adversarial">5. Curry-Howard Gap</a>
-      <a href="#logitlens" class="sub">LogitLens Protocol</a>
-      <a href="#patching" class="sub">Activation Patching</a>
-      <a href="#oracle">6. Phase 3 Oracle Fidelity</a>
-      <a href="#taxonomy">7. Taxonomy Problem</a>
-      <a href="#remediation">8. Pre-Registration</a>
-      <a href="#test-time">9. FLOP Efficiency</a>
-    </aside>
-
-    <article>
-
-      <!-- =====================================================
-         SECTION 1: INFRASTRUCTURE CONTEXT
-         ===================================================== -->
-      <section id="infrastructure">
-        <h2>1. Compute Efficiency Thesis vs. Macro-Infrastructure Context</h2>
-
-        <p>A critical structural error in algorithmic optimization work is the conflation of macro-scale physical
-          infrastructure limits with the localized justification for training-time data selection. The primary argument
-          for Verification-Guided Curriculum Learning does not rest on power-grid limitations or nuclear fuel supply
-          chains. The core claim is scale-independent: at <em>any</em> fixed training compute budget, curriculum
-          sampling efficiency reduces the tokens-to-capability ratio by concentrating gradient updates on high-utility
-          data regimes. This holds equally on a single T4 GPU and on a hyperscale cluster. Physical infrastructure
-          constraints at the gigawatt scale provide macroeconomic motivation for algorithmic efficiency at frontier
-          training runs; they have no direct causal relationship with whether curriculum targeting improves Qwen 2.5
-          1.5B on HumanEval.</p>
-
-        <p>The gigawatt-scale constraints documented below are real, with distinct physical origins and resolution
-          timelines measured in years to decades. They are provided as accurate macro context for the compute landscape,
-          not as the operative justification for Phase 0 experiments.</p>
-
-        <h3 id="haleu">HALEU Enrichment Deficit</h3>
-
-        <p>Advanced reactor designs targeting high energy density require High-Assay Low-Enriched Uranium: uranium
-          enriched to 5&ndash;20% U-235, compared to the 3&ndash;5% in conventional light-water reactors. Both Kairos
-          Power fluoride salt and TerraPower Natrium sodium fast reactor designs depend on it. Total Western LEU
-          enrichment capacity sits at approximately 26.5 million SWU per year: Urenco's four-facility network across the
-          UK,
-          Netherlands, Germany, and New Mexico contributes approximately 17.9 million SWU; Orano's Georges Besse II at
-          Tricastin adds about 7.5 million. Japan Nuclear Fuel Limited at Rokkasho contributes another ~1.05 million
-          SWU. None of those facilities produce HALEU at commercial scale; reconfiguration requires regulatory approval,
-          physical cascade modifications, and new UF6 handling infrastructure rated for higher-enrichment material.</p>
-
-        <p>Centrus Energy holds the only US commercial HALEU demonstration license. Their Piketon, Ohio plant runs at
-          approximately 900 kg/year. Centrus has stated a target of 12 metric tonnes per year post-2030: a 13.3&times;
-          scale-up from current demonstrated output, contingent on DOE program funding and physical facility expansion.
-          That figure is a target in a funding proposal, not a licensed production capacity.</p>
-
-        <p>The transport problem compounds the enrichment problem. NRC criticality safety margins impose a cask
-          payload reduction that worsens steeply with enrichment level: documented figures show 255 lbs per cask at
-          12.5% enrichment falling to 54.9 lbs per cask at 100% enrichment, a reduction of approximately 78%, or
-          nearly a fivefold drop in per-shipment payload. A partial figure covering only the lower portion of
-          the enrichment range gives 44.2% (2,277 kg to 1,271 kg per cask); the full criticality safety margin
-          scaling across the complete enrichment range reduces per-shipment payload by approximately 78%. For
-          reactor-grade HALEU at 19.75% enrichment, the
-          operative per-cask payload falls far below the LEU baseline, and the logistics multiplier on annual
-          shipment volume is correspondingly severe. No commercial HALEU transport cask design was licensed at the
-          time of writing.</p>
-
-        <p>Against this transport backdrop, DOE HALEU supply availability under the HALEU Operations Contract
-          (HOCP) has advanced through three confirmed allocation milestones that function as near-term supply
-          constraints for deployment planning: 3 metric tonnes made available as of September 2024, 8 metric
-          tonnes as of December 2025, and a current allocation target of 10 metric tonnes as of June 2026. These
-          figures represent HOCP program supply volumes sourced from government surplus and downblended stockpile
-          material, not from Piketon cascade enrichment output; Piketon's confirmed new-enrichment rate remains
-          approximately 900 kg/year. The allocation schedule and the cascade output are operationally distinct:
-          surplus-sourced allocations bridge near-term reactor demonstration demand that the Piketon cascade cannot
-          yet cover at scale. Continuous monitoring of the HALEU supply chain is required against these milestones.
-          The next operative supply threshold for automated monitoring is the 10 MT HOCP allocation ceiling itself;
-          the December 2025 milestone of 8 MT has already been reached, making real-time tracking of the gap
-          between the 10 MT ceiling and the post-2030 Piketon cascade expansion the active constraint.</p>
-
-        <h3 id="pwb">Photonic Wire Bonding Throughput Wall</h3>
-
-        <p>Co-packaged optics architectures for next-generation AI accelerator interconnects require photonic wire
-          bonding: two-photon polymerization lithography writing 3D polymer waveguide structures between optical
-          components, one bond at a time. Current commercial PWB tools achieve 10&ndash;50 bonds per hour in
-          production, with an engineered ceiling near 100 bonds per hour. Commercial viability at wafer-scale
-          interconnect density requires each bond completed in under 30 seconds, sustained across thousands of bonds
-          per wafer. No production-grade system is at that throughput.</p>
-
-        <p>The fundamental constraint is alignment tolerance, not write speed. PWB must hit coupling windows on the
-          order of 1&ndash;2 microns between misaligned photonic components. At wafer scale, placement errors
-          accumulate, and every bond requires a fresh alignment search before the write cycle begins. The
-          search-plus-write cycle is the bottleneck. The bond material is a cured polymer waveguide with CTE exceeding
-          50&times;10&#8315;&sup6;/K; silicon runs at 2.6&times;10&#8315;&sup6;/K. The interfacial thermal stress
-          across a 125 K excursion (modeling the &minus;40&deg;C to 85&deg;C operating range) is:</p>
-
-        <div class="callout math">
-          <div class="callout-title">Thermal Stress (Simplified Lower Bound)</div>
-          <p>$$\tau_\text{approx} = \Delta\alpha \cdot \Delta T \cdot E_\text{polymer}$$</p>
-          <p>The biaxial correction adds $E/(1-\nu)$. At polymer Poisson ratio $\nu \approx 0.35\text{--}0.40$,
-            actual interfacial stress runs 1.54&ndash;1.61$\times$ the simplified estimate. Applying the values
-            stated in the preceding paragraph: $\Delta\alpha \approx 47 \times 10^{-6}$ K$^{-1}$ (polymer CTE
-            exceeding $50\,\mu$/K minus silicon $2.6\,\mu$/K) and $\Delta T = 125$ K (the stated
-            $-40{^\circ}$C to $85{^\circ}$C operating excursion), at $E_\text{polymer} \approx 3$ GPa, the
-            simplified estimate yields approximately 17.6 MPa; the biaxial-corrected value reaches approximately
-            27&ndash;28 MPa. Hardware active cooling and strain-absorbing substrates provide limited relief at this
-            stress magnitude.
-            The underlying CTE mismatch is not eliminable through standard process control, but specific
-            software-layer and materials-level interventions can reduce the severity of thermal excursions and
-            provide tolerance for residual misalignment.</p>
-        </div>
-
-        <p>Four mitigation vectors are available. First, software workload scheduling can stagger compute tasks
-          across the photonic interconnect fabric, distributing thermal load over time and reducing peak-to-trough
-          temperature variance at any single bond site; the reduced $\Delta T$ amplitude directly lowers the
-          instantaneous stress term. Second, data routing policies can direct traffic away from thermally loaded
-          interconnect regions, avoiding hot-spot layers where bond sites operate near their thermal limit.
-          Third, error-tolerant coding schemes, including redundant photonic signal transmission and
-          forward error-correcting codes applied at the link layer, allow the system to tolerate occasional
-          bond misalignment without propagating hard errors into the compute fabric. Fourth, polymer formulation
-          optimization targeted at reducing $\Delta\alpha$ narrows the stress margin, even where it cannot
-          eliminate it. These interventions do not constitute a resolution of the fundamental alignment constraint;
-          they reduce effective coupling-loss rates under thermal cycling and extend mean-time-to-failure without
-          substituting for the hardware throughput scaling problem.</p>
-
-        <h3 id="ferc">FERC Grid Access and the Co-Location Framework</h3>
-
-        <p>In November 2024, FERC rejected the amended Interconnection Service Agreement between Talen Energy and
-          Amazon Web Services that would have expanded the co-located nuclear load at Susquehanna from 300 MW to
-          480 MW. (The 960 MW figure frequently cited in coverage of this docket belongs to the AWS data center
-          campus Talen sold to Amazon in March 2024, a legally distinct transaction from the ISA that FERC
-          rejected.) The core objection: the
-          behind-the-meter arrangement let a single customer consume generation without contributing to transmission
-          cost recovery, shifting costs to other PJM ratepayers. On June 11, 2025, Talen and Amazon announced a
-          restructured 17-year front-of-meter PPA for up to 1,920 MW through 2042, structured to address the
-          cost-recovery objection. On December 18, 2025, FERC issued an omnibus order directing PJM to establish new
-          transmission service categories for co-located load configurations. PJM filed its compliance proposal on
-          February 23, 2026, targeting July 31, 2026 as the effective date. The procedural cycle advanced through
-          the March 18, 2026 response deadline and the April 17, 2026 reply deadline, with a May 28, 2026
-          subsequent milestone; all of these dates have elapsed as of the June 16, 2026 temporal anchor.
-          Regulatory momentum rests entirely with the PJM compliance transition, and the July 31, 2026
-          effective date for the new transmission service categories is the operative milestone for all pending
-          co-location structuring decisions. Nuclear co-location is not dead; it requires front-of-meter
-          structuring, which adds cost and contract complexity.</p>
-
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Constraint</th>
-                <th>Origin</th>
-                <th>Resolution Timeline</th>
-                <th>Algorithmic Substitute</th>
-                <th>Operational Constraint (6/2026 Baseline)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>HALEU enrichment capacity</td>
-                <td>Physical + Regulatory</td>
-                <td class="warn">2028&ndash;2032+</td>
-                <td class="bad">No</td>
-                <td class="warn">10 MT HOCP allocation ceiling (surplus/stockpile-sourced; Piketon new-enrichment output
-                  ~900 kg/yr, operationally distinct); milestones: 3 MT (9/2024), 8 MT (12/2025, reached); automated
-                  supply-chain monitoring; alert threshold at 10 MT ceiling; no licensed 19.75%-grade transport cask
-                </td>
-              </tr>
-              <tr>
-                <td>PWB serial throughput</td>
-                <td>Engineering (serial process)</td>
-                <td class="warn">3&ndash;5 years (parallel systems)</td>
-                <td class="warn">Partial (workload scheduling, hot-spot routing, ECC, polymer $\Delta\alpha$ tuning)
-                </td>
-                <td class="warn">Biaxial thermal stress ceiling ~27 MPa (polymer CTE $>50\,\mu$/K, Si $2.6\,\mu$/K,
-                  $\Delta T = 125$ K excursion); real-time bond-site temperature monitoring required; automated alert at
-                  ~22 MPa (80% of ceiling)</td>
-              </tr>
-              <tr>
-                <td>FERC co-location rules</td>
-                <td>Regulatory</td>
-                <td class="ok">Framework in progress (H2 2026)</td>
-                <td class="bad">No</td>
-                <td class="ok">Filing cycle concluded through April 17 reply deadline; May 28, 2026 milestone elapsed;
-                  PJM transition active; July 31, 2026 effective date operative; front-of-meter structuring mandatory
-                </td>
-              </tr>
-              <tr>
-                <td>EGS seismicity risk</td>
-                <td>Geophysical</td>
-                <td class="bad">Uncertain</td>
-                <td class="bad">No</td>
-                <td class="bad">Seismic hazard assessment mandatory per populated-area siting; 2&ndash;4 yr permitting
-                  extension; no automated monitoring protocol currently defined</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <h3 id="egs">EGS Seismicity as a Deployment Blocker</h3>
-
-        <p>Fervo Energy's commercial EGS projects in Nevada have demonstrated consistent baseload generation at
-          utility scale. Current LCOE runs $90&ndash;140/MWh depending on drilling depth, rock permeability, and site
-          conditions. The deployment constraint is geomechanical: fluid injection at pressure changes pore pressure in
-          surrounding rock, which can activate pre-existing faults. The 2017 Pohang, South Korea event (Mw 5.5)
-          resulted in project abandonment after causing structural damage and injuring 135 people. Permitting near
-          populated areas now requires seismic hazard assessments that extend development timelines by 2&ndash;4
-          years. This constraint does not scale away with better drilling.</p>
-      </section>
-
-      <!-- =====================================================
-         SECTION 2: VGCL THESIS
-         ===================================================== -->
-      <section id="vgcl">
-        <h2>2. The VGCL Thesis</h2>
-
-        <p>VGCL is a training-time optimization: at any fixed compute budget, a curriculum engine targeting the
-          model's current failure modes extracts more capability per FLOP than uniform sampling from a static dataset.
-          The loop runs in three phases. A verification oracle identifies categories where the current model fails.
-          A capable external generator produces new training problems targeting those categories. Fine-tuning,
-          re-evaluation,
-          and iteration continue, with each round updating the failure distribution to expose the next capability gap.
-        </p>
-
-        <p>The analogy to AlphaGo, AlphaZero, and AlphaProof is structurally apt: all three operate in closed
-          environments with unambiguous feedback. AlphaProof (DeepMind, 2024) extends this to formal mathematics via
-          Lean 4 type-checking. For code generation, the Python interpreter serves the same oracle role. The critical
-          empirical bet is that this loop produces <em>generalization</em> rather than memorization of the curriculum
-          distribution. The five critiques below describe specific mechanisms by which the current experimental design
-          fails to verify that claim.</p>
-
-        <div class="callout fix">
-          <div class="callout-title">Architectural Patch: Multi-Layered Verification Hierarchy and Quarantine Protocol
-          </div>
-          <p><strong>Verification hierarchy.</strong> A two-stage oracle structure is mandatory; a single binary
-            interpreter pass is insufficient. The weak verifier (stage 1) applies syntax validation, sandboxed
-            execution against provided test cases, and execution-trace completeness checks; outputs failing any stage-1
-            criterion are discarded before reaching the strong verifier. The strong verifier (stage 2) applies
-            property-based testing across procedurally generated edge-case inputs, semantic equivalence checking
-            against a reference implementation where one exists, and cross-example invariance validation confirming
-            that solution behavior is consistent across structurally isomorphic input variants. No sample advances
-            from stage 1 to stage 2 without satisfying both a binary pass criterion and an execution-trace
-            consistency check across a minimum of five distinct test inputs; this eliminates solutions that pass
-            against the provided suite by accident rather than by algorithmic correctness.</p>
-          <p><strong>Confidence thresholding.</strong> The oracle must emit a continuous confidence score in $[0, 1]$
-            alongside each binary correctness label; a binary label alone is insufficient for curriculum entry.
-            Samples with oracle confidence below 0.95 are flagged and routed to the human review queue; samples with
-            confidence below 0.80 are immediately quarantined regardless of the binary label. The confidence score
-            must be derived from the strong verifier's test coverage metric (proportion of property-based tests
-            passed) rather than from any generative model's output probability, which is not a valid calibration
-            source for correctness confidence.</p>
-          <p><strong>Quarantine pipeline.</strong> Flagged samples enter a hold queue requiring a minimum of three
-            independent oracle re-evaluations under distinct random seeds for property-based test generation.
-            Samples that fail re-evaluation at any stage are permanently discarded from the curriculum. Samples
-            demonstrating confidence recovery above 0.95 across all three independent re-evaluations may re-enter
-            the curriculum in a subsequent training round; no re-queued sample enters fine-tuning within the same
-            round in which it was quarantined. The maximum allowable oracle-failure-derived contamination rate in
-            any finalized training batch is below 1%; batches exceeding this threshold are rejected and regenerated
-            before fine-tuning commences.</p>
-        </div>
-      </section>
-
-      <!-- =====================================================
-         SECTION 3: SPECIFICATION RIFT + PRE-TRAINING GRAVITY
-         ===================================================== -->
-      <section id="spec-rift">
-        <h2>3. The Specification Rift and Pre-Training Gravity</h2>
-        <div><span class="critique-type ct-structural">Structural</span></div>
-
-        <p>The model targeted by the roadmap and the model executable on a Kaggle T4 are not the same experiment. This
-          is not merely a resource constraint; it changes the scope of any positive result.</p>
-
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Parameter</th>
-                <th>Roadmap Specification</th>
-                <th>Phase 0 Practical Spec</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Base model</td>
-                <td>Two identical 7B models</td>
-                <td class="warn">Qwen 2.5 1.5B-Instruct</td>
-              </tr>
-              <tr>
-                <td>Curriculum size</td>
-                <td>1,000&ndash;5,000 problems</td>
-                <td class="warn">200 problems, 3 epochs</td>
-              </tr>
-              <tr>
-                <td>Evaluation</td>
-                <td>HumanEval + MBPP + LiveCodeBench</td>
-                <td class="warn">HumanEval + MBPP only</td>
-              </tr>
-              <tr>
-                <td>Training infrastructure</td>
-                <td>Dedicated GPU cluster</td>
-                <td class="warn">Kaggle T4 (15 GB VRAM)</td>
-              </tr>
-              <tr>
-                <td>Curriculum generator</td>
-                <td>Separate, stronger model</td>
-                <td class="warn">Claude API (rate-limited)</td>
-              </tr>
-              <tr>
-                <td>Oracle</td>
-                <td>Multi-phase verification pipeline</td>
-                <td class="warn">Standard Python test suite</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <h3 id="gravity">Per-Parameter Update Magnitude and Pre-Training Gravity</h3>
-
-        <p>The attribution of the 1.5B model selection to "proportionally less code-specific instruction data" is
-          incorrect. Both the 1.5B and 7B variants of Qwen 2.5-Instruct carry identical instruction fine-tuning
-          fractions relative to their total pre-training exposure. The structural divergence is governed by
-          per-parameter update dynamics under fine-tuning, not by data composition ratios.</p>
-
-        <p>For a transformer with $N$ parameters fine-tuned on $M$ tokens at learning rate $\eta$ with gradient
-          clipping norm $\tau$, under standard Glorot initialization the gradient norm per parameter scales as
-          $\mathcal{O}(d_\text{model}^{-1/2})$ per layer. The expected per-parameter update magnitude for a model with
-          hidden dimension $d_\text{model}$ and $L$ layers is:</p>
-
-        $$E[\|\Delta\theta_i\|] \approx \eta \cdot \tau \cdot \frac{1}{\sqrt{d_\text{model}}} \cdot \frac{1}{L}$$
-
-        <p>For the Qwen 2.5 family, the relevant architectural parameters are: 1.5B with $d_\text{model} = 1536$,
-          $L = 28$; 7B with $d_\text{model} = 3584$, $L = 28$. Depth is identical; width diverges. The ratio of
-          expected per-parameter update magnitudes at identical learning rate and clipping threshold:</p>
-
-        $$\frac{\|\Delta\theta_{1.5B}\|}{\|\Delta\theta_{7B}\|} =
-        \sqrt{\frac{d_{\text{model},7B}}{d_{\text{model},1.5B}}} = \sqrt{\frac{3584}{1536}} \approx 1.527$$
-
-        <p>The 1.5B model absorbs approximately $1.53\times$ larger per-parameter gradient perturbations than the 7B
-          model for identical fine-tuning data at identical learning rate. This variance establishes distinct
-          <em>pre-training gravity regimes</em>. The pre-training gravity radius is defined as the neighborhood in
-          weight space within which pre-trained representations maintain historical structural coherence. This radius
-          is substantially more resilient in the 7B model, where per-parameter updates are diluted across a larger
-          dimensionality. Conversely, the 1.5B model escapes its gravity radius more readily, making it susceptible to
-          either rapid specialization or catastrophic representational decay. The sign of this effect under curriculum
-          training is an empirical question, not a theoretical one. A positive result at 1.5B scale does not predict
-          the direction of the effect at 7B scale, because: (a) the per-parameter perturbation ratio is 1.53&times;,
-          (b) the pre-training gravity radius may not scale linearly with $d_\text{model}$, and (c) emergent
-          capability thresholds observed at 7B have no established analogs at 1.5B.
-        </p>
-
-        <h3 id="qlora">QLoRA Feasibility on a Single T4</h3>
-
-        <p>The 1.5B model selection is not a hardware wall. QLoRA (Dettmers et al., 2023) with 4-bit NF4
-          quantization, LoRA adapters, and activation gradient checkpointing places a 7B model well within the 15 GB
-          T4 VRAM envelope:</p>
-
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Component</th>
-                <th>Memory Footprint</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>NF4 weights (7B &times; 0.5 bytes)</td>
-                <td>3.5 GB</td>
-              </tr>
-              <tr>
-                <td>LoRA adapters ($r=32$, $\alpha=64$)</td>
-                <td>0.8 GB</td>
-              </tr>
-              <tr>
-                <td>Activations with gradient checkpointing (<code>seq_len=512</code>, batch 1)</td>
-                <td>3.8 GB</td>
-              </tr>
-              <tr>
-                <td>Optimizer states (LoRA params only, AdamW fp32)</td>
-                <td>0.7 GB</td>
-              </tr>
-              <tr>
-                <td><strong>Total</strong></td>
-                <td><strong>~8.8 GB</strong></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <p>Gradient checkpointing adds approximately 33% to backward pass time. The 1.5B model selection is therefore
-          an optimization <em>velocity</em> choice, not a strict technical memory ceiling. The consequence for
-          interpretation is direct: positive Phase 0 results at 1.5B demonstrate that the mechanism operates at that
-          scale, not that it operates at 7B. Curriculum volume, model scale, and oracle sophistication each interact
-          with training signal in ways that do not extrapolate trivially across the 1.53&times; per-parameter
-          perturbation gap.</p>
-
-        <div class="callout note">
-          <div class="callout-title">NF4 Calibration Boundary Condition and Outlier Channel Remediation</div>
-          <p>Standard NF4 quantization levels are fixed quantiles of a Gaussian distribution, calibrated by default
-            against text-domain corpora such as C4 or WikiText. Code-domain activation distributions deviate
-            structurally from this assumption: certain channels activate at magnitudes up to 100&times; the
-            per-layer median, driven by rare tokens or syntax-triggered spikes. These outlier channels lie beyond
-            the learned NF4 clipping range and are clamped to the nearest representable 4-bit level. The
-            consequence is not marginal: an activation that should register at magnitude 100 (in normalized units)
-            is reduced to approximately the NF4 ceiling of ~1.0, injecting structural quantization noise into the
-            weight updates computed by the LoRA adapter for that channel. The LoRA gradients on these channels
-            become effectively random, undermining the curriculum fine-tuning signal on the highest-magnitude
-            features.</p>
-          <p>Three remediation vectors address this mismatch. First, on-domain recalibration: collect activation
-            histograms from a representative sample of curriculum code problems and recompute the NF4 clip points
-            against the empirical code-domain distribution, rather than importing calibration scales fit to text.
-            This realigns the quantization grid to the actual activation range seen during fine-tuning. Second,
-            group-wise non-uniform quantization: partition channels into magnitude groups and apply a distinct
-            quantization grid per group, so that high-magnitude outlier channels receive a grid matched to their
-            actual range rather than the population-level Gaussian grid. Third, mixed-precision channel isolation:
-            identify channels exceeding a magnitude threshold (typically 3 to 5 standard deviations above the
-            per-layer median) and retain those channels in FP16 throughout the quantization pass, isolating LoRA
-            adapter updates on the critical outlier channels from 4-bit clipping errors entirely. These three
-            vectors are complementary; recalibration reduces the population-level mismatch, group-wise
-            quantization contains residual per-channel variance, and FP16 isolation eliminates clipping on the
-            tail that neither of the prior steps fully resolves.</p>
-          <p>Additionally, $r = 16$ for a 1536-dimensional model yields $r/d_\text{model} = 0.010$, at the lower
-            boundary of the empirically observed QLoRA curriculum fine-tuning failure zone; increasing to
-            $r = 32$ ($r/d_\text{model} = 0.021$) costs approximately 0.4 GB additional VRAM and substantially
-            enlarges the LoRA subspace available to encode curriculum signal.</p>
-        </div>
-
-        <div class="callout warn">
-          <div class="callout-title">Operating System Constraint: Pre-Training Gravity Ceiling (Qwen 2.5 1.5B)</div>
-          <p><strong>Constraint ceiling.</strong> The empirically validated per-parameter update magnitude ceiling
-            for the Qwen 2.5 1.5B model is $|\Delta\theta| &lt; 1.53\times$ the per-parameter update magnitude
-            observed at 7B scale under identical learning rate and gradient clipping threshold. This value is not a
-            heuristic estimate; it derives directly from the architectural dimension ratio:
-            $$\frac{|\Delta\theta_{1.5B}|}{|\Delta\theta_{7B}|} =
-            \sqrt{\frac{d_{\text{model},7B}}{d_{\text{model},1.5B}}} = \sqrt{\frac{3584}{1536}} \approx 1.527$$
-            The depth term cancels because both variants share $L = 28$ layers; the width divergence alone governs
-            gradient norm scaling under standard Glorot initialization. This ceiling is a hard architectural
-            consequence, not a tunable parameter; it constitutes an operational guardrail on all curriculum
-            fine-tuning campaigns at this model scale.</p>
-          <p><strong>Enforcement and monitoring protocol.</strong> During fine-tuning, continuous per-parameter
-            update monitoring must track $\|\Delta\theta_i\|$ against the 7B reference baseline at each gradient
-            step. Automated alerts are triggered at 80% of the ceiling (approximately $1.22\times$ the 7B reference
-            update magnitude), providing a warning interval before the critical threshold is breached. Static
-            checkpoint rollback with a fixed 0.5 learning rate multiplier upon crossing the 1.53x ceiling is
-            rejected as the primary enforcement mechanism: code-domain gradient distributions are highly dynamic,
-            and a rigid rollback rule activates on large-but-valid gradient steps produced during genuinely
-            complex reasoning computations. This triggers repeated rollback cycles that exponentially decay the
-            effective learning rate toward zero and stall optimization velocity entirely without resolving the
-            underlying gradient magnitude; the training run enters a degenerate state where the optimizer can
-            neither advance nor recover. The replacement enforcement mechanism is a dynamic adaptive gradient
-            clipping formulation based on the running median of the update norm history:
-            $$\text{Clip Threshold}_t = \text{median}\!\left(\|\Delta\theta_{t-k:t}\|\right) + 3 \cdot
-            \text{MAD}\!\left(\|\Delta\theta_{t-k:t}\|\right)$$
-            where $k$ is a trailing window of 100 gradient steps and MAD denotes the median absolute deviation
-            of the norm history within that window. Update steps exceeding this threshold are scaled down
-            proportionally by the factor $\text{Clip Threshold}_t / \|\Delta\theta_t\|$ rather than triggering
-            a rollback; this preserves optimization continuity by attenuating the anomalous step while allowing
-            fine-tuning to proceed without resetting momentum state or reverting accumulated parameter updates.
-            The window length $k$ defaults to 100 steps and should be reduced to 50 for curricula containing
-            fewer than 200 training problems, so the running median reflects recent gradient history rather
-            than early-phase initialization artifacts. Any curriculum fine-tuning campaign on Qwen 2.5 1.5B
-            that does not implement this adaptive clipping mechanism is operating outside verified
-            parameter-stability bounds and cannot make valid claims about pre-training gravity confinement.</p>
-        </div>
-      </section>
-
-      <!-- =====================================================
-         SECTION 4: STATISTICAL CASCADE
-         ===================================================== -->
-      <section id="noise-floor">
-        <h2>4. The Statistical Cascade and Intra-Category Covariance</h2>
-        <div><span class="critique-type ct-statistical">Statistical</span></div>
-
-        <p>The experiment compares two arms: curriculum-trained versus control, each evaluated on the same benchmark.
-          The operative statistical quantity for this comparison is $\text{SE}_\text{diff}$, the standard error of
-          the difference between two independent arm estimates, not $\sigma_\text{meas}$, the standard deviation of a
-          single-arm evaluation run. These quantities differ by $\sqrt{2}$:</p>
-
-        <div class="callout math">
-          <div class="callout-title">Two-Arm SE Correction</div>
-          <p>Single-arm measurement standard deviation:</p>
-          <p>$$\sigma_\text{meas} = \sqrt{\frac{p(1-p)}{n}}$$</p>
-          <p>Standard error of the two-arm difference:</p>
-          <p>$$\text{SE}_\text{diff} = \sqrt{\frac{p(1-p)}{n} + \frac{p(1-p)}{n}} = \sqrt{2}\;\sigma_\text{meas}$$</p>
-          <p>The 2$\sigma$ minimum detectable difference is $2 \cdot \text{SE}_\text{diff}$. Every detection threshold
-            computed under the single-arm formula is $\sqrt{2} \approx 1.41\times$ below the correct value.</p>
-        </div>
-
-        <p>Two-arm detection thresholds at $p = 0.5$:</p>
-
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Benchmark ($n$)</th>
-                <th>$\sigma_\text{meas}$</th>
-                <th>$\text{SE}_\text{diff}$</th>
-                <th>Corrected 2$\sigma$ threshold</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>HumanEval (164)</td>
-                <td>3.90 pp</td>
-                <td>5.52 pp</td>
-                <td class="bad">11.04 pp</td>
-              </tr>
-              <tr>
-                <td>HumanEval + MBPP-raw (538)</td>
-                <td>2.16 pp</td>
-                <td>3.05 pp</td>
-                <td class="warn">6.10 pp</td>
-              </tr>
-              <tr>
-                <td>HumanEval + MBPP-san (421)</td>
-                <td>2.44 pp</td>
-                <td>3.45 pp</td>
-                <td class="warn">6.89 pp</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="callout warn">
-          <div class="callout-title">Consequence of the Two-Arm Correction</div>
-          <p>The corrected 2$\sigma$ detection threshold at $n = 538$ is 6.10 pp, not 4.31 pp. Statistical power to
-            detect a 5 pp improvement at $n = 538$ under a two-sided $\alpha = 0.05$ test is 37.5%: indistinguishable
-            from a coin flip. The experiment at $n = 538$ cannot reliably detect the effect it is looking for.</p>
-        </div>
-
-        <p>MBPP (Austin et al., 2021) has three evaluation variants with meaningfully different sample sizes: the
-          original 374-problem test set ($n = 538$ with HumanEval), the 257-problem sanitized subset ($n = 421$,
-          shifting the 2$\sigma$ threshold to 6.89 pp), and the EvalPlus MBPP+ version at 378 problems. The
-          experimental specification must declare which variant is used before training begins; the detection threshold
-          depends on the choice.</p>
-
-        <h3 id="deff">Intra-Category Correlation and the Design Effect</h3>
-
-        <p>Resolving the $\sqrt{2}$ correction exposes a second failure mode: curriculum targeting induces
-          intra-category sample correlation that inflates effective variance far beyond what $\text{SE}_\text{diff}$
-          captures under independence assumptions. When the model learns to handle recursive data structures, it
-          improves on <em>all</em> recursive data structure problems simultaneously, introducing positive
-          within-category correlation that standard two-proportion tests ignore.</p>
-
-        <p>Let $X_i$ denote a Bernoulli trial representing success on problem $i$ with probability $p_i$. Curriculum
-          targeting clusters these trials into discrete categories $C_k$, each containing $m_k$ problems exhibiting
-          intra-category correlation $\rho_k$. The complete variance expression is:</p>
-
-        $$\text{Var}(X) = \sum_{i=1}^{n} p_i(1-p_i) + 2\sum_{i < j} \text{Cov}(X_i, X_j)$$ $$=p(1-p) \cdot \left[n +
-          \sum_k \rho_k \cdot m_k(m_k - 1)\right]$$ <p>For a targeted block of $m = 50$ problems with $\rho = 0.3$ and
-          $p = 0.5$:</p>
-
-          $$\text{Var}(X_\text{block}) = 0.25 \cdot [50 + 0.3 \cdot 50 \cdot 49] = 0.25 \cdot 785 = 196.25$$
-
-          <p>This yields $\sigma_\text{block} = 14.0$ problems, against the independence assumption value
-            $\sigma_\text{indep} = \sqrt{12.5} \approx 3.54$ problems. The Design Effect is:</p>
-
-          $$\text{DEFF} = 1 + (m-1)\rho = 1 + 49 \times 0.3 = 15.7$$
-
-          <p>The Kish (1965) formula assumes equal cluster sizes; HumanEval categories range from approximately 15 to
-            45 problems per category, requiring the unequal-cluster correction
-            $\text{DEFF} = 1 + \left(\sum_k m_k^2 / \sum_k m_k - 1\right)\rho$, which produces a modestly higher
-            effective DEFF than the equal-cluster approximation.</p>
-
-          <h3 id="power">Power Collapse at $n = 2{,}000$</h3>
-
-          <p>The effective sample size after DEFF correction:</p>
-
-          $$n_\text{eff} = \frac{n}{\text{DEFF}} = \frac{2{,}000}{15.7} \approx 127$$
-
-          <p>Power recalculation at $n_\text{eff} = 127$, $\delta = 5$ pp, $\alpha = 0.05$ two-sided:</p>
-
-          $$\text{SE}_\text{diff} = \sqrt{\frac{2\,p(1-p)}{n_\text{eff}}} = \sqrt{\frac{0.5}{127}} \approx 6.28 \text{
-          pp}$$
-
-          $$z = \frac{\delta}{\text{SE}_\text{diff}} = \frac{5}{6.28} = 0.796$$
-
-          $$\text{Power} = \Phi(0.796 - 1.96) = \Phi(-1.164) \approx 12.2\%$$
-
-          <div class="callout warn">
-            <div class="callout-title">The DEFF Collapse</div>
-            <p>Under the independence assumption, $n = 2{,}000$ problems provides 88.5% power to detect a 5 pp
-              improvement at $\alpha = 0.05$. After applying the intra-category correlation correction at $\rho = 0.3$,
-              actual power is <strong>12.2%</strong>: nearly indistinguishable from the uncorrected $n = 538$ case. The
-              additional 1,462 problems provide almost no statistical benefit because the curriculum structure
-              introduces
-              correlated sampling that the power calculation ignores.</p>
-            <p>At the literature-calibrated ICC range of 0.50&ndash;0.70 for structured LLM reasoning tasks, DEFF
-              rises to 25.5&ndash;35.3 and effective power falls to 7.7&ndash;9.1%: the experiment is functionally
-              incapable of detecting its target effect at any plausible intra-category correlation value.</p>
-          </div>
-
-          <div class="callout warn">
-            <div class="callout-title">Required Sample Size for 80% Power</div>
-            <p>At $\rho = 0.3$ and $\delta = 5$ pp ($\alpha = 0.05$, two-sided), 80% power requires
-              $n_\text{eff} \approx 1{,}562$, yielding $n_\text{req} = \text{DEFF} \times 1{,}562 = 15.7 \times
-              1{,}562 \approx 24{,}523$ problems. At $\rho = 0.5$, $n_\text{req}$ rises to 39,827. The 2,000-problem
-              evaluation suite in Section 8 addresses contamination control, not statistical power; these are distinct
-              problems with separate solutions.</p>
-          </div>
-
-          <p>The covariance addition for the targeted block is $\rho \cdot m(m-1) \cdot p(1-p) = 0.3 \times 2{,}450
-            \times 0.25 = 183.75$, against an independence contribution of $m \cdot p(1-p) = 12.5$. The covariance
-            term is 14.7&times; the independence term. The Poisson-Binomial variance reduction from problem
-            heterogeneity (real, in the direction of reducing variance below the binomial upper bound) is completely
-            overwhelmed by this intra-category covariance inflation. The net correction direction is unknown without
-            empirical $\rho$ estimates obtained by running the base model on the evaluation suite twice under different
-            random seeds and computing within-category pass correlation. That measurement is a prerequisite for any
-            valid power calculation; it must precede the generation of a single curriculum problem.</p>
-
-          <div class="callout fix">
-            <div class="callout-title">Prescribed Remediation: Newey-West HAC Estimation and Bayesian Multilevel
-              Modeling</div>
-            <p><strong>Newey-West heteroskedasticity and autocorrelation-consistent (HAC) standard errors</strong>
-              are mandatory as a replacement for standard OLS or two-proportion standard errors whenever
-              intra-category correlation is detected in the DEFF-corrected analysis. The standard two-proportion test
-              ignores the intra-category covariance term $2\sum_{i &lt; j} \text{Cov}(X_i, X_j)$ entirely; the
-              Newey-West correction accounts for the serial dependence structure introduced by curriculum targeting
-              without requiring the analyst to specify the exact correlation structure in advance, producing
-              asymptotically valid standard errors under unknown within-category dependence patterns. The bandwidth
-              parameter is set to $m = \lfloor T^{1/3} \rfloor$ where $T$ is the number of evaluation rounds,
-              following the Andrews (1991) automatic bandwidth selection rule. Implementation requires constructing
-              a time-indexed sequence of per-round category pass rates rather than a single aggregate statistic;
-              the HAC-corrected confidence intervals on the treatment effect estimate replace all standard proportion
-              test confidence intervals in any analysis where the empirical $\rho$ exceeds 0.15 within any targeted
-              category.</p>
-            <p><strong>Bayesian multilevel (hierarchical) modeling</strong> is the mandatory primary analysis
-              framework whenever the intra-class correlation coefficient (ICC) for any problem category exceeds the
-              threshold ICC $\geq 0.3$. The prescribed model structure is: pass/fail outcome
-              $Y_{ij} \sim \text{Bernoulli}(p_{ij})$, with log-odds parameterized as $\alpha_j +
-              \beta_\text{treatment}$,
-              where $\alpha_j \sim \mathcal{N}(\mu_\alpha, \sigma_\alpha^2)$ represents the category-level random
-              intercept capturing between-category variance in base difficulty. The hyperprior on $\sigma_\alpha$
-              propagates uncertainty about the between-category variance structure into the posterior; the posterior
-              distribution of $\beta_\text{treatment}$ constitutes the curriculum effect estimate with proper
-              uncertainty propagation across the full ICC structure. ICC is computed as
-              $\sigma_\alpha^2 / (\sigma_\alpha^2 + \pi^2/3)$ under the logistic-normal parameterization. The ICC
-              threshold for mandatory escalation to the Bayesian multilevel framework is ICC $&lt; 0.3$ for standard
-              analysis to remain valid; above this value, standard analysis is structurally invalid and the multilevel
-              framework is non-optional regardless of sample size. Posterior inference uses No-U-Turn Sampling (NUTS)
-              with a minimum of 4 chains and 2,000 post-warmup draws; convergence is verified by $\hat{R} &lt; 1.01$
-              across all parameters before any posterior quantity is reported.</p>
-          </div>
-
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>$\delta$ (true improvement)</th>
-                  <th>Power at $n = 538$, uncorrected</th>
-                  <th>Power at $n = 2{,}000$, uncorrected</th>
-                  <th>Power at $n = 2{,}000$, DEFF-corrected ($\rho = 0.3$)</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>3 pp</td>
-                  <td class="bad">16.6%</td>
-                  <td class="bad">47.5%</td>
-                  <td class="bad">7.1%</td>
-                </tr>
-                <tr>
-                  <td>4 pp</td>
-                  <td class="bad">25.9%</td>
-                  <td class="warn">71.6%</td>
-                  <td class="bad">9.5%</td>
-                </tr>
-                <tr>
-                  <td>5 pp</td>
-                  <td class="bad">37.5%</td>
-                  <td class="ok">88.5%</td>
-                  <td class="bad">12.2%</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-      </section>
-
-      <!-- =====================================================
-         SECTION 5: CURRY-HOWARD GAP + MECHANISTIC DIAGNOSTICS
-         ===================================================== -->
-      <section id="adversarial">
-        <h2>5. Mechanistic Verification and the Curry-Howard Gap</h2>
-        <div><span class="critique-type ct-structural">Structural</span></div>
-
-        <p>The Python interpreter provides a binary oracle on output correctness. It cannot distinguish between two
-          mechanistically distinct computation paths that both satisfy the test suite:</p>
-
-        <p><strong>Path A (Systemic Reasoning):</strong> the network sequentially builds the underlying algorithm,
-          constructing generalizable symbolic logical representations across intermediate layers. Correct output is
-          produced by actually executing the relevant computation.</p>
-
-        <p><strong>Path B (Template Matching):</strong> the network maps prompt surface features to an internal
-          high-dimensional template, performing abstract pattern completion without generalizable algorithmic
-          synthesis. Correct output is produced on the specific test cases by instantiating a pre-training template,
-          not by constructing the algorithmic solution.</p>
-
-        <p><strong>Path C (Compressed Reasoning Shortcut):</strong> the network executes a truncated version of the
-          required algorithm, concentrating intermediate state representations in late layers rather than distributing
-          computation across the MLP chain. Correct outputs result on training-distribution problems; the shortcut
-          collapses under distribution shift. Path C is observationally equivalent to Path A under test-suite
-          evaluation and mechanistically similar to Path B under LogitLens analysis, because late-layer concentration
-          of probability mass is its defining feature. The LogitLens protocol as specified cannot distinguish Path A
-          from Path C without a distribution-shift ablation.</p>
-
-        <p>These paths are observationally equivalent under test-suite evaluation and mechanistically distinguishable.
-          The curriculum generation loop compounds this problem: the generator model produces problems that are
-          textually similar to the failure category as it appears in its training distribution, without access to the
-          student model's internal failure mechanism. Some generated problems genuinely test the missing computation;
-          others are solvable by template-matching to patterns the model already knows from pre-training, without
-          requiring the reasoning step that caused the original failure. The oracle passes both. Two diagnostic
-          protocols resolve this ambiguity.</p>
-
-        <h3 id="logitlens">The LogitLens Hooking Protocol</h3>
-
-        <p>For a 28-layer transformer model, forward linear hooks are registered post-normalization at each
-          intermediate layer to project residual stream states directly into vocabulary space. This surfaces whether
-          correct token probability accretes progressively through the MLP chain (reasoning) or concentrates in the
-          final output layers (template completion):</p>
-
-        <pre><code><span class="kw">def</span> <span class="fn">register_logit_lens</span>(model):
-    layer_logits = []
-    <span class="kw">for</span> idx, layer <span class="kw">in</span> <span class="fn">enumerate</span>(model.model.layers):
-        <span class="kw">def</span> <span class="fn">hook_fn</span>(module, input, output, l_idx=idx):
-            <span class="cm"># Shape: (batch, seq_len, d_model)</span>
-            hidden_states = output[<span class="nu">0</span>]
-            normed_states = model.model.norm(hidden_states)
-            <span class="cm"># Shape: (batch, seq_len, vocab_size)</span>
-            logits = model.lm_head(normed_states)
-            layer_logits.append((l_idx, logits.detach().cpu()))
-        layer.register_forward_hook(hook_fn)
-    <span class="kw">return</span> layer_logits</code></pre>
-
-        <p>Evaluating the layer-wise token probability $P(\text{target\_token} \mid \text{Layer}_i)$ across all 28
-          layers yields two diagnostic signatures:</p>
-
-        <p><strong>Reasoning signature:</strong> target token confidence builds monotonically from mid-network layers,
-          reaching 40&ndash;60% of final value by layer 14 (50% depth). This pattern indicates progressive, structured
-          computation distributed across the transformer's MLP chain.</p>
-
-        <p><strong>Template signature:</strong> target token confidence remains near uniform through layers
-          1&ndash;23, followed by a sharp non-linear jump confined to the output layers (24&ndash;28). This exposes
-          late-layer pattern completion without mid-network algorithmic construction: the LM head is doing surface
-          matching, not the MLP chain.</p>
-
-        <p>A pre/post fine-tuning comparison on identical held-out problems isolates whether curriculum training shifts
-          internal computation toward reasoning or deepens template mode. The diagnostic requires one forward hook per
-          layer and a held-out set of correctly and incorrectly solved problems; it separates two outcomes that
-          behavioral evaluation cannot separate.</p>
-
-        <p>Before using the LogitLens diagnostic on curriculum-trained models, the test-retest reliability of the
-          reasoning/template classification must be established on the base model. Run the base model on the same 200
-          held-out problems twice under different random seeds. Compute Cohen's &kappa; for agreement between the two
-          classification runs. If &kappa; &lt; 0.60, the protocol cannot produce reproducible mechanistic conclusions
-          and must be replaced by an attribution-graph approach (e.g., sparse autoencoder transcoder decomposition of
-          residual flows) before any mechanistic claims are made.</p>
-
-        <h3 id="patching">Causal Activation Patching Protocol</h3>
-
-        <p>To locate specialized category circuits, select $k = 30$ isomorphic problem pairs $(A, B)$ sharing
-          structural properties where the model successfully solves $A$ but fails on $B$, both within the same
-          human-assigned category. For each attention head $h$ at layer $l$, the activation tensor
-          $\mathbf{A}_{h,l}$ is captured during the forward pass of problem $A$ and substituted into the forward
-          pass of problem $B$. The Intervention Effect is:</p>
-
-        $$\text{IE}_{h,l} = \mathbb{E}_{\text{pairs}}\left[P\!\left(\text{correct} \mid B,\; \text{patch}_{A \to
-        B}(h,l)\right) - P\!\left(\text{correct} \mid B,\; \text{unpatched}\right)\right]$$
-
-        <p>If high $\text{IE}_{h,l}$ concentrates statistically within a bounded set of attention heads (typically
-          3&ndash;5 heads across specific layers), those heads constitute a generalized category-reasoning circuit
-          mapping structural concepts rather than localized prompt formatting. A cross-category check patches
-          activations from a correctly solved dynamic programming problem $A$ into a structurally isomorphic graph
-          traversal problem $B$: if the same heads produce positive IE across categories, the circuit implements
-          general algorithmic reasoning rather than DP-specific memorization.</p>
-
-        <div class="callout fix">
-          <div class="callout-title">Cross-Language Transfer Check</div>
-          <p>Neither the LogitLens nor the patching protocol directly tests cross-domain generalization. That requires
-            generating isomorphic problem pairs in a second language: for each Python curriculum target category,
-            produce idiomatic Rust problems with identical algorithmic structure and input/output contracts. Compute
-            $\delta_\text{Python} = p'_\text{Python} - p_\text{Python}$ and $\delta_\text{Rust} = p'_\text{Rust} -
-            p_\text{Rust}$ after curriculum training.</p>
-          <p>$\delta_\text{Rust}/\delta_\text{Python} > 0.5$ indicates structural generalization: the curriculum
-            taught an abstract algorithm, not a Python idiom. $\delta_\text{Rust}/\delta_\text{Python} \approx 0$
-            indicates syntactic template extension. $\delta_\text{Rust} < 0$ indicates severe template overfitting:
-              fine-tuning degraded Rust performance while improving Python performance, a categorical failure of the
-              curriculum's generalization claim.</p>
-        </div>
-
-        <div class="callout fix">
-          <div class="callout-title">Middle-Management Abstraction Layer: Cross-Language Deployment Decision Filter
-          </div>
-          <p>The LogitLens hooking protocol and Causal Activation Patching analysis constitute necessary but
-            insufficient conditions for authorizing generalization of mechanistic findings beyond the Python training
-            domain. A mandatory cross-language transfer verification gate operates as an intermediate decision layer
-            between mechanistic confirmation and deployment authorization: before any mechanistic finding (confirmed
-            attention circuit, reasoning signature, causal pathway concentration) is generalized to a multilingual
-            production context or used as the basis for curriculum decisions across languages, it must satisfy a
-            minimum cross-language transfer consistency threshold of <strong>greater than 90% consistency across the
-              target language set.</strong></p>
-          <p>Consistency is defined operationally as the proportion of isomorphic test problems across the target
-            language set for which the mechanistic signature replicates within one standard deviation of its
-            Python-domain reference value; the replication check applies independently to (a) the LogitLens
-            trajectory profile (layer-wise target-token probability buildup pattern) and (b) the Causal Activation
-            Patching intervention effect concentration (the $\text{IE}_{h,l}$ distribution across attention
-            heads). Both checks must pass independently; passing one does not exempt a finding from the other.
-            For a finding to clear the filter, the proportion of isomorphic cross-language problems satisfying
-            both criteria simultaneously must exceed 0.90; findings clearing the filter at 0.70&ndash;0.90 are
-            designated language-proximal and may inform language-specific curriculum refinements but may not be
-            treated as evidence of general algorithmic capability or deployed as universal mechanistic properties.
-            Findings clearing below 0.70 are classified as language-local and quarantined from generalization
-            entirely.</p>
-          <p>This filter is structurally non-negotiable. Omitting it permits language-specific surface biases to
-            masquerade as universal mechanistic properties, producing curriculum decisions and interpretability
-            conclusions that appear valid under single-language evaluation while systematically degrading
-            multilingual performance. Any published claim that VGCL curriculum training instills a generalizable
-            algorithmic capability must report the cross-language consistency score for each claimed mechanistic
-            finding alongside the $\delta_\text{Rust}/\delta_\text{Python}$ ratio; a consistency score below 0.90
-            constitutes a binding constraint against the generalization claim regardless of the behavioral
-            improvement magnitude in the training language.</p>
-        </div>
-      </section>
-
-      <!-- =====================================================
-         SECTION 6: PHASE 3 ORACLE FIDELITY
-         ===================================================== -->
-      <section id="oracle">
-        <h2>6. Phase 3 Oracle Fidelity vs. Simulation Speed</h2>
-        <div><span class="critique-type ct-engineering">Engineering</span></div>
-
-        <p>For Phase 3 (molecular discovery), the DFT latency objection is accurate about the constraint and
-          misidentifies the operative failure mode. Raw DFT on drug-sized molecules runs 8&ndash;72 hours per query;
-          synchronous DFT inside a live generation loop is not a viable architecture. Production materials science ML
-          systems do not use it. The standard architecture employs machine learning interatomic potentials (MLIPs):
-          neural networks trained on DFT computations that evaluate molecular energy and forces at approximately
-          $10^5\times$ the speed of the underlying DFT code. CHGNet (Deng et al., 2023) and MatterSim (Microsoft,
-          2024) are two recent examples. A curriculum loop using an MLIP oracle runs at millisecond latency per
-          evaluation.</p>
-
-        <p>The operative failure mode for Phase 3 is distinct: curriculum engines push toward the edges of the current
-          model's capability distribution. In the molecular domain, that means the generator produces candidate
-          structures in regions where the model currently fails, which are precisely the regions where MLIPs are least
-          accurate, because MLIPs are trained on DFT data from chemically reasonable structures and extrapolate poorly
-          to unusual geometries, exotic bonding environments, and unexplored coordination chemistries. The curriculum
-          learns to produce structures with low MLIP-predicted energy not because they are genuinely stable, but
-          because they exploit coverage gaps in the MLIP's training manifold.</p>
-
-        <div class="callout note">
-          <div class="callout-title">Active Learning as a Partial Response</div>
-          <p>The standard mitigation for MLIP distributional failure is uncertainty-aware active learning: run the
-            curriculum loop against the MLIP, compute epistemic uncertainty via ensemble disagreement across a
-            committee of independently initialized MLIP instances, and route high-uncertainty structures to DFT
-            validation rather than trusting the MLIP score. FLARE (Vandermause et al., 2020), MACE-MP-0 (Batatia et
-            al., 2023), and SevenNet (Park et al., 2024) implement this. A committee of five MACE-MP-0 instances with
-            an uncertainty gate at $\sigma_\text{committee} > 0.05$ eV/atom triggering async DFT validation via
-            PySCF (open-source, Kaggle-deployable) provides a fully specified oracle architecture.</p>
-          <p>This partially addresses oracle gaming by flagging structures in poorly-covered regions. It does not
-            address interpolation errors: structures where the MACE model is confident but systematically wrong in a
-            pocket of chemical space that happens to fall within the training manifold at a bonding geometry with
-            subtle errors. Whether a sufficiently adversarial curriculum generator finds such pockets depends on
-            MACE-MP-0's specific coverage landscape. The mitigation is to verify that generated structures cluster
-            within the known training manifold via SOAP descriptor distance rather than at its periphery, before
-            accepting MLIP predictions as ground truth. The Phase 3 oracle architecture requires explicit
-            specification of: the MLIP version, the uncertainty metric and threshold triggering DFT fallback, the DFT
-            code and level of theory, and the mechanism by which DFT-validated signal flows back to the curriculum
-            generator.</p>
-        </div>
-      </section>
-
-      <!-- =====================================================
-         SECTION 7: TAXONOMY PROBLEM
-         ===================================================== -->
-      <section id="taxonomy">
-        <h2>7. The Failure Taxonomy Problem</h2>
-        <div><span class="critique-type ct-methodological">Methodological</span></div>
-
-        <p>The curriculum loop requires categorizing failures to generate a targeted curriculum. Human-assigned problem
-          categories (HumanEval labels by algorithm type: sorting, dynamic programming, string manipulation, graph
-          traversal) may not correspond to the model's internal failure modes. A model might fail on graph traversal
-          problems not because it lacks graph reasoning but because it consistently makes off-by-one errors in
-          adjacency list indexing. Both failures surface as "graph traversal" in the human taxonomy but require
-          different curriculum responses.</p>
-
-        <p>The inverse is also real. Two problems in different human categories might share a single neural failure
-          mode: failing at pointer arithmetic in C-style simulations and failing at matrix indexing could share a
-          representational deficit in how the model tracks positional state. A curriculum treating them as separate
-          categories generates redundant training signal and misses the underlying deficit.</p>
-
-        <p>The correct taxonomy is model-architecture-dependent. The same surface category can involve different
-          internal computations across model families because attention patterns, positional encoding schemes, and MLP
-          specialization differ by architecture. There is no static problem taxonomy simultaneously valid for Qwen
-          2.5, Llama 3, and Mistral.</p>
-
-        <div class="callout fix">
-          <div class="callout-title">Mechanistic Taxonomy Discovery</div>
-          <p>Before generating any curriculum, run the base model on 500+ evaluation problems with LogitLens hooks
-            active. For each problem, extract the $(28 \times \text{tokens})$ matrix of $P(\text{correct\_token}
-            \mid \text{layer}_i)$. Cluster these trajectories via K-means (K = 8 to 15) on the flattened
-            layer-token-probability vector. Compute the Adjusted Rand Index (ARI) between mechanistic clusters and
-            human-assigned HumanEval categories. If ARI $< 0.3$, the human taxonomy is a poor proxy for model-internal
-              failure modes and must be replaced by the mechanistic taxonomy as the curriculum target. If ARI falls
-              within $[0.3, 0.4]$, run a mixed-taxonomy curriculum: use mechanistic cluster assignments as primary
-              curriculum targets but cross-reference human category labels to verify each cluster's semantic coherence
-              before generating problems; neither taxonomy alone is reliable in this transitional band. If ARI $> 0.4$,
-              human categories are usable as an approximation. This measurement determines whether the
-              problem with a "dynamic programming" curriculum is that the model lacks DP reasoning, or that it fails at
-              boundary condition tracking, a failure mode that spans multiple human categories and requires a different
-              training signal entirely.</p>
-        </div>
-      </section>
-
-      <!-- =====================================================
-         SECTION 8: PRE-REGISTRATION AND CONTAMINATION REMEDIATION
-         ===================================================== -->
-      <section id="remediation">
-        <h2>8. Pre-Registration and Contamination Remediation</h2>
-
-        <p>Testing aggregate pass rate mixes curriculum-targeted and non-targeted problems, conflating signal with
-          noise. VGCL does not claim to improve average pass rate uniformly; it claims to improve pass rate on
-          specific categories it targeted. The experimental design must isolate this claim into a formal
-          multi-hypothesis pre-registration framework.</p>
-
-        <h3>Multi-Hypothesis Structural Framework</h3>
-
-        <p><strong>H<sub>1</sub> (Targeted Category Improvement):</strong> a directional, paired two-sample
-          proportion test executed strictly over problems within curriculum-targeted categories. Pairing over identical
-          problem sets minimizes the effective Design Effect, partially mitigating variance inflation from the DEFF
-          calculation in Section 4. Each targeted category is tested separately with a Bonferroni correction across
-          hypotheses.</p>
-
-        <p><strong>H<sub>2</sub> (Cross-Language Capability Transfer):</strong> an isomorphic generalization test
-          measuring whether curriculum training on a targeted category in Python predicts statistically significant
-          improvement on structural clones translated into Rust. This separates abstract logical acquisition from
-          syntax pattern matching. The ratio $\delta_\text{Rust}/\delta_\text{Python}$ is the primary interpretive
-          quantity: values above 0.5 indicate the curriculum taught structural reasoning; values near 0 indicate
-          template extension; negative values indicate catastrophic overfitting to Python surface patterns.</p>
-
-        <p><strong>H<sub>3</sub> (Global Bleed-Through Control):</strong> a non-inferiority check on non-targeted
-          categories. Curriculum training should produce a strict null result on untargeted problems, confirming the
-          improvement is category-specific rather than a global uncalibrated representation shift from fine-tuning. A
-          statistically significant improvement on non-targeted problems is itself a failure mode, not a success.</p>
-
-        <h3>Deterministic Benchmark Composition</h3>
-
-        <p>To achieve a clean evaluation suite of $n = 2{,}000$ distinct problems without introducing evaluation
-          bias or temporal contamination, the benchmark ensemble is locked to the following deterministic
-          composition:</p>
-
-        <div class="callout math">
-          <div class="callout-title">Benchmark Composition (2,000 Total)</div>
-          <p>$$[\text{HumanEval (164)}] + [\text{MBPP-Sanitized (257)}] + [\text{HumanEval+ v0.1.6 (164)}]$$</p>
-          <p>$$+ [\text{LiveCodeBench Fixed Window (400)}] + [\text{APPS Introductory (900)}] + [\text{CodeContests Easy
-            (115)}] = 2{,}000$$</p>
-          <p>MBPP-Sanitized (257 problems) is declared as the canonical variant; the detection threshold at $n = 421$
-            is 6.89 pp. The LiveCodeBench window is permanently frozen to January 1&ndash;June 30, 2024, with
-            problem IDs committed to version control prior to the generation of any curriculum data. MinHash
-            Locality-Sensitive Hashing (LSH) deduplication at a strict 0.85 similarity threshold is enforced across
-            all training-evaluation pairs before the first fine-tuning step. Any generated curriculum problem
-            exceeding this threshold against an evaluation problem is rejected and regenerated.</p>
-        </div>
-
-        <p>The effect size prior underpinning the power calculation (specified in Section 4 as 2&ndash;5 pp) must be
-          sourced from published curriculum fine-tuning results at comparable scale and compute, specifically CodeRL
-          (Le et al., 2022), STaR (Zelikman, Wu, Mu, and Goodman, 2022), and Self-Play Fine-Tuning studies at 1&ndash;2B
-          scale on
-          HumanEval, where the empirical literature range is 5&ndash;15 pp at comparable compute. An unsourced effect
-          size prior renders the entire power analysis conditional on an assumption rather than evidence, which
-          invalidates the sample size recommendation.</p>
-
-        <div class="callout note">
-          <div class="callout-title">Empirical ρ Estimation Requirement</div>
-          <p>The DEFF correction in Section 4 assumes $\rho = 0.3$ as a conservative estimate. The pre-registration
-            document must replace this with an empirically measured value: run the base model on the full 2,000-problem
-            evaluation suite twice under different random seeds and compute within-category pass correlation as
-            Pearson's $\phi$ statistic. This establishes the true intra-category correlation structure for this
-            model family on this benchmark, grounding the DEFF and power calculations in data rather than assumption.
-            The power calculation must be re-run with the empirical $\rho$ before any curriculum generation begins.
+  <!-- =========================================================
+       LAYOUT
+  ========================================================= -->
+  <div class="layout">
+    <main class="main" id="main-content">
+
+
+      <!-- DOCUMENT HEADER: name only -->
+      <header class="doc-header">
+        <h1 class="doc-name">Tazwar Ahnaf Enan</h1>
+      </header>
+
+
+      <!-- =======================================================
+           IDENTITY
+      ======================================================= -->
+      <section class="section" id="identity" aria-label="About">
+
+        <div class="sec-rule"></div>
+
+        <div class="identity-block">
+          <p>
+            My work falls into two areas. One is building systems for multiple AI models
+            to coordinate reliably under load: how they reach agreement, how they recover
+            from failures, and how to measure whether the coordination is actually working.
+          </p>
+          <p>
+            The other is working out what it would physically take to combine biological
+            cells with silicon computing hardware into a single system. Both threads involve
+            a lot of formal specification before anything gets built. The documents below
+            are write-ups from that work.
           </p>
         </div>
+
       </section>
 
-      <!-- =====================================================
-         SECTION 9: FLOP EFFICIENCY VS. INFERENCE SCALING
-         ===================================================== -->
-      <section id="test-time">
-        <h2>9. Training FLOP Efficiency vs. Inference Scaling</h2>
 
-        <p>Evaluating the absolute value of curriculum training requires a structural boundary distinction that the
-          standard FLOP comparison elides: training compute is a fixed, amortizable overhead; inference compute scales
-          as a linear function of production query volume. These are incommensurable at $T = 1$ query. The operative
-          engineering question is the break-even query volume $T^*$, defined as the point where the fixed compute
-          cost of curriculum training equals the cumulative variable compute cost of extended inference exploration
-          over the base model.</p>
+      <!-- =======================================================
+           SYSTEM PORTALS INDEX
+           Entries [01] and [02] only.
+      ======================================================= -->
+      <section class="section" id="portals" aria-label="Published documents">
 
-        <p>Let $C_\text{train} = 2.7 \times 10^{15}$ FLOPs (Phase 0 curriculum training: 300K tokens at 3 epochs
-          over a 1.5B model) and $C_\text{query} = 2 \times 1.5 \times 10^9 \times 400 \approx 1.2 \times 10^{12}$
-          FLOPs per single query at 1.5B scale. Total FLOPs over $T$ queries:</p>
+        <div class="sec-rule"></div>
 
-        <div class="callout math">
-          <div class="callout-title">Break-Even Query Volume</div>
-          <p>VGCL approach (fixed training + standard inference): $C_\text{train} + T \cdot C_\text{query}$</p>
-          <p>Pass@100 approach (repeated sampling, $k = 100$): $T \cdot k \cdot C_\text{query}$</p>
-          <p>Setting equal and solving for $T$:</p>
-          <p>$$T^* = \frac{C_\text{train}}{(k-1)\cdot C_\text{query}} = \frac{2.7 \times 10^{15}}{99 \times 1.2 \times
-            10^{12}} \approx 23 \text{ queries}$$</p>
-          <p>After 23 queries, curriculum training has strictly lower cumulative FLOP cost than pass@100 sampling.
-            At $T = 1$, the stated values yield a VGCL-to-pass@100 compute ratio of approximately
-            22.5&times;, representing the worst-case amortization point for curriculum training.</p>
-        </div>
+        <ul class="portals-list" role="list">
 
-        <p>The T* = 23 figure applies strictly to Phase 0 training volume (200 problems, 3 epochs, 300K tokens).
-          At roadmap scale, T* scales proportionally: at 1,000 problems (1.5M tokens, 3 epochs),
-          $C_\text{train} = 1.35 \times 10^{16}$ FLOPs and T* = 113 queries; at 5,000 problems, T* = 568 queries.
-          The deployment rule $T > 100$ is calibrated to the 1,000-problem training configuration, not Phase 0.
-          The T* = 23 figure describes a training cost that is lower than 23 inference passes, but does not by
-          itself justify deployment.</p>
 
-        <p>The per-query FLOP efficiency comparison nonetheless favors test-time compute: pass@100 delivers
-          approximately 30 pp improvement per query at a cost of $k \cdot C_\text{query}$ per query; curriculum
-          training delivers a permanent 5 pp improvement at a one-time cost amortized over $T$. For any finite $T$,
-          pass@100 achieves higher FLOP-per-accuracy-point per query. A model scoring 50% with greedy decoding
-          reaches 80%+ with repeated sampling and test-time verification; the o1 and o3 model series formalize this
-          pattern by allocating inference compute to extended chain-of-thought and internal verification rather than a
-          single greedy pass.</p>
+          <!-- PORTAL [01] -->
+          <li class="portal-entry" role="listitem">
 
-        <p>The correct cost-justification frame for VGCL is not efficiency, but capability frontier. For problem
-          classes where $p_\text{base} = 0$, test-time compute delivers $P(\text{solve} \mid k \text{ samples}) = 1
-          - (1 - p_\text{base})^k = 0$ for all $k$, regardless of sampling budget. Curriculum training can change
-          $p_\text{base}$ from 0 to $\delta > 0$ if the curriculum successfully teaches the required computation.
-          This is where test-time compute and curriculum training are not substitutes but complements on the
-          capability axis.</p>
+            <span class="portal-idx" aria-label="Index 01">[01]</span>
 
-        <p>Identifying problem classes where $p_\text{base} &lt; 0.05$ requires running the base model at pass@k
-          for sufficiently large k. At k = 100 over 2,000 evaluation problems at 1.5B scale
-          ($C_\text{query} = 1.2 \times 10^{12}$ FLOPs per sample), the identification measurement costs
-          $2{,}000 \times 100 \times 1.2 \times 10^{12} = 2.4 \times 10^{17}$ FLOPs: 89&times; the Phase 0
-          curriculum training budget. Any cost-justification argument for VGCL that does not account for this
-          identification measurement is analytically incomplete.</p>
+            <div class="portal-body">
+              <h2 class="portal-title">
+                Architectural Patching: VGCL Cognitive Curriculum Frameworks
+              </h2>
+              <p class="portal-scope">
+                Vulnerability-Guided Curriculum Learning protocol specification for
+                sub-2B parameter language models. Covers statistical power architecture
+                under design effect inflation; Bonferroni-corrected multi-hypothesis
+                pre-registration with targeted, transfer, and bleed-through controls;
+                benchmark contamination remediation via MinHash LSH deduplication at
+                0.85 similarity threshold; and FLOP break-even analysis comparing fixed
+                training cost against variable inference-time sampling regimes. Taxonomic
+                cluster alignment measured by Adjusted Rand Index against mechanistic
+                interpretability layer activations.
+              </p>
+              <div class="tag-row" aria-label="Domain tags">
+                <span class="tag">CURRICULUM LEARNING</span>
+                <span class="tag">STATISTICAL POWER</span>
+                <span class="tag">LLM ARCHITECTURE</span>
+                <span class="tag">MECHANISTIC INTERP</span>
+                <span class="tag">BENCHMARK DESIGN</span>
+              </div>
+              <a class="portal-link" href="./vgcl-cognitive-curriculum.html" aria-label="Open VGCL document">&rarr;
+                ./vgcl-cognitive-curriculum.html</a>
+            </div>
 
-        <div class="callout fix">
-          <div class="callout-title">Decision Rule</div>
-          <p>Deploy curriculum training when: (a) the target problem class has $p_\text{base} < 0.05$ under greedy and
-              sampling decoding; (b) the failure mode is learnable given the pre-training gravity radius at the chosen
-              model scale, verified by the LogitLens reasoning signature; and (c) expected query volume $T>
-              100$ over the deployment lifetime. Any cost justification for curriculum training is analytically
-              incomplete without explicitly computing $T^*$ and verifying condition (a). Outside these parameters,
-              compute is more efficiently allocated at inference time.</p>
-        </div>
+          </li>
+
+
+          <!-- PORTAL [02] -->
+          <li class="portal-entry" role="listitem">
+
+            <span class="portal-idx" aria-label="Index 02">[02]</span>
+
+            <div class="portal-body">
+              <h2 class="portal-title">
+                Wetware-Silicon Homeostatic Convergence: Physical Constraint Architecture
+              </h2>
+              <p class="portal-scope">
+                Full systems architecture for hybrid biological-silicon computational
+                substrates with formal physical feasibility bounds. Covers XNA replication
+                fidelity requirements and the 63-codon natural genome fallback; extracellular
+                graphene scaffold strategies as SWCNT synthesis intermediate; thermodynamic
+                energy budgets and thermal dissipation ceilings under cellular enclosure;
+                dual-layer volatile and durable computation auditing; and phased integration
+                gates across a 48-month implementation timeline. Synthetic organism
+                biocontainment enforced via xenobiology constraints and dNaM:dTPT3 unnatural
+                base pair isolation.
+              </p>
+              <div class="tag-row" aria-label="Domain tags">
+                <span class="tag">WETWARE SYSTEMS</span>
+                <span class="tag">XNA BIOLOGY</span>
+                <span class="tag">SILICON HYBRID</span>
+                <span class="tag">HOMEOSTASIS</span>
+                <span class="tag">BIOCONTAINMENT</span>
+              </div>
+              <a class="portal-link" href="./wetware-silicon-convergence.html"
+                aria-label="Open Wetware-Silicon document">&rarr; ./wetware-silicon-convergence.html</a>
+            </div>
+
+          </li>
+
+
+        </ul>
+
       </section>
 
-    </article>
+
+    </main>
   </div>
 
-  <footer>
-    <p>Contact: <a href="mailto:tazwardevp@gmail.com">tazwardevp@gmail.com</a></p>
+
+  <!-- =========================================================
+       FOOTER
+       3-column network table only. No signatures, no revision text.
+  ========================================================= -->
+  <footer class="site-footer" role="contentinfo">
+    <table class="footer-net" aria-label="Network connections">
+      <tbody>
+        <tr>
+          <td>X (Twitter)</td>
+          <td>@TazwarEnan</td>
+          <td>
+            <a href="https://x.com/TazwarEnan" target="_blank" rel="noopener noreferrer">x.com/TazwarEnan</a>
+          </td>
+        </tr>
+        <tr>
+          <td>GitHub</td>
+          <td>tazwaryayyyy</td>
+          <td>
+            <a href="https://github.com/tazwaryayyyy" target="_blank"
+              rel="noopener noreferrer">github.com/tazwaryayyyy</a>
+          </td>
+        </tr>
+        <tr>
+          <td>LinkedIn</td>
+          <td>tazwar-ahnaf</td>
+          <td>
+            <a href="https://www.linkedin.com/in/tazwar-ahnaf-1872b8362/" target="_blank"
+              rel="noopener noreferrer">linkedin.com/in/tazwar-ahnaf-1872b8362</a>
+          </td>
+        </tr>
+        <tr>
+          <td>Email</td>
+          <td>tazwardevp</td>
+          <td>
+            <a href="mailto:tazwardevp@gmail.com">tazwardevp@gmail.com</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </footer>
 
 </body>
