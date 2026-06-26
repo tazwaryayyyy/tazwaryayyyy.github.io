@@ -138,10 +138,10 @@
 
     .tb-nav a {
       font-family: var(--mono);
-      font-size: 0.62rem;
+      font-size: 0.8rem;
       font-weight: 500;
-      letter-spacing: 0.06em;
-      color: var(--text-sec);
+      letter-spacing: 0.03em;
+      color: var(--text);
       white-space: nowrap;
       transition: color 0.12s;
     }
@@ -149,13 +149,6 @@
     .tb-nav a:hover {
       color: var(--accent);
       text-decoration: none;
-    }
-
-    /* Small arrow prefix on each nav link */
-    .tb-nav a::before {
-      content: '\2192\00a0';
-      color: var(--text-dim);
-      font-size: 0.6rem;
     }
 
 
@@ -327,8 +320,9 @@
 
     /* =========================================================
        FOOTER
-       Minimal. Contains only the 3-column network table.
-       No signatures, no revision strings.
+       Flat flexbox row of network nodes.
+       Each node: stacked label (dim mono) + link (blue mono).
+       Separated by 1px vertical hairlines, no table.
     ========================================================= */
     .site-footer {
       border-top: 1px solid var(--border);
@@ -336,67 +330,54 @@
       padding: 1.75rem 2rem 2rem;
     }
 
-    /* 3-column network table */
-    .footer-net {
-      width: 100%;
+    /* Inner wrapper aligned to reading column */
+    .footer-inner {
       max-width: 840px;
       margin: 0 auto;
-      border-collapse: collapse;
-      font-size: 0.78rem;
+      display: flex;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 1.5rem 0;
     }
 
-    .footer-net thead th {
+    /* Individual network node: label stacked above link */
+    .footer-node {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      padding-right: 2.25rem;
+      margin-right: 2.25rem;
+      border-right: 1px solid var(--border-med);
+    }
+
+    /* Last node: no right divider */
+    .footer-node:last-child {
+      border-right: none;
+      padding-right: 0;
+      margin-right: 0;
+    }
+
+    /* Platform label: tiny uppercase mono, dim */
+    .fn-label {
       font-family: var(--mono);
-      font-size: 0.55rem;
+      font-size: 0.56rem;
       font-weight: 600;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--text-dim);
-      padding: 0 0 0.55rem;
-      border-bottom: 1px solid var(--border);
-      text-align: left;
-      background: transparent;
     }
 
-    .footer-net tbody td {
-      padding: 0.55rem 0;
-      border-bottom: 1px solid var(--border);
-      vertical-align: middle;
-      color: var(--text);
-      font-size: 0.8rem;
-    }
-
-    .footer-net tbody tr:last-child td {
-      border-bottom: none;
-    }
-
-    /* First column: network name, sans */
-    .footer-net td:first-child {
-      font-family: var(--sans);
-      font-weight: 500;
-      color: var(--text-sec);
-      width: 22%;
-      padding-right: 1.5rem;
-    }
-
-    /* Second column: handle, mono accent */
-    .footer-net td:nth-child(2) {
+    /* Handle / URL: mono, blue link color */
+    .fn-link {
       font-family: var(--mono);
-      font-size: 0.72rem;
-      color: var(--accent);
+      font-size: 0.76rem;
       font-weight: 500;
-      width: 30%;
-      padding-right: 1.5rem;
-    }
-
-    /* Third column: URL link, mono blue */
-    .footer-net td:last-child {
-      font-family: var(--mono);
-      font-size: 0.68rem;
-    }
-
-    .footer-net td:last-child a {
       color: var(--link);
+      line-height: 1.3;
+    }
+
+    .fn-link:hover {
+      text-decoration: underline;
     }
 
 
@@ -441,33 +422,16 @@
         font-size: 0.9rem;
       }
 
-      /* Stack footer table on very small screens */
-      .footer-net,
-      .footer-net thead,
-      .footer-net tbody,
-      .footer-net tr,
-      .footer-net th,
-      .footer-net td {
-        display: block;
+      /* Footer nodes wrap and drop dividers on mobile */
+      .footer-node {
+        border-right: none;
+        padding-right: 0;
+        margin-right: 0;
+        flex-basis: calc(50% - 0.75rem);
       }
 
-      .footer-net thead {
-        display: none;
-      }
-
-      .footer-net tbody tr {
-        padding: 0.65rem 0;
-        border-bottom: 1px solid var(--border);
-      }
-
-      .footer-net tbody tr:last-child {
-        border-bottom: none;
-      }
-
-      .footer-net tbody td {
-        border-bottom: none;
-        padding: 0.1rem 0;
-        width: 100%;
+      .footer-node:last-child {
+        border-right: none;
       }
     }
   </style>
@@ -525,9 +489,7 @@
           </p>
           <p>
             The other is working out what it would physically take to combine biological
-            cells with silicon computing hardware into a single system. Both threads involve
-            a lot of formal specification before anything gets built. The documents below
-            are write-ups from that work.
+            cells with silicon computing hardware into a single system.
           </p>
         </div>
 
@@ -624,43 +586,42 @@
 
   <!-- =========================================================
        FOOTER
-       3-column network table only. No signatures, no revision text.
+       Flexbox row: stacked label + link per network.
+       Separated by hairline vertical dividers.
   ========================================================= -->
   <footer class="site-footer" role="contentinfo">
-    <table class="footer-net" aria-label="Network connections">
-      <tbody>
-        <tr>
-          <td>X (Twitter)</td>
-          <td>@TazwarEnan</td>
-          <td>
-            <a href="https://x.com/TazwarEnan" target="_blank" rel="noopener noreferrer">x.com/TazwarEnan</a>
-          </td>
-        </tr>
-        <tr>
-          <td>GitHub</td>
-          <td>tazwaryayyyy</td>
-          <td>
-            <a href="https://github.com/tazwaryayyyy" target="_blank"
-              rel="noopener noreferrer">github.com/tazwaryayyyy</a>
-          </td>
-        </tr>
-        <tr>
-          <td>LinkedIn</td>
-          <td>tazwar-ahnaf</td>
-          <td>
-            <a href="https://www.linkedin.com/in/tazwar-ahnaf-1872b8362/" target="_blank"
-              rel="noopener noreferrer">linkedin.com/in/tazwar-ahnaf-1872b8362</a>
-          </td>
-        </tr>
-        <tr>
-          <td>Email</td>
-          <td>tazwardevp</td>
-          <td>
-            <a href="mailto:tazwardevp@gmail.com">tazwardevp@gmail.com</a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="footer-inner">
+
+      <div class="footer-node">
+        <span class="fn-label">X (Twitter)</span>
+        <a class="fn-link" href="https://x.com/TazwarEnan" target="_blank" rel="noopener noreferrer">
+          @TazwarEnan
+        </a>
+      </div>
+
+      <div class="footer-node">
+        <span class="fn-label">GitHub</span>
+        <a class="fn-link" href="https://github.com/tazwaryayyyy" target="_blank" rel="noopener noreferrer">
+          tazwaryayyyy
+        </a>
+      </div>
+
+      <div class="footer-node">
+        <span class="fn-label">LinkedIn</span>
+        <a class="fn-link" href="https://www.linkedin.com/in/tazwar-ahnaf-1872b8362/" target="_blank"
+          rel="noopener noreferrer">
+          tazwar-ahnaf-1872b8362
+        </a>
+      </div>
+
+      <div class="footer-node">
+        <span class="fn-label">Email</span>
+        <a class="fn-link" href="mailto:tazwardevp@gmail.com">
+          tazwardevp@gmail.com
+        </a>
+      </div>
+
+    </div>
   </footer>
 
 </body>
