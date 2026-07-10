@@ -484,13 +484,13 @@
       <a href="#ferc" class="sub">FERC Grid Access</a>
       <a href="#egs" class="sub">EGS Seismicity</a>
       <a href="#vgcl">2. The VGCL Thesis</a>
-      <a href="#spec-rift">3. Specification Rift</a>
-      <a href="#gravity" class="sub">Pre-Training Gravity</a>
+      <a href="#spec-rift">3. Specification Gap</a>
+      <a href="#gravity" class="sub">Representational Stability</a>
       <a href="#qlora" class="sub">QLoRA Feasibility</a>
       <a href="#noise-floor">4. Statistical Cascade</a>
       <a href="#deff" class="sub">DEFF Correction</a>
       <a href="#power" class="sub">Power Collapse</a>
-      <a href="#adversarial">5. Curry-Howard Gap</a>
+      <a href="#adversarial">5. Observational Equivalence</a>
       <a href="#logitlens" class="sub">LogitLens Protocol</a>
       <a href="#patching" class="sub">Activation Patching</a>
       <a href="#oracle">6. Phase 3 Oracle Fidelity</a>
@@ -507,19 +507,23 @@
       <section id="infrastructure">
         <h2>1. Compute Efficiency Thesis vs. Macro-Infrastructure Context</h2>
 
-        <p>A critical structural error in algorithmic optimization work is the conflation of macro-scale physical
+        <p>Algorithmic optimization work often incorrectly conflates macro-scale physical
           infrastructure limits with the localized justification for training-time data selection. The primary argument
           for Verification-Guided Curriculum Learning does not rest on power-grid limitations or nuclear fuel supply
-          chains. The core claim is scale-independent: at <em>any</em> fixed training compute budget, curriculum
-          sampling efficiency reduces the tokens-to-capability ratio by concentrating gradient updates on high-utility
-          data regimes. This holds equally on a single T4 GPU and on a hyperscale cluster. Physical infrastructure
+          chains. The core claim is scale-independent: curriculum sampling improves sample efficiency by
+          concentrating gradient updates on high-utility data regimes, independent of the total training compute
+          budget. This holds equally on a single T4 GPU and on a hyperscale cluster. Physical infrastructure
           constraints at the gigawatt scale provide macroeconomic motivation for algorithmic efficiency at frontier
           training runs; they have no direct causal relationship with whether curriculum targeting improves Qwen 2.5
           1.5B on HumanEval.</p>
 
         <p>The gigawatt-scale constraints documented below are real, with distinct physical origins and resolution
           timelines measured in years to decades. They are provided as accurate macro context for the compute landscape,
-          not as the operative justification for Phase 0 experiments.</p>
+          not as the operative justification for Phase 0 experiments. Each subsection below (HALEU enrichment,
+          photonic wire bonding, FERC co-location, EGS seismicity) functions strictly as a causal abstraction: a
+          simplified narrative of a macro-economic constraint chain, offered to motivate why frontier-scale training
+          economics matter, not an empirical claim that any of these physical constraints determines, bounds, or
+          licenses the Phase 0 result at 1.5B scale.</p>
 
         <h3 id="haleu">HALEU Enrichment Deficit</h3>
 
@@ -535,7 +539,7 @@
 
         <p>Centrus Energy holds the only US commercial HALEU demonstration license. Their Piketon, Ohio plant (operating under the HALEU Operations Contract, HOCP) runs at approximately 900 kg/year. On January 6, 2026, DOE announced a $900M task order to Centrus as part of a $2.7B total program award shared equally among Centrus, General Matter, and Orano Federal Services, for expansion to commercial-scale HALEU production. The 12 metric tonnes per year post-2030 target (a 13.3&times; scale-up from current demonstrated output) should accordingly be characterized as awarded but subject to finalized contract negotiation, not as a loose proposal contingent on future funding decisions. A separate contract timing issue is immediately operative: Phase III (Option 1a) of the HOCP expires on June 30, 2026, three days from the June 27 temporal anchor of this document. Continuation of the 900 kg/year baseline rate requires immediate exercise of Option 1b (July 2026 through June 2028) by DOE; that transition is unaddressed in most deployment planning documents.</p>
 
-        <p>The transport problem compounds the enrichment problem. NRC criticality safety margins impose a cask
+        <p>Transport constraints exacerbate enrichment limits. NRC criticality safety margins impose a cask
           payload reduction that worsens steeply with enrichment level: documented figures show 255 lbs per cask at
           12.5% enrichment falling to 54.9 lbs per cask at 100% enrichment, a reduction of approximately 78%, or
           nearly a fivefold drop in per-shipment payload. A partial figure covering only the lower portion of
@@ -567,17 +571,33 @@
         <div class="callout math">
           <div class="callout-title">Thermal Stress (Simplified Lower Bound)</div>
           <p>$$\tau_\text{approx} = \Delta\alpha \cdot \Delta T \cdot E_\text{polymer}$$</p>
-          <p>The biaxial correction adds $E/(1-\nu)$. At polymer Poisson ratio $\nu \approx 0.35\text{--}0.40$,
+          <p>The simplified form omits the biaxial correction, mandatory for an interfacial layer constrained in
+            two dimensions rather than free to expand uniaxially. The corrected form is:</p>
+          <p>$$\tau_\text{corrected} = \Delta\alpha \cdot \Delta T \cdot \frac{E_\text{polymer}}{1-\nu}$$</p>
+          <p>At polymer Poisson ratio $\nu \approx 0.35\text{--}0.40$,
             actual interfacial stress runs 1.54 to 1.61$\times$ the simplified estimate. Applying the values
             stated in the preceding paragraph: $\Delta\alpha \approx 47 \times 10^{-6}$ K$^{-1}$ (polymer CTE
             exceeding $50\,\mu$/K minus silicon $2.6\,\mu$/K) and $\Delta T = 125$ K (the stated
             $-40{^\circ}$C to $85{^\circ}$C operating excursion), at $E_\text{polymer} \approx 3$ GPa, the
-            simplified estimate yields approximately 17.6 MPa; the biaxial-corrected value reaches approximately
-            27 to 28 MPa. Hardware active cooling and strain-absorbing substrates provide limited relief at this
+            simplified estimate yields approximately 17.6 MPa; applying $E/(1-\nu)$, $\tau_\text{corrected}$
+            reaches approximately 27 to 28 MPa. The simplified $\tau_\text{approx}$ value understates the
+            governing interfacial load by roughly 35 to 37% and should not be used for monitoring threshold
+            calibration. Hardware active cooling and strain-absorbing substrates provide limited relief at this
             stress magnitude.
             The underlying CTE mismatch is not eliminable through standard process control, but specific
             software-layer and materials-level interventions can reduce the severity of thermal excursions and
             provide tolerance for residual misalignment.</p>
+        </div>
+
+        <div class="callout warn">
+          <div class="callout-title">Monitoring Threshold: Bond-Site Stress Ceiling</div>
+          <p>Real-time bond-site temperature and stress monitoring must trigger an automated alert at
+            $\tau = 22$ MPa, representing 80% of the biaxial-corrected ceiling
+            ($\tau_\text{corrected} \approx 27$ to 28 MPa). The margin between the 22 MPa alert threshold and the
+            ceiling is the operational window within which workload rescheduling and hot-spot traffic rerouting
+            (below) can act before a bond site crosses into failure-inducing stress. A monitoring system
+            calibrated against $\tau_\text{approx}$ rather than $\tau_\text{corrected}$ would set its alert
+            threshold roughly 35 to 37% too low and provide a false sense of margin.</p>
         </div>
 
         <p>Four mitigation vectors are available. First, software workload scheduling can stagger compute tasks
@@ -739,15 +759,37 @@
             round in which it was quarantined. The maximum allowable oracle-failure-derived contamination rate in
             any finalized training batch is below 1%; batches exceeding this threshold are rejected and regenerated
             before fine-tuning commences.</p>
+          <p><strong>Stage 2 cost overhead.</strong> The strong verifier is not free. Property-based testing
+            executes a minimum of 100 procedurally generated edge-case inputs per candidate (the standard default
+            for frameworks such as Hypothesis), and semantic equivalence checking executes one additional
+            reference-implementation pass per input where a reference exists, for approximately 200 sandboxed
+            executions per candidate reaching Stage 2. Against the $n_\text{req} \approx 24{,}523$ figure derived
+            in Section 4 and an unmeasured Stage 2 acceptance rate, a conservative 2:1 candidate-to-accepted ratio
+            implies roughly 49,000 candidates reach Stage 2, or approximately 9.8 million isolated sandbox
+            executions. At an assumed 100 ms per execution (process spin-up, run, teardown under standard
+            container-based isolation), this is on the order of 980,000 seconds, or approximately 272 hours, of
+            sandbox wall-clock time before parallelization. This cost is denominated in CPU-isolation
+            infrastructure and wall-clock latency, not GPU FLOPs, and it appears in no compute budget in this
+            document: not the $8.1 \times 10^{15}$ FLOP $C_\text{train}$ figure, and not the $2.4 \times 10^{17}$
+            FLOP pass@k identification measurement in Section 9. Both of those figures describe GPU-side training
+            and inference cost exclusively and omit oracle-side verification cost entirely.</p>
         </div>
       </section>
 
       <!-- =====================================================
-         SECTION 3: SPECIFICATION RIFT + PRE-TRAINING GRAVITY
+         SECTION 3: SPECIFICATION GAP + REPRESENTATIONAL STABILITY
          ===================================================== -->
       <section id="spec-rift">
-        <h2>3. The Specification Rift and Pre-Training Gravity</h2>
+        <h2>3. The Specification Gap and Representational Stability</h2>
         <div><span class="critique-type ct-structural">Structural</span></div>
+
+        <p>Phase 0, specified in full below, is framed explicitly as a <strong>Pre-Registration and Methodological
+          Framework for Qwen 2.5 1.5B-Instruct</strong>: a locked specification of model, curriculum scale,
+          generator, oracle, and evaluation suite against which hypotheses are tested, fixed before any training
+          run begins. This framing is deliberate. No pass rate, confidence interval, or trained-model comparison
+          appears anywhere in this document; the object under evaluation is the design of the verification,
+          sampling, and statistical-correction protocol, not a reported empirical result. Grounding Phase 0 in
+          verifiable, pre-specified conditions is what makes a future empirical claim checkable at all.</p>
 
         <p>The model targeted by the roadmap and the model executable on a Kaggle T4 are not the same experiment. This
           is not merely a resource constraint; it changes the scope of any positive result.</p>
@@ -796,7 +838,7 @@
           </table>
         </div>
 
-        <h3 id="gravity">Per-Parameter Update Magnitude and Pre-Training Gravity</h3>
+        <h3 id="gravity">Per-Parameter Update Magnitude and Representational Stability</h3>
 
         <p>The attribution of the 1.5B model selection to "proportionally less code-specific instruction data" is
           incorrect. Both the 1.5B and 7B variants of Qwen 2.5-Instruct carry identical instruction fine-tuning
@@ -819,15 +861,15 @@
 
         <p>The 1.5B model absorbs approximately $1.53\times$ larger per-parameter gradient perturbations than the 7B
           model for identical fine-tuning data at identical learning rate. This variance establishes distinct
-          <em>pre-training gravity regimes</em>. The pre-training gravity radius is defined as the neighborhood in
-          weight space within which pre-trained representations maintain historical structural coherence. This radius
-          is substantially more resilient in the 7B model, where per-parameter updates are diluted across a larger
-          dimensionality. Conversely, the 1.5B model escapes its gravity radius more readily, making it susceptible to
-          either rapid specialization or catastrophic representational decay. The sign of this effect under curriculum
-          training is an empirical question, not a theoretical one. A positive result at 1.5B scale does not predict
-          the direction of the effect at 7B scale, because: (a) the per-parameter perturbation ratio is 1.53&times;,
-          (b) the pre-training gravity radius may not scale linearly with $d_\text{model}$, and (c) emergent
-          capability thresholds observed at 7B have no established analogs at 1.5B.
+          <em>representational stability regimes</em>. The representational stability radius is defined as the
+          neighborhood in weight space within which pre-trained representations maintain historical structural
+          coherence. This radius is substantially more resilient in the 7B model, where per-parameter updates are
+          diluted across a larger dimensionality. Conversely, the 1.5B model exits its stability radius more readily,
+          making it susceptible to either rapid specialization or catastrophic representational decay. The sign of
+          this effect under curriculum training is an empirical question, not a theoretical one. A positive result at
+          1.5B scale does not predict the direction of the effect at 7B scale, because: (a) the per-parameter
+          perturbation ratio is 1.53&times;, (b) the stability radius may not scale linearly with $d_\text{model}$,
+          and (c) emergent capability thresholds observed at 7B have no established analogs at 1.5B.
         </p>
 
         <h3 id="qlora">QLoRA Feasibility on a Single T4</h3>
@@ -912,7 +954,7 @@
         </div>
 
         <div class="callout warn">
-          <div class="callout-title">Operating System Constraint: Pre-Training Gravity Ceiling (Qwen 2.5 1.5B)</div>
+          <div class="callout-title">Operating System Constraint: Representational Stability Ceiling (Qwen 2.5 1.5B)</div>
           <p><strong>Constraint ceiling.</strong> The empirically validated per-parameter update magnitude ceiling
             for the Qwen 2.5 1.5B model is $|\Delta\theta| &lt; 1.53\times$ the per-parameter update magnitude
             observed at 7B scale under identical learning rate and gradient clipping threshold. This value is not a
@@ -946,7 +988,7 @@
             fewer than 200 training problems, so the running median reflects recent gradient history rather
             than early-phase initialization artifacts. Any curriculum fine-tuning campaign on Qwen 2.5 1.5B
             that does not implement this adaptive clipping mechanism is operating outside verified
-            parameter-stability bounds and cannot make valid claims about pre-training gravity confinement.</p>
+            parameter-stability bounds and cannot make valid claims about representational stability.</p>
         </div>
       </section>
 
@@ -958,9 +1000,9 @@
         <div><span class="critique-type ct-statistical">Statistical</span></div>
 
         <p>The experiment compares two arms: curriculum-trained versus control, each evaluated on the same benchmark.
-          The operative statistical quantity for this comparison is $\text{SE}_\text{diff}$, the standard error of
-          the difference between two independent arm estimates, not $\sigma_\text{meas}$, the standard deviation of a
-          single-arm evaluation run. These quantities differ by $\sqrt{2}$:</p>
+          This comparison turns on $\text{SE}_\text{diff}$, the standard error of the difference between the two
+          arms, not $\sigma_\text{meas}$, the standard deviation of a single arm's evaluation run. These quantities
+          differ by $\sqrt{2}$:</p>
 
         <div class="callout math">
           <div class="callout-title">Two-Arm SE Correction</div>
@@ -1043,10 +1085,15 @@
 
           $$\text{DEFF} = 1 + (m-1)\rho = 1 + 49 \times 0.3 = 15.7$$
 
-          <p>The Kish (1965) formula assumes equal cluster sizes; HumanEval categories range from approximately 15 to
+          <p>The Kish (1965) formula $\text{DEFF} = 1 + (m-1)\rho$ carries two unresolved assumptions rather than
+            one. First, it assumes equal cluster sizes; HumanEval categories range from approximately 15 to
             45 problems per category, requiring the unequal-cluster correction
             $\text{DEFF} = 1 + \left(\sum_k m_k^2 / \sum_k m_k - 1\right)\rho$, which produces a modestly higher
-            effective DEFF than the equal-cluster approximation.</p>
+            effective DEFF than the equal-cluster approximation. Second, and more consequentially, $\rho = 0.3$
+            itself carries no empirical grounding on this model or this benchmark: it is a substituted constant,
+            not a measured quantity. Every DEFF, power, and required-sample-size figure derived below inherits
+            this assumption and should be read as conditional on it, not as a measured result, until the
+            empirical $\rho$ estimation protocol in Section 8 has actually been executed.</p>
 
           <h3 id="power">Power Collapse at $n = 2{,}000$</h3>
 
@@ -1080,7 +1127,13 @@
             <div class="callout-title">Required Sample Size for 80% Power</div>
             <p>At $\rho = 0.3$ and $\delta = 5$ pp ($\alpha = 0.05$, two-sided), 80% power requires
               $n_\text{eff} \approx 1{,}562$, yielding $n_\text{req} = \text{DEFF} \times 1{,}562 = 15.7 \times
-              1{,}562 \approx 24{,}523$ problems. At $\rho = 0.5$, $n_\text{req}$ rises to 39,827. The 2,000-problem
+              1{,}562 \approx 24{,}523$ problems. At $\rho = 0.5$, $n_\text{req}$ rises to 39,827; at the upper end
+              of the literature-calibrated range, $\rho = 0.7$, $\text{DEFF} = 1 + 49 \times 0.7 = 35.3$ and
+              $n_\text{req} \approx 55{,}139$. The $n_\text{req} \approx 24{,}523$ figure is therefore a floor, not
+              a ceiling: it holds only under the unmeasured, most favorable assumption $\rho = 0.3$. Across the
+              literature-plausible range, statistical power does not merely decline further; it collapses to a
+              regime where no curriculum volume proposed anywhere in this document, 200 to 5,000 problems
+              (Section 3), approaches adequacy at any tested effect size. The 2,000-problem
               evaluation suite in Section 8 addresses contamination control, not statistical power; these are distinct
               problems with separate solutions.</p>
           </div>
@@ -1128,6 +1181,24 @@
               across all parameters before any posterior quantity is reported.</p>
           </div>
 
+          <div class="callout warn">
+            <div class="callout-title">Bonferroni Over-Correction Across Correlated Hypothesis Clusters</div>
+            <p>Section 8's H<sub>1</sub> test applies a Bonferroni correction independently across each targeted
+              category. Bonferroni bounds the family-wise error rate by dividing $\alpha$ by the number of
+              hypotheses; with $K$ ranging from 8 to 15 mechanistically discovered clusters (Section 7), the
+              corrected $\alpha$ falls to $0.05/15 \approx 0.0033$, compounding a second source of power loss on
+              top of the DEFF collapse already established above. This is excessively conservative given the
+              correlation structure this section derives: the categories are not independent tests of unrelated
+              hypotheses; they are positively correlated by the same curriculum-induced mechanism that inflates
+              DEFF in the first place. Benjamini-Hochberg false discovery rate control merits investigation as a
+              replacement. The standard procedure (Benjamini and Hochberg, 1995) was derived under independence,
+              but Benjamini and Yekutieli (2001) showed it remains valid under positive regression dependency, the
+              condition that plausibly holds here, since curriculum training induces positive, not adversarial,
+              within- and cross-category correlation by construction. BH trades family-wise error control for a
+              bounded false discovery rate, which is the more defensible target given an already-collapsed power
+              budget; this is proposed here as a direction for investigation, not as a validated replacement.</p>
+          </div>
+
           <div class="table-wrap">
             <table>
               <thead>
@@ -1163,10 +1234,10 @@
       </section>
 
       <!-- =====================================================
-         SECTION 5: CURRY-HOWARD GAP + MECHANISTIC DIAGNOSTICS
+         SECTION 5: OBSERVATIONAL EQUIVALENCE + MECHANISTIC DIAGNOSTICS
          ===================================================== -->
       <section id="adversarial">
-        <h2>5. Mechanistic Verification and the Curry-Howard Gap</h2>
+        <h2>5. Mechanistic Verification and Observational Equivalence</h2>
         <div><span class="critique-type ct-structural">Structural</span></div>
 
         <p>The Python interpreter provides a binary oracle on output correctness. It cannot distinguish between two
@@ -1274,7 +1345,7 @@
         </div>
 
         <div class="callout fix">
-          <div class="callout-title">Middle-Management Abstraction Layer: Cross-Language Deployment Decision Filter
+          <div class="callout-title">Cross-Language Generalization Gate: Deployment Decision Filter
           </div>
           <p>The LogitLens hooking protocol and Causal Activation Patching analysis constitute necessary but
             insufficient conditions for authorizing generalization of mechanistic findings beyond the Python training
@@ -1296,7 +1367,7 @@
             treated as evidence of general algorithmic capability or deployed as universal mechanistic properties.
             Findings clearing below 0.70 are classified as language-local and quarantined from generalization
             entirely.</p>
-          <p>This filter is structurally non-negotiable. Omitting it permits language-specific surface biases to
+          <p>Omitting this gate permits language-specific surface biases to
             masquerade as universal mechanistic properties, producing curriculum decisions and interpretability
             conclusions that appear valid under single-language evaluation while systematically degrading
             multilingual performance. Any published claim that VGCL curriculum training instills a generalizable
@@ -1314,8 +1385,8 @@
         <h2>6. Phase 3 Oracle Fidelity vs. Simulation Speed</h2>
         <div><span class="critique-type ct-engineering">Engineering</span></div>
 
-        <p>For Phase 3 (molecular discovery), the DFT latency objection is accurate about the constraint and
-          misidentifies the operative failure mode. Raw DFT on drug-sized molecules runs 8 to 72 hours per query;
+        <p>For Phase 3 (molecular discovery), the DFT latency objection correctly identifies the constraint but
+          misidentifies the actual failure mode. Raw DFT on drug-sized molecules runs 8 to 72 hours per query;
           synchronous DFT inside a live generation loop is not a viable architecture. Production materials science ML
           systems do not use it. The standard architecture employs machine learning interatomic potentials (MLIPs):
           neural networks trained on DFT computations that evaluate molecular energy and forces at approximately
@@ -1323,7 +1394,7 @@
           2024) are two recent examples. A curriculum loop using an MLIP oracle runs at millisecond latency per
           evaluation.</p>
 
-        <p>The operative failure mode for Phase 3 is distinct: curriculum engines push toward the edges of the current
+        <p>Phase 3's real failure mode is different: curriculum engines push toward the edges of the current
           model's capability distribution. In the molecular domain, that means the generator produces candidate
           structures in regions where the model currently fails, which are precisely the regions where MLIPs are least
           accurate, because MLIPs are trained on DFT data from chemically reasonable structures and extrapolate poorly
@@ -1448,6 +1519,18 @@
             exceeding this threshold against an evaluation problem is rejected and regenerated.</p>
         </div>
 
+        <div class="callout warn">
+          <div class="callout-title">MinHash 0.85 Threshold: Contamination Vulnerability</div>
+          <p>A 0.85 Jaccard similarity threshold is highly vulnerable to variable renaming, whitespace injection,
+            and rephrasing slop. MinHash LSH operates on token shingles, not abstract syntax structure or semantic
+            content, so any of these three perturbations, applied individually or in combination, can push a
+            genuinely contaminated pair below threshold while leaving the underlying algorithmic template, and the
+            memorization risk it carries, fully intact. No ablation study in this document establishes 0.85 as a
+            validated boundary for code-domain near-duplicate detection at any similarity level. As specified, the
+            threshold permits massive evaluation leaks into the curriculum, undermining the "clean evaluation
+            suite" claim this deduplication step exists to establish.</p>
+        </div>
+
         <p>The effect size prior underpinning the power calculation (specified in Section 4 as 2 to 5 pp) must be
           sourced from published curriculum fine-tuning results at comparable scale and compute, specifically CodeRL
           (Le et al., 2022), STaR (Zelikman, Wu, Mu, and Goodman, 2022), and Self-Play Fine-Tuning studies at 1 to 2B
@@ -1515,6 +1598,19 @@
           pattern by allocating inference compute to extended chain-of-thought and internal verification rather than a
           single greedy pass.</p>
 
+        <div class="callout warn">
+          <div class="callout-title">The 30 pp Figure Is an Unverified Assumption</div>
+          <p>The 30 pp pass@100 improvement figure above is asserted, not measured. No citation grounds it, and no
+            pass@100 run against the Section 8 benchmark composition, on Qwen 2.5 1.5B-Instruct specifically, is
+            reported anywhere in this document. The figure is carried over from test-time scaling literature on
+            larger models, not measured on the model and benchmark this comparison claims to analyze, and it does
+            not account for problem difficulty distribution. Every downstream conclusion in this section that
+            depends on the per-query FLOP-efficiency comparison, including the claim that pass@100 dominates
+            curriculum training in accuracy-per-FLOP terms at any finite $T$, is conditional on this unverified
+            figure and should be treated as provisional pending an empirical pass@100 measurement on Qwen 2.5
+            1.5B-Instruct.</p>
+        </div>
+
         <p>The correct cost-justification frame for VGCL is not efficiency, but capability frontier. For problem
           classes where $p_\text{base} = 0$, test-time compute delivers $P(\text{solve} \mid k \text{ samples}) = 1
           - (1 - p_\text{base})^k = 0$ for all $k$, regardless of sampling budget. Curriculum training can change
@@ -1529,11 +1625,35 @@
           corrected Phase 0 curriculum training budget. Any cost-justification argument for VGCL that does not
           account for this identification measurement is analytically incomplete.</p>
 
+        <div class="callout warn">
+          <div class="callout-title">Corrected Break-Even Volume: Omitted Oracle and Identification Cost</div>
+          <p>The $T^* = 68$ figure above counts only $6N$ training FLOPs against pure inference FLOPs. It omits
+            the identification measurement computed just above, itself a fixed cost paid once, prior to any
+            curriculum generation, to locate problem classes where $p_\text{base} &lt; 0.05$. Folding this cost
+            into the fixed-cost base and denoting the result $T^{**}$:</p>
+          <p>$$T^{**} = \frac{C_\text{train} + C_\text{ident}}{(k-1)\cdot C_\text{query}} =
+            \frac{8.1\times10^{15} + 2.4\times10^{17}}{99 \times 1.2\times10^{12}} \approx 2{,}088 \text{
+            queries}$$</p>
+          <p>This is a lower bound. It excludes at least three further cost sources absent from any FLOP
+            accounting in this document: the Stage 2 Strong Verifier's sandboxed-execution cost (Section 2, on
+            the order of $10^7$ isolated executions and approximately 272 hours of wall-clock time); the Claude
+            API generation cost for the curriculum problems themselves; and the mechanistic taxonomy discovery
+            pipeline (Section 7), which requires LogitLens-instrumented forward passes over 500 or more evaluation
+            problems followed by K-means clustering of the resulting trajectory matrices. None of these three
+            terms is converted to a common accounting unit anywhere in this document, so none can currently be
+            added to $C_\text{train}$ with numerical precision. What can be stated precisely is the scaling
+            relationship itself: for any additive hidden cost $\Delta C$ folded into the fixed-cost base,
+            $T^{**} = T^* \cdot (1 + \Delta C / C_\text{train})$. Because the identification measurement alone is
+            approximately 30&times; $C_\text{train}$, it alone raises $T^*$ on the order of thirty-fold; the
+            oracle and generator terms, once reconciled to a common unit, raise it further by an amount this
+            document does not currently quantify.</p>
+        </div>
+
         <div class="callout fix">
           <div class="callout-title">Decision Rule</div>
           <p>Deploy curriculum training when: (a) the target problem class has $p_\text{base} < 0.05$ under greedy and
-              sampling decoding; (b) the failure mode is learnable given the pre-training gravity radius at the chosen
-              model scale, verified by the LogitLens reasoning signature; and (c) expected query volume $T >
+              sampling decoding; (b) the failure mode is learnable given the representational stability radius at the
+              chosen model scale, verified by the LogitLens reasoning signature; and (c) expected query volume $T >
               341$ over the deployment lifetime (calibrated to the 1,000-problem training configuration under the
               corrected $6N$ FLOP accounting; for Phase 0 scale only, the threshold is $T > 68$). Any cost
               justification for curriculum training is analytically incomplete without explicitly computing $T^*$
