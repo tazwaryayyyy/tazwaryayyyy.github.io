@@ -241,7 +241,9 @@
     }
 
     /* reading column constraint */
-    .section, .abstract, .doc-header {
+    .section,
+    .abstract,
+    .doc-header {
       max-width: 820px;
     }
 
@@ -379,7 +381,9 @@
       scroll-margin-top: calc(var(--bar-h) + 1rem);
     }
 
-    .sec-eyebrow { display: none; }
+    .sec-eyebrow {
+      display: none;
+    }
 
     h2.sh {
       font-size: 1.18rem;
@@ -391,7 +395,9 @@
       letter-spacing: -0.015em;
     }
 
-    .sec-rule { display: none; }
+    .sec-rule {
+      display: none;
+    }
 
     h3.sub {
       font-size: 0.93rem;
@@ -848,7 +854,7 @@
     <span class="tb-logo">SI Framework</span>
     <div class="tb-divider"></div>
     <span class="tb-title">Wetware–Silicon Homeostatic Convergence</span>
-    <span class="tb-right">JUNE&nbsp;·&nbsp; 2026</span>
+    <span class="tb-right">JULY&nbsp;·&nbsp; 2026</span>
   </header>
 
   <div class="layout">
@@ -896,7 +902,19 @@
         <a href="#s8-1" class="sub"><span class="sn">8.1</span>Power Calculations &amp; Endpoint Correction</a>
         <a href="#s8-2" class="sub"><span class="sn">8.2</span>Koch Postulate Adaptation</a>
         <a href="#s8-3" class="sub"><span class="sn">8.3</span>Phase-Gated Execution Protocol</a>
-        <a href="#refs"><span class="sn">9.</span>References</a>
+        <a href="#s9"><span class="sn">9.</span>Independent Verification Audit</a>
+        <a href="#s9-1" class="sub"><span class="sn">9.1</span>Oxygen Budget Closure Failure</a>
+        <a href="#s9-2" class="sub"><span class="sn">9.2</span>Thermal &amp; Geometric Errors</a>
+        <a href="#s9-3" class="sub"><span class="sn">9.3</span>Graphene/SWCNT Contradiction</a>
+        <a href="#s9-4" class="sub"><span class="sn">9.4</span>Biocontainment Fallback Logic</a>
+        <a href="#s9-5" class="sub"><span class="sn">9.5</span>Audit-Layer Latency</a>
+        <a href="#s9-6" class="sub"><span class="sn">9.6</span>Optogenetic &amp; Indicator Kinetics</a>
+        <a href="#s9-7" class="sub"><span class="sn">9.7</span>State-Vector &amp; HRRL Gaps</a>
+        <a href="#s9-8" class="sub"><span class="sn">9.8</span>Scale &amp; Target Inconsistencies</a>
+        <a href="#s9-9" class="sub"><span class="sn">9.9</span>Synthesis Yield &amp; Timeline</a>
+        <a href="#s9-10" class="sub"><span class="sn">9.10</span>Claims Not Substantiated</a>
+        <a href="#s9-11" class="sub"><span class="sn">9.11</span>Net Assessment</a>
+        <a href="#refs"><span class="sn">10.</span>References</a>
       </div>
     </nav>
 
@@ -966,14 +984,17 @@
           through 24/7 automated millimeter-scale in-parallel synthesis (mMPS) platforms driven by engineered
           <em>Zonotrichia albicollis</em> Terminal Deoxynucleotidyl Transferase (ZaTdT) variants. Bioenergetic
           sustainability mandates a complete departure from glucose-based metabolism; synthetic electron-transport
-          chains coupled to perfluorocarbon-mediated oxygen delivery ($\alpha_{O_2} =
-          2.4\,\text{mL}\,O_2/\text{dL·atm}$, an 8-fold improvement over saline) provide the thermodynamic foundation,
-          while chilled microfluidic perfusion channels spaced at no greater than 6.4 mm prevent thermal runaway at
-          metabolic densities up to 200 W per liter of matrix.
+          chains coupled to perfluorocarbon-mediated oxygen delivery ($\alpha_{O_2} \approx
+          32\,\text{mL}\,O_2/\text{dL·atm}$ for an 80% v/v emulsion actively equilibrated to 1 atm pO$_2$, roughly
+          100-fold over saline at equivalent partial pressure) provide the thermodynamic foundation, at a perfusion
+          rate sized to the oxygen demand of 200 W/L metabolic operation rather than to heat removal alone, while
+          chilled microfluidic perfusion channels spaced at no greater than 5.6 mm prevent thermal runaway at that
+          same metabolic density plus peak illumination load.
         </p>
         <p>The bio-silicon interface abandons metallic electrode arrays in favor of extracellular graphene nanoelectrode
           scaffolds augmented by optogenetic-electrical hybrid coupling, delivering an aggregate Shannon channel
-          capacity exceeding 665 Mbps across $10^6$ parallel channels. A dual-layer epigenetic audit system separates
+          capacity of approximately 346 Mbps across $10^6$ parallel channels. A dual-layer epigenetic audit system
+          separates
           real-time computational tracing (electrochemical volatile registers at microsecond resolution) from durable
           causal logging (CcrM methyltransferase-driven synthetic audit chromosomes at minute-to-hour resolution).
           Ambient thermal noise at 310 K is exploited as a computational resource through stochastic resonance, with ion
@@ -1147,8 +1168,16 @@
           providing both greater encoding density and the capacity to assign all synthetic amino acid codons without
           collision with the canonical 20-amino acid set. All native tRNA codons are removed from the synthetic genome
           and replaced with tRNA variants charged exclusively with non-canonical amino acids (ncAAs) that native
-          terrestrial proteases cannot recognize or cleave, establishing a complete chemical barrier against
-          environmental enzymatic attack.<sup class="r"><a href="#ref-8">[8]</a></sup></p>
+          terrestrial proteases cannot recognize or cleave, providing a strong chemical barrier against environmental
+          enzymatic attack once the full six-letter, ncAA-dependent genome is running.<sup class="r"><a
+              href="#ref-8">[8]</a></sup>
+          This barrier is not "complete" in the absolute sense, and it does not apply during the mandatory
+          natural-base fallback period described in §2.4: published ncAA-auxotrophy containment designs have reduced
+          escape frequency to below laboratory detection limits with redundant safeguards, which is not the same as
+          proving zero escape, and simpler single-layer auxotrophic systems have measurably failed in other published
+          work. §7's risk table now carries a separate line for the fallback-period containment margin rather than
+          reporting a single "Very Low" figure that implicitly assumes the full XNA system is already
+          operational.</p>
 
         <h3 class="sub" id="s2-2"><span class="sub-num">2.2</span>Automated mMPS Synthesis Platform</h3>
         <p>Fabrication of the XNA substrate cannot depend on commercial reagent supply chains. The architecture mandates
@@ -1156,9 +1185,20 @@
           platform uses QR-coded, sortable microchips as physical synthesis supports, driving single-nucleotide
           enzymatic addition cycles via engineered variants of <em>Zonotrichia albicollis</em> Terminal Deoxynucleotidyl
           Transferase (ZaTdT). The ZaTdT catalytic cavity is remodeled to accommodate $3'\text{-ONH}_2$ reversible
-          terminator nucleotides, enabling precise single-base-addition cycling without template dependency:</p>
+          terminator nucleotides, enabling precise single-base-addition cycling without template dependency. This
+          single-nucleotide process synthesizes short fragments (target: 200–500 bases) directly on-chip; the
+          genome-scale product is assembled from these fragments hierarchically (enzymatic overlap-based ligation of
+          pre-verified blocks into progressively longer segments), the same strategy used in published genome-scale
+          synthesis projects, rather than by running the single-nucleotide addition cycle continuously across an
+          entire $10^6$-base genome. An earlier draft did not make this distinction, which matters because per-step
+          synthesis yields compound multiplicatively: even at a generous 98.7% per-step yield, 1,000 uninterrupted
+          single-nucleotide additions give a cumulative yield of $(0.987)^{1000}\approx2.1\times10^{-6}$, and a full
+          genome built the same way would compound to a yield indistinguishable from zero. Restricting continuous
+          single-nucleotide synthesis to short, independently quality-checked fragments, and moving to block-level
+          assembly beyond that length, is what makes the 98.7% figure below achievable at genome scale rather than
+          only at fragment scale:</p>
 
-        <pre class="term"><span class="dim">mMPS FLUIDIC SYNTHESIS PROCESS FLOW</span>
+        <pre class="term"><span class="dim">mMPS FLUIDIC SYNTHESIS PROCESS FLOW (PER FRAGMENT, 200–500 BASES)</span>
 
  <span class="hi">[ Barcoded mMPS Microchip Entry ]</span>
               |
@@ -1187,14 +1227,16 @@
  <span class="hi">[ Blocking Group Removal ]</span>
        |
        v
- <span class="hi">[ Targeted Genomic Edit ]</span></pre>
+ <span class="hi">[ Verified Fragment -&gt; Hierarchical Block Assembly ]</span></pre>
 
         <p>Phase gate thresholds for synthesis calibration require a stepwise printing yield of $\geq98.7\%$ across
-          1,000 consecutive cycles, and structural stability of the unnatural base pairs must exhibit $\geq99\%$
-          replication fidelity under mammalian DNA polymerase $\beta$ verification. Sequence deviations detected by the
-          real-time optical tracking system trigger an automated purge-and-reprint protocol: the compromised synthesis
-          chamber is flushed and enzymatic polymerization re-initiated from a verified checkpoint.<sup class="r"><a
-              href="#ref-14">[14,16]</a></sup></p>
+          1,000 consecutive cycles at the single-fragment scale above, not across the full genome length, and structural
+          stability of the unnatural base pairs must exhibit $\geq99\%$ replication fidelity under mammalian DNA
+          polymerase $\beta$ verification. Sequence deviations detected by the real-time optical tracking system
+          trigger an automated purge-and-reprint protocol: the compromised synthesis chamber is flushed and enzymatic
+          polymerization re-initiated from a verified checkpoint. The document does not specify a reprint-attempt
+          budget or an escape rate for failures the optical check misses; both remain open items for the Phase 1
+          calibration referenced above.<sup class="r"><a href="#ref-14">[14,16]</a></sup></p>
 
         <h3 class="sub" id="s2-3"><span class="sub-num">2.3</span>Non-Canonical Amino Acid Integration and Orthogonal
           Translation</h3>
@@ -1218,7 +1260,7 @@
           2014).<sup class="r"><a href="#ref-29">[29]</a></sup> Subsequent work by Feldman et al. (<em>Science</em>
           2017) demonstrated stable chromosomal propagation of dNaM:dTPT3 through multiple bacterial generations with
           near-complete retention, enabled by an evolved nucleotide transporter and engineered polymerase variants.<sup
-          class="r"><a href="#ref-32">[32]</a></sup> Modern polymerase and nucleotide transporter optimizations
+            class="r"><a href="#ref-32">[32]</a></sup> Modern polymerase and nucleotide transporter optimizations
           significantly surpass the 2014 error metrics. Nonetheless, the replication stability risks flagged in this
           section remain architecturally valid for genome-scale XNA implementation: the fidelity requirements at
           $10^6$ base pairs remain severe regardless of incremental improvements at the per-base level. The mutation
@@ -1292,42 +1334,77 @@
         </div>
         <p>Two hundred watts per liter represents a severe thermal challenge. The system must sustain bulk temperature
           within $\pm0.5\,^\circ\text{C}$ of the 37°C setpoint; deviations exceeding 2 K risk irreversible protein
-          denaturation and membrane integrity loss.<sup class="r"><a href="#ref-2">[2]</a></sup></p>
+          denaturation and membrane integrity loss.<sup class="r"><a href="#ref-2">[2]</a></sup> This 200 W figure is
+          metabolic heat only. Two other heat sources bear on the same 1-liter volume and are treated separately
+          rather than folded silently into $Q_{gen}^{max}$: the silicon control and logic layer is packaged outside
+          the wetware matrix, connected through the graphene electrode leads and fiber-optic illumination path, and
+          uses conventional forced-air or cold-plate cooling standard to server- and ASIC-class hardware, so it does
+          not add to the biological thermal budget below. The 450 nm prime-editing laser array (§4.3), however,
+          deposits its energy directly inside the same matrix volume it illuminates: at 10,000 points and 5 mW/cm²,
+          a 1 cm² footprint per point gives a peak optical input of ${\approx}50\,\text{W}$ during an editing pulse.
+          Because editing pulses are not necessarily synchronized to avoid periods of peak metabolic load, the
+          thermal design below budgets for the worst case of both occurring simultaneously,
+          $Q_{gen}^{worst}=200+50=250\,\text{W}$, rather than the metabolic figure alone.</p>
 
         <h3 class="sub" id="s3-2"><span class="sub-num">3.2</span>Bioheat Equation and Cooling Channel Geometry</h3>
-        <p>The governing equation for tissue thermal dynamics in the presence of perfusion cooling is the Pennes bioheat
-          equation:</p>
+        <p>Tissue thermal dynamics in the presence of perfusion cooling are conventionally written via the Pennes
+          bioheat equation:</p>
         <div class="eq">
           <span class="eq-tag">Eq. 3.4</span>
           $$\rho_t c_t \frac{\partial T}{\partial t} = \nabla\cdot(k_t\nabla T) + \omega_b\rho_b c_b(T_a - T) +
           Q_{met}$$
         </div>
         <p>Where tissue density $\rho_t\approx1050\,\text{kg/m}^3$, specific heat $c_t\approx3600\,\text{J/(kg·K)}$, and
-          thermal conductivity $k_t\approx0.5\,\text{W/(m·K)}$. The maximum allowable temperature rise without
-          perfusion, from the steady-state parabolic solution, is:</p>
+          thermal conductivity $k_t\approx0.5\,\text{W/(m·K)}$. Eq. 3.4's perfusion term $\omega_b\rho_b c_b(T_a-T)$
+          describes blood moving through the capillary bed it is warming, which is not the geometry here: this
+          architecture uses fabricated 300 µm channels carrying pumped PFC emulsion, a forced-convection heat
+          exchanger external to the tissue it cools, not a perfused capillary bed. The channel-spacing estimate below
+          therefore drops the perfusion term (sets $\omega_b=0$) and solves the resulting steady-state conduction
+          problem directly, rather than treating Eq. 3.4 as literally governing the system. The maximum allowable
+          temperature rise, from the steady-state parabolic solution to that reduced equation in planar geometry, is:
+        </p>
         <div class="eq">
           <span class="eq-tag">Eq. 3.5</span>
           $$\Delta T_{max} = \frac{q_{met}\cdot L^2}{2\,k_t}$$
         </div>
-        <p>Setting $\Delta T_{max}=2\,\text{K}$ (the cellular survival threshold) and
-          $q_{met}=2\times10^5\,\text{W/m}^3$ (10× metabolic intensity):</p>
+        <p>Setting $\Delta T_{max}=2\,\text{K}$ and $q_{met}=2.5\times10^5\,\text{W/m}^3$ (the combined worst-case
+          250 W/L from §3.1, not the 200 W/L metabolic figure alone):</p>
         <div class="eq">
           <span class="eq-tag">Eq. 3.6</span>
-          $$L = \sqrt{\frac{2\,k_t\,\Delta T_{max}}{q_{met}}} = \sqrt{\frac{2\times0.5\times2}{2\times10^5}} =
-          \sqrt{10^{-5}} \approx 3.2\,\text{mm}$$
+          $$L = \sqrt{\frac{2\,k_t\,\Delta T_{max}}{q_{met}}} = \sqrt{\frac{2\times0.5\times2}{2.5\times10^5}} =
+          \sqrt{8\times10^{-6}} \approx 2.8\,\text{mm}$$
         </div>
-        <p>Cooling microfluidic channels must therefore be spaced no greater than 6.4 mm center-to-center throughout the
-          entire matrix volume. This constraint imposes a fixed volumetric overhead of 15–20% for the vascular network
-          but is achievable with current soft lithography and sacrificial template microfabrication at 300 µm channel
-          diameter. The required volumetric flow rate of chilled buffer ($T_{in}=4\,^\circ\text{C}$,
-          $T_{out}\leq15\,^\circ\text{C}$) to sustain 200 W of heat removal is:<sup class="r"><a
-              href="#ref-3">[3,4]</a></sup></p>
+        <p>Cooling microfluidic channels must therefore be spaced no greater than 5.6 mm center-to-center throughout the
+          entire matrix volume. Treating each channel as a cylinder on a square grid, the resulting volumetric
+          overhead is $\pi r^2/s^2 = \pi(0.15\,\text{mm})^2/(5.6\,\text{mm})^2 \approx 0.23\%$ at 300 µm channel
+          diameter, well within the tolerance of current soft lithography and sacrificial template microfabrication.</p>
+        <p>Eq. 3.5 is itself a planar (1D slab) approximation applied to what is physically a 2D grid of cylindrical
+          channels, the same simplification implicit in treating $L$ as a half-thickness rather than solving the
+          conduction problem around a cylinder. Solving the correct cylindrical unit-cell problem, steady radial
+          conduction with uniform volumetric generation $q_{met}$ around a channel of radius $r_c$ held at the
+          coolant temperature, out to an adiabatic boundary at the equivalent cell radius $R$ (defined by
+          $\pi R^2=s^2$ for a square grid of pitch $s$):</p>
+        <div class="eq">
+          <span class="eq-tag">Eq. 3.6a</span>
+          $$\Delta T_{max} = \frac{q_{met}}{4k_t}\left[2R^2\ln(R/r_c) - (R^2-r_c^2)\right]$$
+        </div>
+        <p>gives $R\approx2.0\,\text{mm}$ ($s\approx3.5\,\text{mm}$) for $\Delta T_{max}=2\,\text{K}$ at
+          $q_{met}=2.5\times10^5\,\text{W/m}^3$, a meaningfully tighter spacing than the planar estimate above. The
+          5.6 mm figure used through the rest of this document is the more conservative-sounding but less accurate
+          of the two models; the 3.5 mm cylindrical figure is the one that should be used for an actual fabrication
+          target, pending independent verification of Eq. 3.6a against a numerical (finite-element) solution, which
+          this document does not substitute for. The volumetric flow rate of chilled buffer
+          ($T_{in}=4\,^\circ\text{C}$, $T_{out}\leq15\,^\circ\text{C}$) needed for 200 W of heat removal alone
+          is:<sup class="r"><a href="#ref-3">[3,4]</a></sup></p>
         <div class="eq">
           <span class="eq-tag">Eq. 3.7</span>
           $$\dot{V}_{buffer} = \frac{Q_{gen}}{\rho_b\,c_b\,(T_{out}-T_{in})} = \frac{200}{1050\times3600\times11}
           \approx 4.8\times10^{-6}\,\text{m}^3/\text{s} = 288\,\text{mL/min}$$
         </div>
-        <p>This flow rate falls within standard peristaltic pump capacities. Any sector exhibiting pH below 6.8 or above
+        <p>This is a lower bound on flow (and uses the 200 W metabolic figure specifically; the full 250 W worst case
+          scales it to ≈360 mL/min, still a lower bound), not the operating flow rate: §3.3 shows that oxygen
+          delivery at this same metabolic density requires substantially more flow than heat removal does, and the
+          higher of the two figures is what the system is actually run at. Any sector exhibiting pH below 6.8 or above
           7.6 triggers a localized forced flush at 3× nominal flow rate; localized cell death within the affected sector
           is explicitly accepted as the lesser cost compared to cascade acidification of adjacent sectors. Lactate
           production from residual glycolysis follows:</p>
@@ -1346,17 +1423,36 @@
           <span class="eq-tag">Eq. 3.9</span>
           $$[O_2]_{dissolved} = \alpha_{O_2}\cdot P_{O_2}$$
         </div>
-        <p>The oxygen solubility coefficient $\alpha_{O_2}$ for PFC emulsions is approximately
-          $2.4\,\text{mL}\,O_2/(\text{dL·atm})$, compared to $0.3\,\text{mL}/(\text{dL·atm})$ for physiological saline,
-          representing an 8-fold improvement in dissolved oxygen delivery capacity at equivalent partial pressures. At
-          atmospheric pO$_2$ (approximately 160 mmHg, or 0.21 atm), the PFC emulsion delivers approximately 0.3 to
-          2.4 mL O$_2$/dL depending on emulsion concentration, versus approximately 0.31 mL O$_2$/dL for physiological
-          saline under the same conditions. Values of 40 to 50 mL O$_2$/dL cited in some PFC literature apply
-          exclusively to neat liquid PFC phases equilibrated under extreme hyperbaric oxygen pressures of approximately
-          17 to 21 atmospheres; those conditions are not specified within this architecture and are not relevant to the
-          emulsion perfusion system described here. The combination of synthetic electron transport chains and
-          PFC-based oxygen delivery eliminates glucose as a metabolic dependency without sacrificing ATP
-          yield.<sup class="r"><a href="#ref-1">[1]</a></sup></p>
+        <p>Neat perfluorodecalin dissolves approximately 40 mL O$_2$ per 100 mL of PFC at 1 atm of oxygen partial
+          pressure,<sup class="r"><a href="#ref-34">[34]</a></sup> against $0.3\,\text{mL}/(\text{dL·atm})$ for
+          physiological saline. The architecture uses a concentrated (~80% v/v) PFC emulsion, giving
+          $\alpha_{O_2}\approx32\,\text{mL}\,O_2/(\text{dL·atm})$, and equilibrates it to 1 atm pO$_2$ in an inline
+          extracorporeal-style oxygenator loop rather than relying on passive exposure to atmospheric air: at
+          atmospheric pO$_2$ (0.21 atm) the same emulsion would deliver only ${\approx}6.7\,\text{mL O}_2/\text{dL}$,
+          which is not enough to close the budget below. Under active 1 atm equilibration, delivered concentration is
+          $[O_2]_{dissolved}=\alpha_{O_2}\cdot P_{O_2}\approx32\,\text{mL/dL}=320\,\text{mL/L}$.</p>
+        <p>At 200 W of metabolic intensity (Eq. 3.3), oxygen consumption follows the standard caloric equivalent of
+          O$_2$ (${\approx}20.1\,\text{kJ/L}$):</p>
+        <div class="eq">
+          <span class="eq-tag">Eq. 3.10</span>
+          $$\dot{V}_{O_2} = \frac{Q_{gen}^{max}}{20.1\,\text{kJ/L}} = \frac{200\,\text{J/s}}{20{,}100\,\text{J/L}}
+          \approx9.95\times10^{-3}\,\text{L/s} \approx600\,\text{mL/min}$$
+        </div>
+        <p>This, not heat removal, is the binding constraint on perfusion flow rate:</p>
+        <div class="eq">
+          <span class="eq-tag">Eq. 3.11</span>
+          $$\dot{V}_{buffer}^{O_2} = \frac{\dot{V}_{O_2}}{[O_2]_{dissolved}} = \frac{600\,\text{mL/min}}{320\,
+          \text{mL/L}} \approx1.9\,\text{L/min}$$
+        </div>
+        <p>which is roughly 6.5× the 288 mL/min derived from heat removal alone (Eq. 3.7). Run back through Eq. 3.7's
+          heat balance, 1.9 L/min carries 200 W of metabolic heat to a coolant $\Delta T$ of approximately 1.7°C,
+          comfortably inside the 2 K bound from Eq. 3.5–3.6: a higher flow rate only improves thermal margin, so
+          sizing the system to the oxygen requirement does not reopen the thermal question. The residence time this
+          implies for a 1-liter matrix, approximately 30 seconds, and its shear-stress tolerance within 300 µm
+          channels, are fluid-dynamics questions the Phase 2 validation protocol (§8.3) should test directly; the
+          arithmetic here closes the oxygen budget, not the channel fluid mechanics. The combination of synthetic
+          electron transport chains and PFC-based oxygen delivery at this flow rate eliminates glucose as a metabolic
+          dependency without sacrificing ATP yield.<sup class="r"><a href="#ref-1">[1]</a></sup></p>
 
         <h3 class="sub" id="s3-4"><span class="sub-num">3.4</span>Synthetic Electron Transport Chains and EET
           Cytochromes</h3>
@@ -1373,10 +1469,16 @@
 
         <div class="callout ok">
           <div class="callout-tag">Thermodynamic Feasibility Assessment</div>
-          At 200 W heat load, 288 mL/min chilled perfluorocarbon perfusion with channels spaced at 6.4 mm satisfies the
-          2 K thermal bound. The 8× oxygen delivery improvement from PFC over saline sustains the synthetic EET pathways
-          without glucose dependency. These values are within achievable engineering parameters using current
-          microfabrication technology.
+          At 200 W metabolic intensity, the binding perfusion constraint is oxygen delivery (≈600 mL O$_2$/min
+          required, Eq. 3.10), not heat removal. A 1.9 L/min flow of an 80% v/v PFC emulsion, actively oxygenated to
+          1 atm pO$_2$, closes that budget (Eq. 3.11) and holds coolant ΔT to ≈1.7°C, inside the 2 K bound set by
+          channel geometry at 5.6 mm spacing (≈0.23% volumetric overhead), sized to the combined 250 W worst case of
+          metabolic heat plus peak illumination load (§3.1). The silicon control layer is external to this budget by
+          design (§3.1) and does not need to be added. These figures close the bioenergetic and thermal arithmetic
+          under the planar channel-spacing model; §3.2 also shows that the more accurate cylindrical model tightens
+          the spacing further, to ≈3.5 mm, which this document flags as the number to actually fabricate to rather
+          than 5.6 mm. Residence time and shear stress through 300 µm channels at 1.9 L/min still require experimental
+          validation.
         </div>
       </section>
 
@@ -1406,9 +1508,12 @@
 
         <div class="callout warn">
           <div class="callout-tag">Confirmed Speed Mismatch - Architectural Resolution Required</div>
-          Methylation write rate: 1–10 sites/second/enzyme. Required audit rate: $\geq10^6$ events/second across the
-          matrix. The gap spans six orders of magnitude. Methylation is suitable for durable macro-state logging only,
-          not per-computation tracing.
+          Methylation catalytic capacity: 1–10 sites/second/enzyme, once an active CcrM-fusion enzyme is already
+          present at a locus. This is a throughput ceiling, not the latency of any single write event: the actual
+          time from a computational event to its methylation mark being written is set by the upstream signaling
+          cascade (§4.3), not by this catalytic rate, and runs to minutes, not milliseconds. Required audit rate:
+          $\geq10^6$ events/second across the matrix, six orders of magnitude beyond either number. Methylation is
+          suitable for durable macro-state logging only, not per-computation tracing.
         </div>
 
         <h3 class="sub" id="s4-2"><span class="sub-num">4.2</span>Dual-Layer Audit Architecture</h3>
@@ -1435,15 +1540,28 @@
         <p>Neural activation potential at cell membrane → calcium transient (via voltage-gated Ca²⁺ channels) →
           calcium-sensitive promoter activation (NFAT response element) → CcrM-fusion protein expression → adenine
           methylation at N6 position of defined GANTC motifs on the audit chromosome.</p>
+        <p>The rate-limiting step in this chain is transcribing and translating a new copy of the CcrM-fusion protein
+          in response to each activation event, not CcrM's own catalytic turnover. For NFAT-responsive promoters,
+          this step characteristically takes on the order of tens of minutes, consistent with the "minute-to-hour
+          resolution" already stated for Layer 2 in §4.2; a Layer 2 entry should be read as reflecting the state of
+          its sector as of tens of minutes before it appears, not as of the triggering event itself. Because the
+          Section 4.4 purge protocol can flush a sector within 60 seconds of a detected audit-concordance failure,
+          faster than a single write cascade completes, a sector purged mid-cascade has no completed Layer 2 record
+          of the activity that triggered the purge; Layer 1's microsecond electrochemical register is the
+          authoritative record for that specific gap; it is retained past the purge specifically to cover this case,
+          rather than being treated as redundant with Layer 2.</p>
         <p>The density of methylation marks across consecutive CpG and GANTC islands represents a sliding-scale analog
           record of computational activity within that processing sector. Methylation writing fidelity must maintain
           $\geq99.5\%$ accuracy across simulated logical operations. The light-activated prime-editing machinery
           integrated into the synthetic chromosome operates through the EL222 blue-light-responsive promoter system. A
           450 nm laser pulse of 10 ms duration at $5\,\text{mW/cm}^2$ triggers simultaneous prime editor (PEmax or PE5
           configuration; Chen et al., 2022, incorporating co-expressed engineered MLH1dn architecture to suppress
-          endogenous mismatch repair and optimize editing efficiency) expression across all illuminated sectors, with the
-          editing window extending 2 to 4 hours post-pulse. For a 1 m$^3$ processing volume, synchronous illumination
-          within a 100 ms window requires a fiber-coupled laser array with 10,000 distributed output points. Sectors
+          endogenous mismatch repair and optimize editing efficiency) expression across all illuminated sectors, with
+          the
+          editing window extending 2 to 4 hours post-pulse. For the 1-liter processing volume used throughout this
+          architecture, synchronous illumination within a 100 ms window requires a fiber-coupled laser array with
+          10,000 distributed output points, giving a mean inter-point spacing of approximately 4.6 mm, comparable to
+          the 5.6 mm cooling-channel pitch from §3.2. Sectors
           achieving less than 95% editing efficiency are flagged for re-illumination at the next scheduled update
           cycle.<sup class="r"><a href="#ref-9">[9,10,11]</a></sup></p>
         <p>The selection of neural activation opsin for the bio-silicon interface requires explicit resolution of
@@ -1451,20 +1569,42 @@
           centered near 470 to 480 nm and substantial absorption extending through 450 nm, creates a fatal
           cross-activation conflict: each prime-editing pulse would simultaneously trigger uncontrolled, widespread
           neural stimulation across all illuminated sectors during every editing cycle. This incompatibility is resolved
-          by deploying ChRmine (Kim et al., <em>Science</em> 2021)<sup class="r"><a
-          href="#ref-33">[33]</a></sup> as the excitatory opsin for all neural activation functions. ChRmine possesses
+          by deploying ChRmine (Marshel et al., <em>Science</em> 2019)<sup class="r"><a href="#ref-33">[33]</a></sup> as
+          the excitatory opsin for all neural activation functions. ChRmine possesses
           a red-shifted peak sensitivity near 590 nm and a 10-fold higher photocurrent than canonical
-          channelrhodopsins, providing complete spectral separation from the EL222 activation wavelength. No
-          cross-activation occurs between ChRmine-expressing sectors and the 450 nm editing pulse; the two optical
-          control channels operate in fully orthogonal spectral windows.</p>
+          channelrhodopsins, providing wide spectral separation (≈140 nm) from the EL222 activation wavelength, and
+          cross-activation of ChRmine by 450 nm pulses is targeted to remain below 5% of peak photocurrent, to be
+          confirmed by direct measurement (§7).</p>
+        <p>The inhibitory opsin faces the same requirement with respect to ChRmine itself, not just EL222. eNpHR3.0
+          has a reported excitation peak near 590 nm,<sup class="r"><a href="#ref-36">[36]</a></sup> essentially
+          coincident with ChRmine's own peak; pairing the two would reintroduce, between the architecture's own
+          excitatory and inhibitory channels, the same cross-activation problem just resolved for EL222. The
+          architecture instead uses Jaws, a red-shifted chloride pump (Chuong et al., 2014)<sup class="r"><a
+              href="#ref-38">[38]</a></sup> with an action spectrum usable from approximately 600 to 635 nm; driven at
+          the
+          red end of that range, Jaws sits roughly 40–45 nm from ChRmine's 590 nm peak, a narrower margin than the
+          ChRmine/EL222 separation above but a substantial improvement over eNpHR3.0's near-total overlap. Jaws
+          shares the rebound-spiking behavior common to hyperpolarizing opsins after light offset, and its
+          performance under sustained, continuous high-frequency cycling has not been characterized to the same
+          degree as its acute inhibition; both are Phase 2 validation items (§8.3) independent of the spectral fix
+          made here.</p>
 
         <h3 class="sub" id="s4-4"><span class="sub-num">4.4</span>SWCNT Optical Readout and Sector Purge Protocol</h3>
-        <p>Non-destructive real-time readout of the methylation audit state is achieved through the photoluminescent
-          properties of the extracellular SWCNT scaffold. The near-infrared first Van Hove transition ($E_{11}$)
-          photoluminescence of the SWCNTs shifts in wavelength in response to localized membrane electrostatic potential
-          changes and ion concentration gradients. Silicon photodetector arrays, calibrated to the emission wavelength
-          shift characteristics of the specific SWCNT chirality used ($n=m$ armchair configuration for metallic
-          character), record the optical signal and translate it into sector-resolved activity maps.</p>
+        <p>Non-destructive real-time readout of the methylation audit state is achieved through a co-embedded
+          population of semiconducting single-walled carbon nanotubes (SWCNTs) distributed within the extracellular
+          graphene scaffold: graphene remains the electrical contact for EET (§3.4) and bulk bio-silicon signaling
+          (§1.3), while the SWCNT population supplies the optical readout channel graphene itself cannot provide. The
+          near-infrared first Van Hove transition ($E_{11}$) photoluminescence of these SWCNTs shifts in wavelength in
+          response to localized membrane electrostatic potential changes and ion concentration gradients. This
+          requires semiconducting chirality ($n-m$ not a multiple of 3); it is not compatible with the armchair
+          ($n=m$) or other metallic chiralities used for graphene's own electrical contacts elsewhere in the scaffold,
+          since metallic nanotubes do not photoluminesce. The optical-readout SWCNTs and the electrical-contact
+          graphene are therefore distinct materials doing distinct jobs within the same scaffold, not one tube type
+          serving both functions. Silicon photodetector arrays, calibrated to the emission wavelength shift
+          characteristics of the specific SWCNT chirality used, record the optical signal and translate it into
+          sector-resolved activity maps. Protein corona formation on the SWCNT population in physiological fluid is a
+          known quenching risk for this readout channel and remains an open validation item alongside general
+          cytotoxicity screening for both carbon nanomaterials at the densities specified here.</p>
         <p>When a sector fails its audit concordance check, Layer 2 methylation pattern does not match expected Layer 1
           electrochemical record within the defined tolerance, the automated purge-and-reprint protocol activates. The
           sector is flushed with 0.1 M NaOH-buffered microfluidic solution to lyse and clear the compromised cell
@@ -1540,14 +1680,27 @@
           <span class="eq-tag">Eq. 5.5</span>
           $$\sigma_{\hat{E}} \sim \frac{\sigma_f}{\sqrt{N}}$$
         </div>
-        <p>With $N=10^6$ parallel processing units, the estimator standard error is
-          $\sigma_{\hat{E}}\sim10^{-3}\sigma_f$, which is sufficient for high-fidelity probabilistic inference across
-          the full range of tasks the system is required to perform. The silicon layer performs aggregation, variance
-          estimation, and confidence interval computation. The biological substrate supplies the independently drawn
-          samples. This architecture achieves BPP (Bounded-error Probabilistic Polynomial-time) computational
-          complexity: the class of problems solvable in polynomial time by a probabilistic Turing machine with a
-          bounded error probability, enabling universal function approximation and non-linear optimization tasks that
-          are intractable for standard deterministic digital architectures of comparable size.</p>
+        <p>With $N=10^6$ parallel processing units drawing fully independent samples, the estimator standard error
+          would be $\sigma_{\hat{E}}\sim10^{-3}\sigma_f$, sufficient for high-fidelity probabilistic inference across
+          the range of tasks the system is required to perform. The silicon layer performs aggregation, variance
+          estimation, and confidence interval computation. This is ordinary Monte Carlo variance reduction with a
+          standard concentration-of-measure error bound (Hoeffding or Chebyshev), not membership in a formal
+          computational complexity class: no Turing-machine model or polynomial-time bound on an algorithm is being
+          established, so this section does not claim BPP-class complexity, only that noise-averaging across $N$
+          samplers gives a controllable, quantifiable estimation error.</p>
+        <p>That error bound assumes the $x_i$ are independent, which requires qualification given the rest of this
+          architecture. Phase 2 (§8.3) engineers dense synaptic and gap-junction (connexin-43) coupling between
+          processing units for tissue viability; gap junctions provide direct electrical coupling, which correlates
+          neighboring units' thermal-noise realizations rather than leaving them independent. For an intraclass
+          correlation $\rho$ among coupled units, the effective sample size is:</p>
+        <div class="eq">
+          <span class="eq-tag">Eq. 5.6</span>
+          $$N_{eff} = \frac{N}{1+(N-1)\rho}, \qquad \sigma_{\hat{E}} \sim \frac{\sigma_f}{\sqrt{N_{eff}}}$$
+        </div>
+        <p>rather than $\sigma_f/\sqrt{N}$. Even a small $\rho$ can suppress $N_{eff}$ well below $N=10^6$ once
+          coupling is dense, so measuring $\rho$ for the connectivity actually realized in Phase 2, and confirming
+          $N_{eff}$ still supports the $\geq1.5\times$ SNR amplification gate below, is a required validation step,
+          not an assumption available in advance.</p>
         <p>Calibrated low-level physical noise is introduced to the substrate, and amplification of weak input signals
           via stochastic resonance is verified against the phase gate threshold: subthreshold signal detection must
           improve by $\geq50\%$ when optimal noise is applied, and the SNR amplification factor must be $\geq1.5\times$
@@ -1577,11 +1730,14 @@
           {[Lac]}_1(t),\ldots,{[Lac]}_M(t) \\ T_1(t),\ldots,T_M(t) \\ \rho_{syn,1}(t),\ldots,\rho_{syn,M}(t) \\
           V_m^{avg}(t),\;\sigma_V(t) \\ M_{audit}(t) \end{bmatrix}$$
         </div>
-        <p>The corresponding software agent state vector $\mathbf{s}(t)$ is six-dimensional:</p>
+        <p>The corresponding software agent state vector $\mathbf{s}(t)$ is six-dimensional. Its sixth component,
+          $s_{task}$, is a scalar (normalized current-task completion progress, $0$ to $1$), not a sub-vector; it is
+          written unbolded below to avoid the notational collision with this document's vector quantities (e.g.
+          $\mathbf{x}_{wet}$, $\vec{\mathcal{B}}$) that an earlier draft left ambiguous:</p>
         <div class="eq">
           <span class="eq-tag">Eq. 6.2</span>
           $$\mathbf{s}(t) = \begin{bmatrix} s_{health} \\ s_{energy} \\ s_{load} \\ s_{integrity} \\ s_{cognitive\_load}
-          \\ \mathbf{s}_{task} \end{bmatrix}$$
+          \\ s_{task} \end{bmatrix}$$
         </div>
         <p>At the highest level, the physical biological state space
           $\vec{\mathcal{B}}(t)=[M(t),\,S_d(t),\,\tau_s(t)]^T$ encoding localized metabolic consumption rate (from the
@@ -1647,25 +1803,55 @@
           <span class="eq-tag">Eq. 6.11</span>
           $$\frac{ds_{cognitive\_load}}{dt} = \alpha_C\cdot u_{task} - \beta_C\cdot s_{cognitive\_load} + \xi_C(t)$$
         </div>
-        <p>These equations are numerically integrated in silicon at a state update rate of 100 Hz, sampling the wetware
-          sensor array graphene electrode impedance measurements, optical calcium indicator fluorescence from jGCaMP8f
-          ($\tau_{off}\approx44\,\text{ms}$, functional bandwidth near 23 Hz; rigorous analytical deconvolution is
-          required to resolve individual events at the 100 Hz operational target),
-          perfusate pH and lactate sensors at 1 kHz.</p>
+        <p>None of the rate coefficients above ($\alpha_E,\beta_E,\gamma_E,\alpha_H,\beta_H,\gamma_H,\alpha_C,\beta_C$),
+          nor the weights $w_1$–$w_5$ in Eq. 6.15–6.16, nor $\gamma_{survival}$, $\gamma_{exploration}$, $\eta$,
+          $\tau_{survival}$, or $\tau_{maintenance}$ in Eq. 6.18–6.21, carry assigned units or numerical values here.
+          Eq. 6.8–6.21 are a functional form, not yet a calibrated model: they specify the shape of the dynamics and
+          the gating logic, and fitting the coefficients to real sensor and actuator data is explicitly a Phase 1–2
+          deliverable (§8.3), not something this document claims to have already done. Any performance figure derived
+          from this framework elsewhere in the document should be read as a target consistent with the functional
+          form, not as a demonstrated result of these specific equations.</p>
+        <p>These equations are numerically integrated in silicon at a state update rate of 100 Hz. The
+          microsecond-resolution channel that actually supports this rate is the graphene electrode impedance array,
+          the same Layer 1 electrochemical registers described in §4.2; perfusate pH and lactate sensors at 1 kHz
+          are comparably fast. Optical calcium indicator fluorescence from jGCaMP8f
+          ($\tau_{off}\approx44\,\text{ms}$, functional bandwidth near 23 Hz) is not a channel capable of resolving
+          individual 100 Hz-rate events, deconvolution cannot recover information above the Nyquist limit set by an
+          indicator's own decay kinetics without strong, independently validated priors, and none are supplied here.
+          jGCaMP8f is used instead as a lower-bandwidth, population-level cross-check on the electrode-derived state
+          estimate, updated at its own native rate rather than upsampled to 100 Hz, and any disagreement between the
+          two channels beyond expected noise is itself a diagnostic signal rather than something deconvolution is
+          expected to paper over.</p>
 
         <h3 class="sub" id="s6-4"><span class="sub-num">6.4</span>Drive Arbitration Matrix and HRRL Framework</h3>
         <p>The software agent operates under Homeostatic Regulated Reinforcement Learning (HRRL) in continuous
-          time-continuous space. The multi-dimensional homeostatic drive deviation is measured as an $L_p$ metric:</p>
+          time-continuous space. The multi-dimensional homeostatic drive deviation is measured as an $L_p$ metric,
+          written $\Delta(\vec{H}_t)$ rather than $D(\vec{H}_t)$ to keep it visually and notationally distinct from
+          the drive vector $\mathbf{D}(t)$ introduced in Eq. 6.14 below, which is a different object: $\Delta$ is a
+          scalar deviation magnitude, $\mathbf{D}$ is a 4-component decomposition. An earlier draft used $D$ for
+          both, which made it impossible to tell from Eq. 6.18 or 6.20 alone which one was meant:</p>
         <div class="eq">
           <span class="eq-tag">Eq. 6.12</span>
-          $$D(\vec{H}_t) = \left(\sum_{i=1}^{3}\left|h_i^* - h_{i,t}\right|^n\right)^{1/m}$$
+          $$\Delta(\vec{H}_t) = \left(\sum_{i=1}^{3}\left|h_i^* - h_{i,t}\right|^p\right)^{1/p}$$
         </div>
-        <p>The primary reward signal delivered to the RL system upon action $\vec{a}_t$ is the immediate reduction in
+        <p>(a standard $L_p$ norm with a single exponent $p$; an earlier draft used two unrelated exponents for the
+          inner sum and outer root, which does not correspond to any standard norm and has been corrected here).
+          The primary reward signal delivered to the RL system upon action $\vec{a}_t$ is the immediate reduction in
           homeostatic drive:</p>
         <div class="eq">
           <span class="eq-tag">Eq. 6.13</span>
-          $$R(t) = D(\vec{H}_t) - D(\vec{H}_{t+\Delta t})$$
+          $$R(t) = \Delta(\vec{H}_t) - \Delta(\vec{H}_{t+\Delta t})$$
         </div>
+        <p>$\vec{H}(t)$ and $\Delta(\vec{H}_t)$ carry the smooth, continuous side of the homeostatic signal:
+          $\vec{H}(t)$
+          (Eq. 6.3) is driven directly by the physical biological state $\vec{\mathcal{B}}(t)$, and $\Delta(\vec{H}_t)$
+          is the single scalar built from it that feeds the reward (Eq. 6.13) and the continuous arbitration scaling
+          below (Eq. 6.18–6.19). The drive vector $\mathbf{D}(t)$ introduced next is a separate, purpose-built
+          decomposition of the software state $\mathbf{s}(t)$ into four named, individually-thresholdable components,
+          used specifically for the hard gate (Eq. 6.20–6.21), which needs discrete, checkable conditions rather than
+          a single blended scalar. The two are not meant to be the same quantity: $\vec{H}(t)$ answers "how far from
+          setpoint, overall," while $\mathbf{D}(t)$ answers "which specific concern, if any, has crossed its own
+          line."</p>
         <p>The drive vector is decomposed into four competing components:</p>
         <div class="eq">
           <span class="eq-tag">Eq. 6.14</span>
@@ -1692,15 +1878,16 @@
           policies in opposition:</p>
         <div class="eq">
           <span class="eq-tag">Eq. 6.18</span>
-          $$A_{survival}(\vec{H}_t) = \gamma_{survival}\cdot D(\vec{H}_t)$$
+          $$A_{survival}(\vec{H}_t) = \gamma_{survival}\cdot \Delta(\vec{H}_t)$$
         </div>
         <div class="eq">
           <span class="eq-tag">Eq. 6.19</span>
-          $$A_{exploration}(\vec{H}_t) = \gamma_{exploration}\cdot e^{-\eta\,D(\vec{H}_t)}$$
+          $$A_{exploration}(\vec{H}_t) = \gamma_{exploration}\cdot e^{-\eta\,\Delta(\vec{H}_t)}$$
         </div>
-        <p>As homeostatic deviation $D\to\infty$, $A_{survival}\to\infty$ and $A_{exploration}\to0$, guaranteeing that
-          survival policies dominate under resource stress. A hard threshold enforcement layer reinforces this guarantee
-          via the Heaviside step function:</p>
+        <p>As homeostatic deviation $\Delta\to\infty$, $A_{survival}\to\infty$ and $A_{exploration}\to0$, guaranteeing
+          that survival policies dominate under resource stress. A hard threshold enforcement layer reinforces this
+          guarantee via the Heaviside step function, now applied to the drive vector $\mathbf{D}(t)$ rather than to
+          $\Delta$, since the gate needs to isolate survival-specific stress from the blended scalar:</p>
         <div class="eq">
           <span class="eq-tag">Eq. 6.20</span>
           $$a_{task}(t) \leftarrow a_{task}(t)\cdot\Theta\!\left(\tau_{survival} - D_{survival}(t)\right)$$
@@ -1711,11 +1898,13 @@
           a_{curiosity}(t)\cdot\Theta\!\left(\tau_{survival}-D_{survival}(t)\right)\cdot\Theta\!\left(\tau_{maintenance}-D_{maintenance}(t)\right)$$
         </div>
         <p>When $D_{survival}(t)$ exceeds $\tau_{survival}$, the Heaviside function collapses to zero, zeroing all
-          non-survival action components in a single algebraic step without relying on learned policy convergence. The
-          hard survival gate is empirically validated by inducing controlled thermal stress: the system must redirect
-          all resources to cooling within 1 second of detecting $T>39\,^\circ\text{C}$ in any sector. Nutrient
-          allocation across the symbiotic cellular ecosystem is mediated by a competitive fitness-proportional
-          distribution:</p>
+          non-survival action components in a single algebraic step without relying on learned policy convergence.
+          The hard survival gate is designed to be validated empirically by inducing controlled thermal stress, with
+          a target (not yet demonstrated by any actuator latency, valve dead-volume, or sensor-response measurement
+          in this document) of redirecting all resources to cooling within 1 second of detecting
+          $T>39\,^\circ\text{C}$ in any sector; achieving that target is a Phase 1–2 validation item, not an
+          established property of the design as written. Nutrient allocation across the symbiotic cellular ecosystem
+          is mediated by a competitive fitness-proportional distribution:</p>
         <div class="eq">
           <span class="eq-tag">Eq. 6.22</span>
           $$N_i(t) = N_{total}\cdot\frac{F_i(t)^\alpha}{\sum_j F_j(t)^\alpha}$$
@@ -1799,11 +1988,16 @@
                 <td><strong>Thermal runaway in wetware matrix at peak metabolic intensity</strong></td>
                 <td><span class="prob h">High</span></td>
                 <td><span class="sev cat">Catastrophic</span></td>
-                <td>Microfluidic cooling channels spaced $\leq6.4\,\text{mm}$; primary perfusion at 288 mL/min;
-                  pH-guarded forced flush (3× flow) at pH $<$ 6.8 or pH $>$ 7.6; PFC emulsion with 8× saline oxygen
-                    capacity</td>
-                <td>$\Delta T<2\,\text{K}$ across entire matrix at 10× baseline metabolic rate; local pH deviation
-                    $<0.05$ under steady state</td>
+                <td>Microfluidic cooling channels spaced $\leq5.6\,\text{mm}$ (${\approx}0.23\%$ volumetric overhead
+                  under the planar model; ${\approx}3.5\,\text{mm}$ under the more accurate cylindrical model, §3.2)
+                  sized to the combined 250 W worst case (200 W metabolic + 50 W peak illumination); primary
+                  perfusion at 1.9 L/min, sized to the oxygen requirement rather than heat removal alone
+                  (${\geq}360\,\text{mL/min}$ would satisfy heat removal by itself at 250 W); pH-guarded forced
+                  flush (3× flow) at pH $<$ 6.8 or pH $>$ 7.6; 80% v/v PFC emulsion, actively oxygenated to 1 atm
+                    pO$_2$, giving ${\approx}100\times$ saline's oxygen capacity at equivalent partial pressure</td>
+                <td>$\Delta T<2\,\text{K}$ across entire matrix at 10× baseline metabolic rate plus peak illumination
+                    load (${\approx}1.7\,\text{K}$ achieved at 1.9 L/min); local pH deviation $<0.05$ under steady
+                    state; oxygen delivery $\geq600\,\text{mL/min}$ at 200 W/L</td>
               </tr>
               <tr>
                 <td><strong>Quantum-ballistic transport through intracellular CNTs infeasible at 310 K</strong></td>
@@ -1811,12 +2005,16 @@
                 <td><span class="sev sev">Severe</span></td>
                 <td>Architecture replaced by extracellular graphene nanoelectrode scaffolds (5 µm diameter, $10^4$/mm²);
                   ChRmine (peak 590 nm, 10-fold photocurrent, spectrally orthogonal to 450 nm EL222 editing system,
-                  resolving cross-activation conflict) / eNpHR3.0 (sustained high-frequency hyperpolarization at 100 Hz)
-                  optogenetic interface; jGCaMP8f calcium indicator readout ($\tau_{off}\approx44\,\text{ms}$);
-                  membrane-bound EET cytochrome variants</td>
+                  resolving cross-activation conflict) / Jaws (600–635 nm activation range, spectrally resolved from
+                  ChRmine's 590 nm peak, sustained high-frequency hyperpolarization target of 100 Hz still requiring
+                  validation) optogenetic interface; jGCaMP8f calcium indicator ($\tau_{off}\approx44\,\text{ms}$,
+                  ≈23 Hz functional bandwidth) as a secondary, population-level cross-check, not the primary
+                  100 Hz readout, which is the electrode impedance channel; membrane-bound EET cytochrome
+                  variants</td>
                 <td>Interface impedance $Z<100\,\text{k}\Omega$ at 1 kHz; $\lambda_{mfp}\approx20\,\text{nm}$ at 310 K
-                    establishes absolute upper bound; ChRmine 590 nm peak provides full spectral separation from 450 nm
-                    editing pulses</td>
+                    establishes absolute upper bound (a thermal coherence length; see §9.10 for the corrected term);
+                    ChRmine 590 nm peak provides full spectral separation from 450 nm editing pulses; Jaws provides
+                    partial (${\approx}40\,\text{nm}$) separation from ChRmine</td>
               </tr>
               <tr>
                 <td><strong>Bio-silicon interface signal degradation over chronic operation</strong></td>
@@ -1825,8 +2023,9 @@
                 <td>30-day chronic recording validated at $<5\%$ electrode failure; weekly impedance monitoring with
                     automated electrode remapping; optogenetic backup channel for any electrode with $Z>
                     150\,\text{k}\Omega$</td>
-                <td>Aggregate Shannon capacity $C>665\,\text{Mbps}$ maintained; SNR $\geq10$ across all active channels
-                </td>
+                <td>Aggregate Shannon capacity $C\approx346\,\text{Mbps}$ maintained ($10^6$ channels at
+                  ${\approx}100\,\text{Hz}$ bandwidth, SNR $\geq10$); Phase 3 gate (§8.3) requires clearing
+                  $100\,\text{Mbps}$, giving margin against this design point</td>
               </tr>
               <tr>
                 <td><strong>Viral or bacterial fouling of the wetware matrix</strong></td>
@@ -1836,7 +2035,7 @@
                   by native proteases; BSL-2+ physical containment with HEPA filtration and 0.3 µm ambient particle
                   control</td>
                 <td>16S rRNA contamination screening Ct $>35$ on all batches; XNA-specific PCR verification per run;
-                  batch failure target $<2\%$</td>
+                  batch failure target $<2\%$< /td>
               </tr>
               <tr>
                 <td><strong>Hyper-accelerated clonal expansion causing genomic destabilization</strong></td>
@@ -1865,13 +2064,13 @@
                 <td><span class="sev sev">Severe</span></td>
                 <td>Whole-genome sequencing post-edit at 6 hours; Bonferroni-corrected off-target analysis; dual-guide
                   verification (nicking sgRNA + pegRNA); sectors with $<95\%$ editing efficiency flagged for
-                    re-illumination; RNA-seq pleiotropic damage screen; optogenetic cross-activation conflict with 450 nm
-                    EL222 pulses resolved by transition to ChRmine (590 nm peak) as the neural activation opsin,
+                    re-illumination; RNA-seq pleiotropic damage screen; optogenetic cross-activation conflict with 450
+                    nm EL222 pulses resolved by transition to ChRmine (590 nm peak) as the neural activation opsin,
                     providing full spectral orthogonality</td>
                 <td>450 nm laser: 10 ms pulse, 5 mW/cm²; all sectors illuminated within 100 ms; editing efficiency
                   $\geq95\%$ confirmed at 6-hr sequencing; $|\log_2 FC|>2$, $q<0.01$ flags immediate review; ChRmine
-                  spectral separation confirmed by photocurrent measurement at 450 nm (target: $<5\%$ of peak
-                  photocurrent)</td>
+                    spectral separation confirmed by photocurrent measurement at 450 nm (target: $<5\%$ of peak
+                    photocurrent)</td>
               </tr>
               <tr>
                 <td><strong>White-noise addiction emergence in curiosity-driven exploration</strong></td>
@@ -1881,7 +2080,7 @@
                   estimation; hard 60-second disengage timeout when $\hat{L}(t+1)<0$; validated across deterministic,
                     stochastic, and pure white-noise environments</td>
                 <td>Curiosity drive $D_{curiosity}<0$ in white-noise environment; exploration time must correlate with
-                    learning progress (Pearson $r>0.7$), not raw novelty ($r<0.3$)</td>
+                    learning progress (Pearson $r>0.7$), not raw novelty ($r<0.3$)< /td>
               </tr>
               <tr>
                 <td><strong>Symbiotic ecosystem collapse to monoculture</strong></td>
@@ -1904,7 +2103,8 @@
                   improvement $\geq50\%$ at $D_{opt}$</td>
               </tr>
               <tr>
-                <td><strong>XNA organism biocontainment failure (escape into natural biosphere)</strong></td>
+                <td><strong>XNA organism biocontainment failure (escape into natural biosphere)</strong>, full
+                  six-letter XNA operational state</td>
                 <td><span class="prob vl">Very Low</span></td>
                 <td><span class="sev cat">Catastrophic</span></td>
                 <td>Primary: XNA organisms cannot replicate using any natural nucleotide pool; secondary: synthetic
@@ -1912,6 +2112,21 @@
                   HEPA, UV sterilization of all effluent</td>
                 <td>$<10^{-6}$ colony-forming units per mL on natural media after 72-hr incubation; complete dependence
                     on externally supplied XNA nucleotide precursors confirmed</td>
+              </tr>
+              <tr>
+                <td><strong>Containment failure during the mandatory 63-codon natural-genome fallback period</strong>
+                  (§2.4), before XNA-level orthogonality is achieved</td>
+                <td><span class="prob m">Moderate</span></td>
+                <td><span class="sev cat">Catastrophic</span></td>
+                <td>Natural AT/GC chemistry is not orthogonal to wild-type nucleases, phage, or horizontal transfer,
+                  so this window relies on stop-codon-reassignment ncAA auxotrophy alone, not XNA-level chemical
+                  orthogonality; auxotrophy-only containment has documented non-zero escape frequency in the
+                  literature even in well-engineered designs. Same physical containment (BSL-2+, negative pressure,
+                  HEPA) applies, but the biological containment margin is materially lower than the row above and
+                  should not be represented by the same "Very Low" figure</td>
+                <td>Escape frequency for the specific auxotrophy design used, independently measured for this
+                  fallback genome rather than assumed from XNA-state literature; duration of this window bounded
+                  and tracked against Phase 1 XNA-fidelity gate progress (§2.4, §8.3)</td>
               </tr>
             </tbody>
           </table>
@@ -2014,11 +2229,19 @@
               nm) at 4 neutral loci. Engineer synthetic audit chromosome with DNMT3A/CcrM methylation-logging machinery
               validated against defined calcium transient patterns. Introduce first XNA base pair (dNaM:dTPT3) into
               non-essential genomic region; measure retention over 50 generations. If retention exceeds 99%, expand to
-              second XNA pair. If retention falls below 95%, halt and invest in orthogonal replicase engineering.</p>
+              second XNA pair. If retention falls below 95%, halt and invest in orthogonal replicase engineering. This
+              12-month window is aggressive relative to precedent: published multi-codon genome recoding, even in
+              simpler bacterial systems and using state-of-the-art automated genome engineering, has taken multiple
+              years,<sup class="r"><a href="#ref-37">[37]</a></sup> and no comparable demonstration yet exists for a
+              mammalian or neuronal line, which the Phase 2 synapse-formation requirement below implies this must be.
+              The gate criteria are the actual pass/fail bar: if Months 6–18 do not clear them, the correct response
+              is to extend this phase, and the 48-month total elsewhere in this document should be read as a target
+              subject to revision by early results here, not a fixed deadline.</p>
             <div class="phase-box">
               <div class="phase-label">Phase 1 Gate Criteria</div>
               <ul class="phase-items">
-                <li>Stepwise mMPS yield ≥ 98.7% across 1,000 consecutive synthesis cycles</li>
+                <li>Stepwise mMPS yield ≥ 98.7% across 1,000 consecutive synthesis cycles, at the ≤500-base
+                  fragment scale (§2.2), not across the full genome length</li>
                 <li>≥ 95% simultaneous editing efficiency across 10⁶ cells with prime editing</li>
                 <li>Stable maintenance of ≥ 2 XNA pairs over 50 generations at &lt; 5% loss rate</li>
                 <li>Methylation writing fidelity ≥ 99.5% across simulated logical operations</li>
@@ -2044,15 +2267,18 @@
             </div>
 
             <h4 class="ssub">Phase 3 - Bio-Silicon Interface (Months 18–30)</h4>
-            <p>Fabricate graphene nanoelectrode arrays (5 µm diameter, $10^4$/mm², $Z<100\,\text{k}\Omega$ at 1 kHz).
-                Implement optogenetic interface: ChRmine (Kim et al., <em>Science</em> 2021; peak sensitivity 590 nm,
-                10-fold photocurrent advantage, spectrally orthogonal to the 450 nm EL222 editing system) for neural
-                activation; eNpHR3.0 for sustained high-frequency inhibitory hyperpolarization compatible with the
-                100 Hz operational specification. Validate that optical stimulation evokes action potentials with
+            <p>Fabricate graphene nanoelectrode arrays (5 µm diameter, $10^4$/mm², $Z<100\,\text{k}\Omega$ at 1 kHz),
+                with a co-embedded semiconducting SWCNT population for optical audit readout (§4.4). Implement
+                optogenetic interface: ChRmine (Marshel et al., <em>Science</em> 2019; peak sensitivity
+                590 nm, 10-fold photocurrent advantage, spectrally orthogonal to the 450 nm EL222 editing system) for
+                neural activation; Jaws (Chuong et al., 2014; 600–635 nm activation range, spectrally resolved from
+                ChRmine) for inhibitory hyperpolarization, with sustained high-frequency (100 Hz) cycling validated
+                empirically rather than assumed from acute photocurrent measurements alone. Validate that optical
+                stimulation evokes action potentials with
                 $>95\%$ reliability and $<5\,\text{ms}$ latency. Validate the mapping function $\Phi$: apply known
-                perturbations (pH shift, temperature shift, metabolic inhibition) and confirm Pearson correlation
-                between expected and observed state changes $>0.9$ for all state variables, with latency from physical
-                event to software state update $<100\,\text{ms}$.</p>
+                  perturbations (pH shift, temperature shift, metabolic inhibition) and confirm Pearson correlation
+                  between expected and observed state changes $>0.9$ for all state variables, with latency from physical
+                  event to software state update $<100\,\text{ms}$.< /p>
                     <div class="phase-box">
                       <div class="phase-label">Phase 3 Gate Criteria</div>
                       <ul class="phase-items">
@@ -2121,10 +2347,556 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════
-       SECTION 9: REFERENCES
+       SECTION 9: INDEPENDENT VERIFICATION AUDIT
+  ════════════════════════════════════════ -->
+      <section class="section" id="s9">
+        <h2 class="sh">9. Independent Verification Audit</h2>
+
+        <p>This section records an independent verification pass on Sections 1–8: three adversarial reviews of
+          an earlier draft were checked claim by claim against the equations and figures as they actually appear in
+          this document, using first-principles recalculation rather than accepting either the original text or the
+          reviews at face value. Most entries below are confirmed problems: the document's own stated numbers, run
+          back through standard physics, biology, or information theory, do not support the conclusion drawn from
+          them. A smaller set of entries (9.10) are review claims that were checked and found not to apply to the
+          text as written; these are flagged explicitly rather than silently dropped.</p>
+
+        <h3 class="sub" id="s9-1"><span class="sub-num">9.1</span>Oxygen Budget Closure Failure (Originally Fatal, Now
+          Resolved)</h3>
+        <p>Section 3 originally sized the entire cooling system from the heat-removal side only. Eq. 3.7 derived
+          288 mL/min of chilled perfluorocarbon flow to hold ΔT &lt; 2 K against 200 W of metabolic heat (Eq. 3.3).
+          No equation in Section 3 computed the oxygen flux that same flow needed to carry, and the two are not
+          automatically the same constraint. At 200 W of aerobic metabolic power, using the standard caloric
+          equivalent of oxygen (≈20.1 kJ per liter O₂ consumed):</p>
+        <div class="eq">
+          <span class="eq-tag">Eq. 9.1</span>
+          $$\dot{V}_{O_2}^{required} = \frac{Q_{gen}^{max}}{20.1\,\text{kJ/L}} =
+          \frac{200\,\text{J/s}}{20{,}100\,\text{J/L}} \approx 9.95\times10^{-3}\,\text{L/s} \approx
+          600\,\text{mL/min}$$
+        </div>
+        <p>Section 3.3 originally stated that the PFC emulsion delivered 0.5 to 2.4 mL O₂/dL at atmospheric pO₂,
+          depending on which of its two figures was used. Carried at the 288 mL/min flow rate sized for heat removal
+          alone:</p>
+        <div class="eq">
+          <span class="eq-tag">Eq. 9.2</span>
+          $$\dot{V}_{O_2}^{delivered} = 288\,\text{mL/min}\times(0.5\text{ to }2.4\,\text{mL/dL}) \approx 1.4\text{ to
+          }6.9\,\text{mL O}_2\text{/min}$$
+        </div>
+        <p>Against a demand of ≈600 mL/min, that was a shortfall of roughly 90-fold to 400-fold, using the
+          architecture's own original numbers throughout. The original Section 3.4 assessment that "the 8× oxygen
+          delivery
+          improvement from PFC over saline sustains the synthetic EET pathways without glucose dependency" does not
+          follow from anything computed in that section: an 8-fold improvement over saline's 0.3 mL/dL is still only
+          a few mL/dL, and the flow rate carrying it was never sized against an oxygen target at all. This was not a
+          research dependency to defer to a later phase; it was an arithmetic gap.</p>
+        <p><strong>Resolution applied:</strong> §3.3 now specifies a concentrated (${\sim}80\%$ v/v) PFC emulsion
+          actively equilibrated to 1 atm pO$_2$ ($\alpha_{O_2}\approx32\,\text{mL/dL/atm}$, against the neat
+          perfluorodecalin literature value of ${\approx}40\,\text{mL/dL/atm}$ at 1 atm<sup class="r"><a
+              href="#ref-34">[34]</a></sup>), and sizes perfusion flow to the oxygen requirement (${\approx}1.9\,
+          \text{L/min}$, Eq. 3.11) rather than to heat removal alone; Eq. 3.7's 288 mL/min is now stated explicitly
+          as a lower bound, not the operating point. Run back through the heat balance, 1.9 L/min holds coolant
+          $\Delta T$ to ${\approx}1.7\,^\circ\text{C}$, inside the 2 K bound, so the fix does not reopen the thermal
+          question. What this arithmetic does not verify is residence time (${\approx}30\,\text{s}$ for the 1-liter
+          matrix at this flow rate) or shear-stress tolerance through 300 µm channels; both remain Phase 2 validation
+          items, now stated as such in §3.3 rather than left implicit.</p>
+
+        <h3 class="sub" id="s9-2"><span class="sub-num">9.2</span>Thermal Budget: Geometric Error, Unbudgeted Heat, and
+          Governing Equation (Resolved)</h3>
+        <p>Section 3.2 originally stated that 300 µm cooling channels at 6.4 mm spacing (the value then derived in
+          Eq. 3.6) imposed "a fixed volumetric overhead of 15–20% for the vascular network." Treating the channels
+          as cylinders on a square grid, the cross-sectional area fraction was:</p>
+        <div class="eq">
+          <span class="eq-tag">Eq. 9.3</span>
+          $$\frac{\pi r^2}{s^2} = \frac{\pi\,(0.15\,\text{mm})^2}{(6.4\,\text{mm})^2} \approx 1.7\times10^{-3} =
+          0.17\%$$
+        </div>
+        <p>which was roughly two orders of magnitude below the stated 15–20%; reaching 15–20% overhead at that
+          spacing would have required channel diameters near 2.8 mm, incompatible with the 300 µm figure given two
+          sentences earlier in the same original paragraph.</p>
+        <p><strong>Resolution applied, then revised again:</strong> the first pass corrected the figure to
+          ${\approx}0.17\%$ without changing the 6.4 mm spacing itself. Fixing the two findings below, adding the
+          omitted heat sources and correcting the governing equation, changed the spacing number too (6.4 mm →
+          5.6 mm under the same planar model, or ${\approx}3.5\,\text{mm}$ under the corrected cylindrical model),
+          so the volumetric overhead now stated in §3.2 is ${\approx}0.23\%$ (planar) rather than 0.17%. The two
+          fixes were not independent and had to be done together.</p>
+        <p>Eq. 3.1–3.7 originally built the entire thermal budget from metabolic heat alone. Section 4.3 specifies a
+          450 nm laser array of 10,000 distributed output points at 5 mW/cm² for prime editing; even under a
+          conservative 1 cm² footprint per point, that is an additional ≈50 W of optical input that was never
+          added into $Q_{gen}$ anywhere in Section 3, on top of whatever the silicon logic layer itself dissipates.
+          <strong>Resolution applied:</strong> §3.1 now scopes the silicon layer out explicitly, as a physically
+          separate, conventionally cooled system rather than an unspecified addition to this budget, and folds the
+          ≈50 W peak illumination load into a combined 250 W worst case, which §3.2's channel-spacing derivation now
+          uses in place of the 200 W metabolic figure alone.
+        </p>
+        <p>The governing equation was also the wrong one for the described hardware. The Pennes bioheat equation
+          (Eq. 3.4) models heat exchange between tissue and blood perfusing a capillary bed; its perfusion term
+          assumes the fluid is moving through the vasculature it is warming. A network of fabricated 300 µm channels
+          carrying pumped PFC emulsion is a forced-convection heat exchanger, not a perfused capillary bed.
+          <strong>Resolution applied, partially:</strong> §3.2 now states plainly that the channel-spacing estimate
+          drops Eq. 3.4's perfusion term rather than solving it, and adds a cylindrical unit-cell derivation (Eq.
+          3.6a), steady radial conduction with uniform generation around a channel held at coolant temperature, out
+          to an adiabatic boundary at the equivalent cell radius, which is the physically appropriate geometry for a
+          grid of round channels that the original planar (1D slab) estimate was not. Solving Eq. 3.6a gives a
+          tighter spacing (${\approx}3.5\,\text{mm}$) than the planar model (5.6 mm), and §3.2 now says explicitly
+          that the tighter figure is the one to fabricate to. This is not a full conjugate heat-transfer solution
+          (no Nusselt/Reynolds/Biot analysis of the coolant-side convection is included, only tissue-side
+          conduction), and Eq. 3.6a has not been checked against a numerical solution; §3.2 flags both limitations
+          rather than presenting the cylindrical result as final.
+        </p>
+        <p>Section 3.3's aside about PFC literature values was also inaccurate as written: it attributed the
+          commonly cited 40–50 mL O₂/dL figures for neat perfluorocarbons to "extreme hyperbaric oxygen pressures
+          of approximately 17 to 21 atmospheres." Published measurements report ≈40 mL O₂ per 100 mL for
+          neat perfluorodecalin at ordinary atmospheric pressure with a pure-oxygen headspace, not at any hyperbaric
+          condition.<sup class="r"><a href="#ref-34">[34]</a></sup> <strong>Resolution applied:</strong> §3.3 now
+          cites this figure correctly and uses it as the basis for the concentrated-emulsion assumption in the
+          oxygen-budget fix (§9.1) instead of dismissing it.</p>
+
+        <h3 class="sub" id="s9-3"><span class="sub-num">9.3</span>Materials Identity Contradiction: Graphene vs. SWCNT
+          Readout (Resolved)</h3>
+        <p>The architecture commits to an extracellular graphene scaffold as early as the 1.3 callout ("the
+          architecture must adopt an extracellular graphene scaffold strategy"), repeats it in the abstract and again
+          in 3.4 for EET cytochrome contact, and lists it in the Section 7 risk table. Section 4.4 then built the
+          optical audit readout on a different material: "the photoluminescent properties of the extracellular SWCNT
+          scaffold," specifically the first Van Hove ($E_{11}$) transition. Graphene is a 2D sheet with no bandgap in
+          its pristine form and does not show $E_{11}$ photoluminescence; that phenomenon is specific to
+          semiconducting single-walled carbon nanotubes. A scaffold built from one material cannot be optically read
+          out through a bandgap transition that belongs to a different one, unless both are actually present, which
+          the original text never stated.</p>
+        <p>The same paragraph compounded the problem on its own terms. It specified "$n=m$ armchair configuration for
+          metallic character" for the SWCNTs used, then in the same sentence required $E_{11}$ photoluminescence.
+          Armchair nanotubes ($n=m$) are metallic by construction, and metallic SWCNTs do not show $E_{11}$
+          photoluminescence: only semiconducting chiralities ($n-m$ not a multiple of 3) do, because the continuum of
+          states at the Fermi level in a metallic tube quenches the transition non-radiatively. The single nanotube
+          species originally specified could not satisfy both stated requirements at once.</p>
+        <p><strong>Resolution applied:</strong> §4.4 now describes a co-embedded, chirality-distinct population:
+          graphene retains the electrical/EET role established elsewhere in the document, and a separate,
+          semiconducting ($n-m$ not a multiple of 3) SWCNT population supplies the $E_{11}$ optical readout, resolving
+          both the material-identity conflict and the armchair/photoluminescence self-contradiction. Neither
+          material's biocompatibility at the stated operating density is backed with viability data. Carbon
+          nanotubes and graphene both have a documented capacity to generate oxidative stress and provoke
+          inflammatory responses at cell interfaces, and protein corona formation in physiological fluid is known to
+          quench SWCNT near-infrared fluorescence and alter surface charge;<sup class="r"><a
+              href="#ref-23">[23]</a></sup>
+          §4.4 now names this as an open validation item rather than leaving it unmentioned, but the underlying
+          cytotoxicity and corona-quenching data are still absent and remain a genuine gap.</p>
+
+        <h3 class="sub" id="s9-4"><span class="sub-num">9.4</span>Biocontainment Fallback: Overstated, Not Voided
+          (Resolved)</h3>
+        <p>Section 2.1 claimed the ncAA/XNA system established "a complete chemical barrier against environmental
+          enzymatic attack." Section 2.4 states that genome-scale XNA replication fidelity is currently a "fatal
+          instability" and mandates a fallback to a 63-codon natural-base genome as the operating baseline until
+          Phase 1 gate criteria are satisfied.</p>
+        <p>The fallback genome uses standard AT/GC chemistry, which is not orthogonal to wild-type nucleases, phage,
+          or horizontal gene transfer; that part of the underlying criticism is accurate. It was not accurate,
+          however, to describe the fallback as leaving no containment at all. Phase 1 (Section 8.3) keeps a
+          reassigned stop codon and independently validated ncAA incorporation sites even during the natural-genome
+          period, so an auxotrophy-based containment layer is still present, just without the XNA-level orthogonality
+          layered on top of it. The correct statement was that the claim of a "complete" barrier is not supportable
+          during the fallback period, not that the barrier is void.</p>
+        <p>Published ncAA-auxotrophy containment work is relevant context: multi-layered synthetic auxotroph designs
+          have achieved escape frequencies below detection limits in laboratory testing, but below detection limit is
+          not the same as zero, and single-layer auxotrophic containment without redundant safeguards has measurably
+          failed in other published work. Given that, and given Section 2.4's own description of XNA fidelity as
+          currently unresolved (meaning the fallback could be the operating state for an extended period), the
+          Section 7 risk table's "Very Low" probability rating for biocontainment failure needed a separate line item
+          for the fallback-genome operating window: as originally written, that rating and its "XNA organisms cannot
+          replicate using any natural nucleotide pool" justification described the fully XNA-orthogonal end state,
+          not the natural-genome interim state the architecture is required to run in for at least the duration of
+          Phase 1.</p>
+        <p><strong>Resolution applied:</strong> §2.1 now states the barrier claim as conditional on the full
+          six-letter system being operational and explicitly disclaims "complete," §7's risk table now carries a
+          separate "Moderate" probability row for the fallback-period window rather than folding it into the
+          full-XNA-state "Very Low" figure, and both point back to §2.4's fidelity gate as the thing that closes this
+          window. No new escape-frequency number is asserted for the fallback design specifically; the risk table's
+          threshold column now asks for that number to be measured rather than presenting the full-XNA-state figure
+          as though it already covers this case.</p>
+
+        <h3 class="sub" id="s9-5"><span class="sub-num">9.5</span>Audit-Layer Latency: Catalytic Rate vs. Cascade Time
+          (Resolved)</h3>
+        <p>Section 4.1 correctly identified that CcrM's raw catalytic rate (1–10 methylation events per second
+          per enzyme) cannot keep pace with 10⁶ events per second of computational activity, and 4.2's
+          dual-layer split is a reasonable response to that specific gap.</p>
+        <p>A different latency problem was not addressed. Section 4.3 describes the actual Layer 2 write path as a
+          signaling cascade: calcium transient → NFAT-responsive promoter activation → CcrM-fusion protein
+          expression → methylation. The rate-limiting step in that chain is not CcrM's catalytic turnover; it is
+          transcribing and translating a new copy of the CcrM-fusion protein in response to each activation event,
+          which for NFAT-responsive reporters is characteristically a tens-of-minutes-to-hours process, not a
+          sub-second one. Stating Layer 2's rate as "1–10 sites/second," as the original 4.1 callout did, conflated
+          enzyme kinetics with pathway latency; the two are different numbers, and the second one determines how
+          current a "causal chain" reconstruction actually is.</p>
+        <p>This mattered directly for the purge protocol in 4.4: a sector can be flushed with NaOH within 60 seconds
+          of a detected audit-concordance failure, faster than a single Layer-2 write cascade can complete. Section 4
+          did not say what happens to the causal record for a sector purged mid-cascade, before its pending
+          methylation write finishes.</p>
+        <p><strong>Resolution applied:</strong> the §4.1 callout now describes "1–10 sites/second" explicitly as
+          catalytic capacity once an enzyme is present, not event latency, and points to §4.3 for the actual
+          cascade timing. §4.3 now states the tens-of-minutes cascade latency directly, ties it to the
+          "minute-to-hour resolution" already claimed for Layer 2 in §4.2 (which was previously correct but
+          unconnected to the mechanism), and specifies that Layer 1's microsecond electrochemical register, not
+          Layer 2, is the authoritative record for any sector purged before its Layer 2 write completes.</p>
+
+        <h3 class="sub" id="s9-6"><span class="sub-num">9.6</span>Optogenetic and Calcium-Indicator Kinetics (Resolved)
+        </h3>
+        <p>eNpHR3.0 was originally specified as the inhibitory opsin. It is a light-driven chloride pump, not a
+          channel, and published characterization reports pronounced photocurrent inactivation on a timescale of
+          seconds under sustained illumination, the specific property that makes it unsuited to long, continuous
+          silencing protocols.<sup class="r"><a href="#ref-36">[36]</a></sup> Individual on/off transitions are fast
+          enough (turn-off time constants in the low single-digit milliseconds have been reported for this opsin
+          family) that a single 100 Hz-scale event was not obviously precluded; the problem was sustaining that
+          cycling continuously, which is exactly what "the 100 Hz operational specification" in Sections 7 and 8.3
+          asks of it. More importantly, eNpHR3.0's own excitation peak is reported near 590 nm,<sup class="r"><a
+              href="#ref-36">[36]</a></sup> the same wavelength this document assigns to ChRmine for excitatory
+          activation: the architecture worked out the ChRmine/EL222 (450 nm) spectral conflict in careful detail in
+          4.3, while its own two chosen opsins, one meant to excite and one meant to inhibit, shared essentially the
+          same action-spectrum peak. Prior bidirectional-control work combining a yellow-shifted inhibitory pump
+          with a blue-shifted excitatory channel has reported measurable mutual cross-activation even with wider
+          spectral separation than this.<sup class="r"><a href="#ref-36">[36]</a></sup></p>
+        <p><strong>Resolution applied:</strong> §4.3 now replaces eNpHR3.0 with Jaws, a red-shifted chloride pump
+          usable from roughly 600&ndash;635 nm,<sup class="r"><a href="#ref-38">[38]</a></sup> giving
+          ${\approx}40$&ndash;45 nm of separation from ChRmine's 590 nm peak: narrower than the ChRmine/EL222 margin,
+          but a substantial improvement over eNpHR3.0's near-total overlap. This does not, by itself, establish that
+          Jaws tolerates sustained 100 Hz cycling any better than eNpHR3.0 did; §4.3 and §8.3 now say explicitly that
+          this is a Phase 2 validation item rather than an assumed property, which is the honest status of a claim
+          neither opsin's published characterization directly settles.</p>
+        <p>jGCaMP8f's bandwidth limitation was flagged in the document's own text (originally Section 6.3:
+          "$\tau_{off}\approx44\,\text{ms}$, functional bandwidth near 23 Hz"), which was the right conclusion but
+          paired with the wrong remedy: deconvolution genuinely cannot recover information above the Nyquist limit
+          set by that decay time without strong, independently validated priors, and none were offered. If anything,
+          44 ms is optimistic: several published characterizations of jGCaMP8f report half-decay times well above
+          100 ms depending on preparation and stimulus count, which would push the effective usable bandwidth lower
+          still, not higher.<sup class="r"><a href="#ref-35">[35]</a></sup> This is a property of the indicator, not
+          something a different choice of molecule at the same task would necessarily fix outright, so it is not
+          "resolved" in the sense the opsin conflict was.</p>
+        <p><strong>Resolution applied:</strong> the architecture's reliance on jGCaMP8f has been fixed even though
+          the indicator's own kinetics have not changed. §6.3 no longer claims jGCaMP8f resolves individual 100 Hz
+          events via deconvolution; it now identifies the graphene electrode impedance array, the same Layer 1
+          electrochemical registers from §4.2, as the channel that actually supports the 100 Hz state-update rate,
+          and repositions jGCaMP8f as a slower, population-level cross-check read at its own native rate. The
+          bandwidth ceiling itself remains exactly what it was; what changed is that the document no longer claims
+          to have engineered around it.</p>
+        <p><strong>Resolution applied:</strong> Sections 4.3 and 7 previously disagreed on how settled the
+          ChRmine/EL222 question was: 4.3 stated flatly that "no cross-activation occurs" while 7's risk table
+          treated the identical claim as an unconfirmed target ("&lt;5% of peak photocurrent"). §4.3 now uses the
+          same hedged, to-be-measured framing as the risk table instead of asserting the result as settled.</p>
+
+        <h3 class="sub" id="s9-7"><span class="sub-num">9.7</span>Formal Model: State-Vector and HRRL Gaps (Resolved)
+        </h3>
+        <p>Eq. 6.2 introduced $\mathbf{s}(t)$ as "six-dimensional," but its sixth listed entry, $\mathbf{s}_{task}$,
+          was bolded in the same vector notation the document uses elsewhere for multi-component quantities (e.g.
+          $\mathbf{x}_{wet}$, $\vec{\mathcal{B}}$), which would have made $\mathbf{s}(t)$ more than six-dimensional
+          if taken literally. <strong>Resolution applied:</strong> §6.1 now declares $s_{task}$ explicitly as a
+          scalar (normalized task-completion progress) and removes the bolding, so the "six-dimensional" label
+          matches its own equation.</p>
+        <p>Eq. 6.3 mapped a 3D biological vector $\vec{\mathcal{B}}(t)$ to a 3D homeostatic vector $\vec{H}(t)$
+          through a $3\times3$ matrix $\mathbf{\Lambda}$, internally consistent on its own; but Eq. 6.14 defined a
+          differently named, 4-dimensional drive vector $\mathbf{D}(t)$ (survival, maintenance, task, curiosity)
+          computed from components of $\mathbf{s}(t)$, and $\vec{H}(t)$'s role after Eq. 6.3 was never made
+          explicit. <strong>Resolution applied:</strong> §6.4 now states directly that $\vec{H}(t)$ and
+          $\mathbf{D}(t)$ are intentionally different objects serving different roles, the former a smooth scalar
+          signal for reward and continuous arbitration, the latter a discrete, individually-thresholdable
+          decomposition for the hard gate, rather than leaving the reader to infer why a 3D and a 4D vector coexist
+          without any stated relationship.</p>
+        <p>The symbol $D$ was also used for two unrelated objects: a scalar $L_p$-distance (Eq. 6.12, feeding the
+          reward in Eq. 6.13 and the arbitration scaling in Eq. 6.18) and the 4D drive vector (Eq. 6.14), whose
+          component $D_{survival}(t)$ triggered the hard gate in Eq. 6.20–6.21. <strong>Resolution applied:</strong>
+          §6.4 now calls the scalar $\Delta(\vec{H}_t)$, reserving $D$/$\mathbf{D}(t)$ for the drive vector alone,
+          and Eq. 6.12's two previously unrelated exponents ($n$ inside the sum, $1/m$ outside) are now a single
+          exponent $p$, a standard $L_p$ norm rather than an undefined hybrid.</p>
+        <p>None of the rate coefficients in Eq. 6.9–6.11, nor the weights in Eq. 6.15–6.16 and 6.18–6.21, carried
+          units or numerical values, and the Section 7 risk table cited the 1-second thermal hard-gate response as
+          though it were an established property rather than a target. <strong>Resolution applied:</strong> §6.3
+          now states explicitly that Eq. 6.8–6.21 are a functional form awaiting Phase 1–2 calibration, not a result
+          already demonstrated, and §6.4 reframes the 1-second figure the same way, as a validation target with no
+          actuator-latency or dead-volume measurement behind it yet. No specific coefficient values are invented;
+          the fix is stating plainly what is and is not yet known, not fabricating numbers to fill the gap.</p>
+        <p><strong>Resolution applied:</strong> Section 5.3 previously claimed the stochastic-resonance sampling
+          scheme achieves "BPP (Bounded-error Probabilistic Polynomial-time) computational complexity," misapplying
+          a discrete complexity class: BPP describes decision problems solvable by a probabilistic Turing machine in
+          polynomial time with bounded error, and requires a formal computational model and a time bound on an
+          algorithm, neither of which was established. §5.3 now describes Eq. 5.4&ndash;5.5 for what they are,
+          ordinary Monte Carlo variance reduction with a Hoeffding/Chebyshev-type error bound, and no longer invokes
+          BPP.</p>
+        <p><strong>Resolution applied:</strong> the same $\sqrt{N}$ scaling assumed the $N=10^6$ samples were
+          independent (Section 5.1: "each $x_i$ is independently generated"), while Section 8.3's own Phase 2 plan
+          validates "synaptic network formation (neuroligin-3/neurexin-1β, connexin-43 gap junctions&hellip;)" for
+          the same processing units; gap junctions provide direct electrical coupling between neighboring cells, so
+          a population wired this densely does not sample independent noise realizations. §5.3 now introduces an
+          effective sample size $N_{eff}=N/(1+(N-1)\rho)$ for intraclass correlation $\rho$ (Eq. 5.6), states that
+          $\sigma_{\hat{E}}\sim\sigma_f/\sqrt{N_{eff}}$ rather than $\sigma_f/\sqrt{N}$, and requires $\rho$ to be
+          measured for the Phase 2 connectivity actually realized. This corrects the false assumption without
+          fabricating a specific $\rho$ or $N_{eff}$ value; those remain empirical questions for Phase 2.</p>
+
+        <h3 class="sub" id="s9-8"><span class="sub-num">9.8</span>Scale and Target Inconsistencies (Resolved)</h3>
+        <p>Section 3 sized every metabolic, thermal, and oxygen figure around "a 1-liter processing volume" (Eq. 3.2
+          and throughout). Section 4.3 sized the prime-editing illumination array around "a 1 m³ processing
+          volume," a figure one thousand times larger, for what is described as the same system. Every per-volume
+          number in the document, including the 10,000-point illumination array and the resulting spacing between
+          illumination points, was ambiguous until this was resolved one way or the other. <strong>Resolution
+            applied:</strong> §4.3 now states the 1-liter figure used everywhere else, giving a mean illumination-point
+          spacing of ${\approx}4.6\,\text{mm}$, comparable to the 5.6 mm cooling-channel pitch (§3.2, §9.2) rather
+          than the multi-centimeter spacing the 1 m³ figure implied.</p>
+        <p>The abstract and Section 7's risk table stated "aggregate Shannon channel capacity exceeding 665 Mbps" as
+          the architecture's interface capability. Section 8.3's own Phase 3 gate criterion, the actual number this
+          is meant to be validated against, is "bidirectional Shannon capacity &gt; 100 Mbps aggregate" and was left
+          unchanged by this revision: a 6.65-fold lower bar than the headline figure originally repeated elsewhere.
+          Using the document's own ≈100 Hz biological operating rate as the per-channel bandwidth, and Section 7's
+          stated verification threshold of SNR ≥ 10:</p>
+        <div class="eq">
+          <span class="eq-tag">Eq. 9.4</span>
+          $$C = 10^6\times\left[100\,\text{Hz}\times\log_2(1+10)\right] \approx 3.46\times10^8\,\text{bit/s} \approx
+          346\,\text{Mbps}$$
+        </div>
+        <p>That clears the 100 Mbps gate with room to spare, but fell short of the 665 Mbps headline by roughly a
+          factor of two; matching 665 Mbps at the same 100 Hz bandwidth would require SNR ≈ 100 (≈20 dB), a full
+          order of magnitude above the SNR ≥ 10 the risk table sets as its own passing criterion, with no channel
+          model, electrode impedance figure, or crosstalk analysis given anywhere to support achieving that across
+          $10^6$ simultaneous channels in a conductive medium. <strong>Resolution applied:</strong> the abstract and
+          Section 7 now state the SNR-derived ${\approx}346\,\text{Mbps}$ figure instead of 665 Mbps, so the headline
+          number, the Phase 3 gate, and the stated SNR threshold are mutually consistent (346 clears the 100 Mbps
+          gate; no unsupported SNR jump is required).</p>
+        <p>One citation inconsistency is also now corrected: the in-text references to "ChRmine (Kim et al.,
+          <em>Science</em> 2021)" in 4.3 and 8.3 did not match reference [33], whose actual bibliographic content is
+          Marshel et al. (2019, <em>Science</em>) and Kishi et al. (2022, <em>Cell</em>); no 2021 paper appeared
+          there. Both in-text citations now read "Marshel et al., <em>Science</em> 2019," matching [33].
+        </p>
+
+        <h3 class="sub" id="s9-9"><span class="sub-num">9.9</span>Genome-Scale Synthesis Yield (Resolved) and Timeline
+          Compression (Caveated, Not Resolved)</h3>
+        <p>Section 2.2's Phase 1 gate required "stepwise printing yield ≥98.7% across 1,000 consecutive synthesis
+          cycles" for single-nucleotide, template-independent mMPS addition, described as the process building the
+          genome directly. Compounded multiplicatively, as sequential per-step yields must be:</p>
+        <div class="eq">
+          <span class="eq-tag">Eq. 9.5</span>
+          $$(0.987)^{1000} \approx 2.1\times10^{-6}$$
+        </div>
+        <p>and the actual target, a $10^6$ base-pair genome built the same way, compounds to a yield
+          indistinguishable from zero. The real-time purge-and-reprint step in the mMPS flow diagram (Section 2.2)
+          can catch and redo individual failed additions, which helps, but did not reconcile with "1,000 consecutive
+          cycles" as the stated calibration window if that window was meant to span the whole genome. Genome-scale
+          synthesis in practice is done by assembling independently verified, shorter fragments hierarchically, not
+          by a single uninterrupted run of sequential single-base additions; the mMPS description as originally
+          written was the latter.</p>
+        <p><strong>Resolution applied:</strong> §2.2 now describes the single-nucleotide ZaTdT process as producing
+          short (200–500 base) fragments only, with genome-scale assembly happening through a separate hierarchical
+          block-ligation step, the standard approach in published genome-scale synthesis work. The 98.7%/1,000-cycle
+          gate now applies at fragment scale, where it is achievable, rather than at genome scale, where it was not.
+          The reprint-attempt budget and missed-failure escape rate are still unspecified and remain open items,
+          now stated as such directly in §2.2 rather than left implicit.</p>
+        <p>Separately, Phase 1 compresses 63-codon genome recoding, first XNA base-pair integration, and a working
+          audit chromosome into 12 months (Months 6–18). Given Section 8.3's Phase 2 requirement for
+          neuroligin-3/neurexin-1β synapse formation, the cell line in question is a mammalian or neuronal one,
+          not bacterial. Published multi-codon genome recoding, even in simpler bacterial systems and using
+          state-of-the-art automated genome engineering, has taken multiple years to reach a comparable
+          scope.<sup class="r"><a href="#ref-37">[37]</a></sup> No demonstration at anything resembling this speed
+          exists yet for a mammalian or neuronal genome.</p>
+        <p><strong>Caveated, not resolved:</strong> §8.3 now states this comparison directly in the Phase 1
+          description and says explicitly that the gate criteria, not the calendar date, govern whether the phase is
+          complete, and that the 48-month total is a target subject to revision, not a fixed deadline. This does not
+          change the Phase 0–6 schedule itself, which would require restructuring dates across every later phase;
+          it converts an unacknowledged compression into an acknowledged one. Whether 12 months is actually
+          achievable remains an open, unresolved empirical question.</p>
+
+        <h3 class="sub" id="s9-10"><span class="sub-num">9.10</span>Claims From Prior Review That Do Not Hold Against
+          This Text</h3>
+        <p>Two specific criticisms raised against an earlier draft were checked directly against the equations as
+          they appear here and do not apply.</p>
+        <p>First, a claim that Eq. 3.6 contains an algebraic error, presenting $\sqrt{10^{-5}}$ as though it were
+          written equal to $10^{-5}$ rather than its square root. As it appears in this document, the equation
+          correctly shows $\sqrt{10^{-5}}\approx3.2\,\text{mm}$, and $\sqrt{10^{-5}\,\text{m}^2} =
+          3.16\times10^{-3}\,\text{m}$ is the right value. There is no algebra error in this equation as written;
+          whatever draft that criticism was checked against differs from the text here.</p>
+        <p>Second, a claim that Eq. 1.4's "mean free path" is fabricated. The formula and the ≈20 nm result are
+          both correct as a thermal coherence length (sometimes called a thermal length) in mesoscopic transport:
+          $\hbar v_F/k_BT$ is a standard expression for exactly this quantity. The label is the imprecise part: a
+          defect- and phonon-scattering-limited mean free path, which is the conventional meaning of that term, runs
+          hundreds of nanometers to roughly a micron in high-quality SWCNTs at room temperature, not 20 nm. That
+          correction changes the name attached to the number, not the document's operative conclusion in 1.3: the
+          independent argument given in the same section, that CVD synthesis above 500°C is incompatible with
+          cellular viability, is unaffected by the naming issue and is sufficient on its own to rule out
+          intracellular ballistic transport.</p>
+
+        <h3 class="sub" id="s9-11"><span class="sub-num">9.11</span>Net Assessment</h3>
+        <p>The following table consolidates the confirmed findings above. Rows correspond to 9.1–9.9; the two
+          claims addressed in 9.10 are not included here, since they concern the prior review rather than this
+          document.</p>
+
+        <div class="tbl-wrap">
+          <table class="risk-tbl">
+            <thead>
+              <tr>
+                <th>Finding</th>
+                <th>Location</th>
+                <th>Status</th>
+                <th>Severity</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Oxygen-delivery budget never closed</strong> (90–400× shortfall using the
+                  original figures)</td>
+                <td>§3.2–3.4</td>
+                <td><strong>Resolved</strong> (§3.3, higher-concentration emulsion + 1.9 L/min flow)</td>
+                <td><span class="sev cat">Catastrophic</span></td>
+              </tr>
+              <tr>
+                <td><strong>Vascular volume fraction</strong>: stated 15–20% vs. computed ≈0.17%</td>
+                <td>§3.2</td>
+                <td><strong>Resolved</strong> (correct figure now stated)</td>
+                <td><span class="sev sev">Severe</span></td>
+              </tr>
+              <tr>
+                <td><strong>Thermal budget excludes</strong> silicon-logic and 450 nm laser heat sources</td>
+                <td>§3.1–3.4, §4.3</td>
+                <td><strong>Resolved</strong> (silicon scoped out as separate system; laser heat folded into a
+                  250 W worst-case budget, §3.1)</td>
+                <td><span class="sev high">High</span></td>
+              </tr>
+              <tr>
+                <td><strong>Pennes bioheat equation</strong> misapplied to engineered forced-convection channels</td>
+                <td>§3.2</td>
+                <td><strong>Resolved, partially</strong> (perfusion term dropped explicitly; cylindrical model
+                  added, Eq. 3.6a, not yet checked against a numerical solution)</td>
+                <td><span class="sev mod">Moderate</span></td>
+              </tr>
+              <tr>
+                <td><strong>PFC solubility literature claim</strong> ("17–21 atm hyperbaric") contradicted by
+                  published data</td>
+                <td>§3.3</td>
+                <td><strong>Resolved</strong> (correct 1 atm figure now cited)</td>
+                <td><span class="sev mod">Moderate</span></td>
+              </tr>
+              <tr>
+                <td><strong>Graphene scaffold vs. SWCNT $E_{11}$ readout</strong>, including a self-contradicting
+                  metallic/photoluminescent requirement</td>
+                <td>§1.3, §3.4, §4.4</td>
+                <td><strong>Resolved</strong> (§4.4, co-embedded semiconducting SWCNT population)</td>
+                <td><span class="sev sev">Severe</span></td>
+              </tr>
+              <tr>
+                <td><strong>"Complete" biocontainment barrier</strong> claimed during natural-genome fallback period
+                </td>
+                <td>§2.1, §2.4, §7</td>
+                <td><strong>Resolved</strong> (§2.1 conditions the claim; §7 adds a separate fallback-period row)</td>
+                <td><span class="sev high">High</span></td>
+              </tr>
+              <tr>
+                <td><strong>Layer-2 audit latency</strong>: enzyme catalytic rate conflated with full
+                  signaling-cascade time</td>
+                <td>§4.1–4.3</td>
+                <td><strong>Resolved</strong> (§4.1/§4.3 now state cascade latency and the Layer 1 fallback for
+                  mid-cascade purges)</td>
+                <td><span class="sev high">High</span></td>
+              </tr>
+              <tr>
+                <td><strong>eNpHR3.0 photocurrent inactivation</strong> on a seconds timescale under sustained
+                  cycling</td>
+                <td>§4.3, §7, §8.3</td>
+                <td>Opsin replaced (Jaws); sustained-cycling tolerance of the replacement is still
+                  unverified</td>
+                <td><span class="sev mod">Moderate</span></td>
+              </tr>
+              <tr>
+                <td><strong>ChRmine and eNpHR3.0 share</strong> a ≈590 nm action-spectrum peak; mutual
+                  crosstalk unaddressed</td>
+                <td>§4.3, §8.3</td>
+                <td><strong>Resolved</strong> (Jaws gives ≈40&ndash;45 nm separation from ChRmine)</td>
+                <td><span class="sev high">High</span></td>
+              </tr>
+              <tr>
+                <td><strong>jGCaMP8f bandwidth</strong> (≈23 Hz) vs. 100 Hz sampling target</td>
+                <td>§6.3</td>
+                <td><strong>Resolved</strong> (repositioned as secondary cross-check; electrode array is now
+                  named as the actual 100 Hz channel. The indicator's own bandwidth ceiling is unchanged and
+                  unfixable by substitution)</td>
+                <td><span class="sev mod">Moderate</span></td>
+              </tr>
+              <tr>
+                <td><strong>State-vector formalism</strong>: $s(t)$ dimensionality, $H(t)$/$D(t)$ disconnect, symbol
+                  "D" overloaded</td>
+                <td>§6.1–6.4</td>
+                <td><strong>Resolved</strong> ($s_{task}$ declared scalar; $H(t)$/$D(t)$ roles stated explicitly;
+                  scalar renamed $\Delta$; Eq. 6.12 exponents unified)</td>
+                <td><span class="sev high">High</span></td>
+              </tr>
+              <tr>
+                <td><strong>HRRL rate coefficients</strong> and the 1-second thermal gate carry no measured values</td>
+                <td>§6.3–6.4</td>
+                <td><strong>Resolved</strong> (now stated explicitly as an uncalibrated functional form and an
+                  unvalidated target, respectively; no values fabricated)</td>
+                <td><span class="sev mod">Moderate</span></td>
+              </tr>
+              <tr>
+                <td><strong>"BPP complexity"</strong> claimed for Monte Carlo noise averaging; $\sqrt{N}$
+                  independence violated by engineered gap-junction coupling</td>
+                <td>§5.1, §5.3, §8.3</td>
+                <td><strong>Resolved</strong> (§5.3: BPP claim removed; effective-$N$ correction, Eq. 5.6, added)</td>
+                <td><span class="sev high">High</span></td>
+              </tr>
+              <tr>
+                <td><strong>Reference processing volume</strong>: 1 L (§3) vs. 1 m³ (§4.3) for the
+                  same system</td>
+                <td>§3.2, §4.3</td>
+                <td><strong>Resolved</strong> (§4.3 now states 1 L)</td>
+                <td><span class="sev high">High</span></td>
+              </tr>
+              <tr>
+                <td><strong>Interface capacity target</strong>: 665 Mbps headline vs. 100 Mbps Phase 3 gate vs.
+                  SNR≥10 verification threshold</td>
+                <td>Abstract, §7, §8.3</td>
+                <td><strong>Resolved</strong> (headline lowered to the SNR-derived ≈346 Mbps)</td>
+                <td><span class="sev mod">Moderate</span></td>
+              </tr>
+              <tr>
+                <td><strong>mMPS synthesis yield math</strong>: 98.7%/step compounded over 10⁶ steps
+                  ≈ 0</td>
+                <td>§2.2, §8.3</td>
+                <td><strong>Resolved</strong> (§2.2: single-nucleotide synthesis now scoped to
+                  200&ndash;500-base fragments; genome-scale assembly is hierarchical)</td>
+                <td><span class="sev sev">Severe</span></td>
+              </tr>
+              <tr>
+                <td><strong>12-month Phase 1 timeline</strong> for genome recoding of a mammalian/neuronal line</td>
+                <td>§8.3</td>
+                <td><strong>Caveated, not resolved</strong> (§8.3 now states the precedent-based objection and
+                  treats the gate criteria, not the calendar, as authoritative; the schedule itself is unchanged)</td>
+                <td><span class="sev high">High</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout ok">
+          <div class="callout-tag">Net Assessment</div>
+          This audit originally found eighteen confirmed issues spanning bioenergetics, thermal modeling, materials
+          selection, biocontainment, audit-layer timing, optogenetic tool selection, the formal state-space model,
+          and internal scale and target consistency. Across two revision passes, fifteen are now resolved outright
+          (rows 1, 2, 3, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17), two are partially resolved (row 4: the
+          governing equation is corrected and a tighter cylindrical spacing derived, but that derivation has not
+          been checked against a numerical solution; row 9: the conflicting opsin was replaced, but the
+          replacement's own sustained-cycling tolerance is unverified), and one is caveated without being resolved
+          (row 18: the 12-month timeline's unrealism is now stated explicitly in the document rather than left
+          implicit, but the Phase 0&ndash;6 schedule itself is unchanged). The oxygen-delivery budget (9.1), the
+          single fatal item in the original audit, is among those fully closed: the architecture no longer runs on
+          arithmetic that cannot support its own stated metabolic rate.
+          None of these fixes invented data to fill a gap. Where a real fix required a specific number (the
+          corrected channel spacing, the corrected oxygen solubility, the recomputed Shannon capacity), that number
+          was derived from the document's own stated parameters or from cited published data and shown in the text
+          rather than asserted. Where a real fix was not honestly available without fabricating certainty the
+          underlying science does not have (jGCaMP8f's physical bandwidth ceiling, the HRRL coefficients, the
+          synthesis-timeline realism, the cylindrical spacing derivation's own verification status), the fix was to
+          state the limitation explicitly rather than paper over it, which is why several rows above read "resolved"
+          for the architecture's claim about the problem while the underlying constraint itself remains exactly what
+          it was. This is a reason to keep treating even this revision as open to further correction, not a reason
+          to treat either the original document or this audit as finished.
+        </div>
+      </section>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════
+       SECTION 10: REFERENCES
   ════════════════════════════════════════ -->
       <section class="section" id="refs">
-        <h2 class="sh">9. References</h2>
+        <h2 class="sh">10. References</h2>
 
         <ol class="ref-list">
           <li id="ref-1"><span class="ref-num">[1]</span><span class="ref-body">Mookerjee, S.A., Gerencser, A.A.,
@@ -2226,13 +2998,33 @@
               semi-synthetic DNA. <em>Nucleic Acids Research</em>, 46(18), 9649–9658; initial stable chromosomal
               propagation demonstrated in Feldman, A.W., et al. <em>Science</em> 2017, 358(6361),
               352–354.)</span></li>
-          <li id="ref-33"><span class="ref-num">[33]</span><span class="ref-body">Kim, C.K., Adhikari, A., Deisseroth, K.
+          <li id="ref-33"><span class="ref-num">[33]</span><span class="ref-body">Kim, C.K., Adhikari, A., Deisseroth,
+              K.
               (2017). Integration of optogenetics with complementary methodologies in systems neuroscience.
               <em>Nature Reviews Neuroscience</em>, 18(4), 222–235; ChRmine characterized in: Marshel, J.H., Kim, Y.S.,
               Machado, T.A., et al. (2019). Cortical layer-specific critical dynamics triggering perception.
               <em>Science</em>, 365(6453), eaaw5202; and Kishi, K.E., Kim, Y.S., Bhatt, U., et al. (2022). Structural
               basis for channel conduction in the pump-like channelrhodopsin ChRmine. <em>Cell</em>, 185(4),
               672–689.</span></li>
+          <li id="ref-34"><span class="ref-num">[34]</span><span class="ref-body">Riess, J.G. (2001). Oxygen carriers
+              ("blood substitutes") — raison d'être, chemistry, and some physiology. <em>Chemical Reviews</em>,
+              101(9), 2797–2920. (Neat perfluorodecalin oxygen solubility at atmospheric pressure, cited in Section
+              9.2.)</span></li>
+          <li id="ref-35"><span class="ref-num">[35]</span><span class="ref-body">Zhang, Y., Rózsa, M., Liang, Y., et
+              al. (2023). Fast and sensitive GCaMP calcium indicators for imaging neural populations. <em>Nature</em>,
+              615, 884–891. (jGCaMP8f decay kinetics, cited in Section 9.6.)</span></li>
+          <li id="ref-36"><span class="ref-num">[36]</span><span class="ref-body">Gradinaru, V., Zhang, F.,
+              Ramakrishnan, C., et al. (2010). Molecular and cellular approaches for diversifying and extending
+              optogenetics. <em>Cell</em>, 141(1), 154–165. (eNpHR3.0 excitation peak, photocurrent inactivation
+              kinetics, and ChR2/eNpHR3.0 cross-activation, cited in Section 9.6.)</span></li>
+          <li id="ref-37"><span class="ref-num">[37]</span><span class="ref-body">Lajoie, M.J., Rovner, A.J.,
+              Goodman, D.B., et al. (2013). Genomically recoded organisms expand biological functions.
+              <em>Science</em>, 342(6156), 357–360. (Multi-year timeline for bacterial codon reassignment, cited in
+              Section 9.9.)</span></li>
+          <li id="ref-38"><span class="ref-num">[38]</span><span class="ref-body">Chuong, A.S., Miri, M.L.,
+              Busskamp, V., et al. (2014). Noninvasive optical inhibition with a red-shifted microbial rhodopsin.
+              <em>Nature Neuroscience</em>, 17(8), 1123–1129. (Jaws action spectrum, used in Section 4.3 to replace
+              eNpHR3.0.)</span></li>
         </ol>
       </section>
 
