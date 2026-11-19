@@ -1,553 +1,1054 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Verification-Guided Curriculum Learning: Frozen Pipeline Documentation (V7)</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<style>
-  :root {
-    --bg: #ffffff;
-    --ink: #1a1a18;
-    --ink-soft: #5c5a52;
-    --ink-faint: #8a8779;
-    --line: #e4e1d8;
-    --line-strong: #c9c5b7;
-    --accent: #2e4a52;
-    --accent-soft: #eef2f1;
-    --flag: #93582b;
-    --flag-bg: #f8f3e9;
-    --mono-bg: #f1efe7;
-  }
-  * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--ink);
-    font-family: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
-    font-size: 17px;
-    line-height: 1.7;
-    -webkit-font-smoothing: antialiased;
-  }
-  .prose { max-width: 640px; margin: 0 auto; padding: 0 24px; }
-  .wide { max-width: 800px; margin: 0 auto; padding: 0 24px; }
-  code, .k {
-    font-family: 'IBM Plex Mono', monospace;
-    background: var(--mono-bg);
-    padding: 0.1em 0.4em;
-    border-radius: 3px;
-    font-size: 0.86em;
-    white-space: normal;
-  }
-  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
-  a:hover { text-decoration: none; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verification-Guided Curriculum Learning: Frozen Pipeline Documentation (V7 + V8 Security Freeze)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --ink: #1a1a18;
+      --ink-soft: #5c5a52;
+      --ink-faint: #8a8779;
+      --line: #e4e1d8;
+      --line-strong: #c9c5b7;
+      --accent: #2e4a52;
+      --accent-soft: #eef2f1;
+      --flag: #93582b;
+      --flag-bg: #f8f3e9;
+      --mono-bg: #f1efe7;
+    }
 
-  header.head { padding: 76px 0 40px; border-bottom: 1px solid var(--line); }
-  h1 {
-    font-size: 2.15rem;
-    font-weight: 600;
-    line-height: 1.28;
-    letter-spacing: -0.01em;
-    margin: 0 0 14px;
-    max-width: 15ch;
-  }
-  .subtitle {
-    font-size: 1.06rem;
-    color: var(--ink-soft);
-    margin: 0 0 24px;
-    max-width: 46ch;
-    font-weight: 400;
-  }
-  .intro-line { font-size: 0.98rem; color: var(--ink-soft); margin: 0; max-width: 62ch; }
-  .intro-line code { font-size: 0.84em; }
+    * {
+      box-sizing: border-box;
+    }
 
-  nav.toc { padding: 34px 0; border-bottom: 1px solid var(--line); }
-  nav.toc h2 { font-size: 0.95rem; font-weight: 600; margin: 0 0 14px; color: var(--ink); }
-  nav.toc ol { columns: 2; column-gap: 36px; padding-left: 1.1em; margin: 0; }
-  nav.toc li { break-inside: avoid; margin-bottom: 7px; font-size: 0.92rem; padding-left: 2px; }
-  nav.toc a { color: var(--ink); }
-  nav.toc a:hover { color: var(--accent); }
+    html {
+      scroll-behavior: smooth;
+    }
 
-  main { padding: 6px 0 10px; }
-  section { padding: 46px 0; border-bottom: 1px solid var(--line); scroll-margin-top: 20px; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+      font-size: 17px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
 
-  h2 {
-    font-size: 1.42rem;
-    font-weight: 600;
-    margin: 0 0 20px;
-    letter-spacing: -0.005em;
-  }
-  h2 .secnum { color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 0.42em; }
-  h3 {
-    font-size: 1.05rem;
-    font-weight: 600;
-    margin: 30px 0 12px;
-  }
-  p { margin: 0 0 17px; }
-  section p:last-child, section ul:last-child, section .table-wrap:last-child, section .flag:last-child { margin-bottom: 0; }
+    .prose {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
 
-  ul { margin: 0 0 17px; padding-left: 1.35em; }
-  li { margin-bottom: 7px; }
-  li:last-child { margin-bottom: 0; }
+    .wide {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
 
-  .flag {
-    background: var(--flag-bg);
-    border-left: 3px solid var(--flag);
-    padding: 15px 20px;
-    margin: 24px 0;
-    border-radius: 0 4px 4px 0;
-  }
-  .flag p { margin: 0; font-size: 0.97rem; }
-  .flag strong { color: var(--flag); }
+    code,
+    .k {
+      font-family: 'IBM Plex Mono', monospace;
+      background: var(--mono-bg);
+      padding: 0.1em 0.4em;
+      border-radius: 3px;
+      font-size: 0.86em;
+      white-space: normal;
+    }
 
-  .table-wrap { overflow-x: auto; margin-top: 22px; margin-bottom: 22px; }
-  table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
-  th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
-  th { font-weight: 600; border-bottom: 2px solid var(--ink); white-space: nowrap; }
-  td:first-child, th:first-child { padding-left: 0; }
-  td:last-child, th:last-child { padding-right: 0; }
-  tbody tr:last-child td { border-bottom: none; }
+    a {
+      color: var(--accent);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 2px;
+    }
 
-  .formula {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 1.02rem;
-    background: var(--mono-bg);
-    padding: 14px 18px;
-    border-radius: 4px;
-    margin: 20px 0;
-    display: inline-block;
-  }
+    a:hover {
+      text-decoration: none;
+    }
 
-  .pipeline { margin: 26px 0 6px; }
-  .lane-label { font-weight: 600; color: var(--accent); font-size: 0.95rem; margin-bottom: 11px; }
-  .step-row { display: flex; flex-wrap: wrap; align-items: center; gap: 9px 6px; }
-  .step-chip {
-    border: 1px solid var(--line-strong);
-    background: #fff;
-    padding: 7px 13px;
-    border-radius: 5px;
-    font-size: 0.82rem;
-    white-space: normal;
-    line-height: 1.35;
-  }
-  .step-arrow { color: var(--ink-faint); font-size: 0.95rem; }
-  .status-pill {
-    display: inline-block;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.74rem;
-    border: 1px solid var(--accent);
-    color: var(--accent);
-    padding: 5px 12px;
-    border-radius: 999px;
-  }
-  .lane-connector {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    color: var(--ink-soft);
-    font-size: 0.86rem;
-    font-style: italic;
-    margin: 16px 0 16px 2px;
-  }
+    header.head {
+      padding: 76px 0 40px;
+      border-bottom: 1px solid var(--line);
+    }
 
-  .num-audit {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    font-size: 0.88rem;
-    padding: 8px 0;
-    border-bottom: 1px dotted var(--line-strong);
-  }
-  .num-audit:last-child { border-bottom: none; }
-  .num-audit .n { font-family: 'IBM Plex Mono', monospace; color: var(--ink); white-space: nowrap; }
-  .num-audit .s { color: var(--ink-soft); text-align: right; }
+    h1 {
+      font-size: 2.15rem;
+      font-weight: 600;
+      line-height: 1.28;
+      letter-spacing: -0.01em;
+      margin: 0 0 14px;
+      max-width: 15ch;
+    }
 
-  footer { padding: 44px 0 88px; }
-  footer p { font-size: 0.88rem; color: var(--ink-soft); max-width: 62ch; margin: 0 0 10px; }
-  footer a { color: var(--ink-soft); }
+    .subtitle {
+      font-size: 1.06rem;
+      color: var(--ink-soft);
+      margin: 0 0 24px;
+      max-width: 46ch;
+      font-weight: 400;
+    }
 
-  @media (max-width: 640px) {
-    body { font-size: 16px; }
-    header.head { padding: 52px 0 32px; }
-    h1 { font-size: 1.6rem; max-width: none; }
-    nav.toc ol { columns: 1; }
-    section { padding: 34px 0; }
-    .step-chip { font-size: 0.8rem; }
-  }
-</style>
+    .intro-line {
+      font-size: 0.98rem;
+      color: var(--ink-soft);
+      margin: 0;
+      max-width: 62ch;
+    }
+
+    .intro-line code {
+      font-size: 0.84em;
+    }
+
+    nav.toc {
+      padding: 34px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    nav.toc h2 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin: 0 0 14px;
+      color: var(--ink);
+    }
+
+    nav.toc ol {
+      columns: 2;
+      column-gap: 36px;
+      padding-left: 1.1em;
+      margin: 0;
+    }
+
+    nav.toc li {
+      break-inside: avoid;
+      margin-bottom: 7px;
+      font-size: 0.92rem;
+      padding-left: 2px;
+    }
+
+    nav.toc a {
+      color: var(--ink);
+    }
+
+    nav.toc a:hover {
+      color: var(--accent);
+    }
+
+    main {
+      padding: 6px 0 10px;
+    }
+
+    section {
+      padding: 46px 0;
+      border-bottom: 1px solid var(--line);
+      scroll-margin-top: 20px;
+    }
+
+    h2 {
+      font-size: 1.42rem;
+      font-weight: 600;
+      margin: 0 0 20px;
+      letter-spacing: -0.005em;
+    }
+
+    h2 .secnum {
+      color: var(--accent);
+      font-variant-numeric: tabular-nums;
+      margin-right: 0.42em;
+    }
+
+    h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin: 30px 0 12px;
+    }
+
+    p {
+      margin: 0 0 17px;
+    }
+
+    section p:last-child,
+    section ul:last-child,
+    section .table-wrap:last-child,
+    section .flag:last-child {
+      margin-bottom: 0;
+    }
+
+    ul {
+      margin: 0 0 17px;
+      padding-left: 1.35em;
+    }
+
+    li {
+      margin-bottom: 7px;
+    }
+
+    li:last-child {
+      margin-bottom: 0;
+    }
+
+    .flag {
+      background: var(--flag-bg);
+      border-left: 3px solid var(--flag);
+      padding: 15px 20px;
+      margin: 24px 0;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .flag p {
+      margin: 0;
+      font-size: 0.97rem;
+    }
+
+    .flag strong {
+      color: var(--flag);
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      margin-top: 22px;
+      margin-bottom: 22px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+    }
+
+    th,
+    td {
+      text-align: left;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+
+    th {
+      font-weight: 600;
+      border-bottom: 2px solid var(--ink);
+      white-space: nowrap;
+    }
+
+    td:first-child,
+    th:first-child {
+      padding-left: 0;
+    }
+
+    td:last-child,
+    th:last-child {
+      padding-right: 0;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .formula {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 1.02rem;
+      background: var(--mono-bg);
+      padding: 14px 18px;
+      border-radius: 4px;
+      margin: 20px 0;
+      display: inline-block;
+    }
+
+    .pipeline {
+      margin: 26px 0 6px;
+    }
+
+    .lane-label {
+      font-weight: 600;
+      color: var(--accent);
+      font-size: 0.95rem;
+      margin-bottom: 11px;
+    }
+
+    .step-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 9px 6px;
+    }
+
+    .step-chip {
+      border: 1px solid var(--line-strong);
+      background: #fff;
+      padding: 7px 13px;
+      border-radius: 5px;
+      font-size: 0.82rem;
+      white-space: normal;
+      line-height: 1.35;
+    }
+
+    .step-arrow {
+      color: var(--ink-faint);
+      font-size: 0.95rem;
+    }
+
+    .status-pill {
+      display: inline-block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.74rem;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 5px 12px;
+      border-radius: 999px;
+    }
+
+    .lane-connector {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      color: var(--ink-soft);
+      font-size: 0.86rem;
+      font-style: italic;
+      margin: 16px 0 16px 2px;
+    }
+
+    .num-audit {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 0.88rem;
+      padding: 8px 0;
+      border-bottom: 1px dotted var(--line-strong);
+    }
+
+    .num-audit:last-child {
+      border-bottom: none;
+    }
+
+    .num-audit .n {
+      font-family: 'IBM Plex Mono', monospace;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+
+    .num-audit .s {
+      color: var(--ink-soft);
+      text-align: right;
+    }
+
+    footer {
+      padding: 44px 0 88px;
+    }
+
+    footer p {
+      font-size: 0.88rem;
+      color: var(--ink-soft);
+      max-width: 62ch;
+      margin: 0 0 10px;
+    }
+
+    footer a {
+      color: var(--ink-soft);
+    }
+
+    @media (max-width: 640px) {
+      body {
+        font-size: 16px;
+      }
+
+      header.head {
+        padding: 52px 0 32px;
+      }
+
+      h1 {
+        font-size: 1.6rem;
+        max-width: none;
+      }
+
+      nav.toc ol {
+        columns: 1;
+      }
+
+      section {
+        padding: 34px 0;
+      }
+
+      .step-chip {
+        font-size: 0.8rem;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<header class="head">
-  <div class="prose">
-    <h1>Verification-Guided Curriculum Learning</h1>
-    <p class="subtitle">A frozen pipeline and an unresolved hypothesis: forensic documentation of the VGCL_Pipeline repository through its V7 freeze.</p>
-    <p class="intro-line">This document describes <code>tazwaryayyyy/VGCL_Pipeline</code> as it stood at tag <code>phase0-experiment-freeze-v7</code>, commit <code>98398d6e49736d83fa3c39560d4d556a8a760419</code>, frozen on 11 September 2026. The repository's status is frozen and archived; a later commit to the main branch, <code>acbea49</code>, is documentation-only and does not alter the implementation described here.</p>
-  </div>
-</header>
+  <header class="head">
+    <div class="prose">
+      <h1>Verification-Guided Curriculum Learning</h1>
+      <p class="subtitle">Repository documentation covering the V7 experimental freeze and the V8 sandbox security
+        hardening of VGCL_Pipeline.</p>
+      <p class="intro-line">This document describes <code>tazwaryayyyy/VGCL_Pipeline</code>. The experimental
+        methodology was frozen on 11 September 2026 at tag <code>phase0-experiment-freeze-v7</code> (commit
+        <code>98398d6e49736d83fa3c39560d4d556a8a760419</code>), followed by documentation commit <code>acbea49</code>.
+        On 19 November 2026, tag <code>phase0-experiment-freeze-v8</code> (commit
+        <code>126ed4351ef2a7176b94004babaafb2ad7dad968</code>)
+        replaced in-process code execution with fail-closed OS and container sandboxes while leaving prompts, model
+        identity, and experiment policy unchanged.
+      </p>
+    </div>
+  </header>
 
-<nav class="toc">
-  <div class="prose">
-    <h2>Contents</h2>
-    <ol>
-      <li><a href="#abstract">Abstract</a></li>
-      <li><a href="#research-question">Research question and hypothesis</a></li>
-      <li><a href="#background">Background and motivation</a></li>
-      <li><a href="#experimental-design">Experimental design</a></li>
-      <li><a href="#architecture">Final VGCL architecture</a></li>
-      <li><a href="#model-roles">Model roles</a></li>
-      <li><a href="#failure-targeting">Failure targeting</a></li>
-      <li><a href="#probing">Base-model probing</a></li>
-      <li><a href="#verification">Verification and candidate quality</a></li>
-      <li><a href="#treatment-control">Treatment and uniform control</a></li>
-      <li><a href="#provenance">Provenance, leakage, and dataset integrity</a></li>
-      <li><a href="#statistics">Statistical analysis framework</a></li>
-      <li><a href="#audits">What the audits revealed</a></li>
-      <li><a href="#frozen-state">Final frozen state</a></li>
-      <li><a href="#limitations">Limitations</a></li>
-      <li><a href="#scientific-status">Scientific status</a></li>
-      <li><a href="#repository">Repository and reproducibility</a></li>
-    </ol>
-  </div>
-</nav>
+  <nav class="toc">
+    <div class="prose">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#abstract">Abstract</a></li>
+        <li><a href="#research-question">Research question and hypothesis</a></li>
+        <li><a href="#background">Background and motivation</a></li>
+        <li><a href="#experimental-design">Experimental design</a></li>
+        <li><a href="#architecture">Final VGCL architecture</a></li>
+        <li><a href="#model-roles">Model roles</a></li>
+        <li><a href="#failure-targeting">Failure targeting</a></li>
+        <li><a href="#probing">Base-model probing</a></li>
+        <li><a href="#verification">Verification and candidate quality</a></li>
+        <li><a href="#treatment-control">Treatment and uniform control</a></li>
+        <li><a href="#provenance">Provenance, leakage, and dataset integrity</a></li>
+        <li><a href="#statistics">Statistical analysis framework</a></li>
+        <li><a href="#audits">What the audits revealed</a></li>
+        <li><a href="#frozen-state">Final frozen state</a></li>
+        <li><a href="#limitations">Limitations</a></li>
+        <li><a href="#scientific-status">Scientific status</a></li>
+        <li><a href="#repository">Repository and reproducibility</a></li>
+      </ol>
+    </div>
+  </nav>
 
-<main>
+  <main>
 
-<section id="abstract">
-  <div class="prose">
-    <h2><span class="secnum">1.</span>Abstract</h2>
-    <p>Verification-Guided Curriculum Learning (VGCL) investigates whether failure-targeted verified synthetic curricula produce greater capability transfer than uniformly sampled verified synthetic curricula, under identical compute budgets. This document reports the frozen state of the VGCL_Pipeline repository based on a forensic audit of its complete history, through its V7 freeze on 11 September 2026.</p>
-    <p>The project built a two-environment pipeline: local generation, repair, and verification of synthetic programming problems, followed by remote probing of a small base model to measure observed failure, followed by local ingestion, target validation, and eligibility gating. Successive audits across the project's history found that earlier versions conflated requested failure targets with observed ones, measured difficulty synthetically rather than empirically, allowed treatment and control conditions to drift apart in ways beyond the intended targeting difference, permitted fallback-model contamination, and risked leakage between calibration and evaluation data. Later revisions addressed each problem individually; V7 consolidates the repairs into a single eligibility and provenance system.</p>
-    <p>The repository's authoritative test suite passed in full under direct execution, which establishes that the implementation behaves as specified for the properties those tests check. It does not constitute evidence about model capability or about the central hypothesis.</p>
-    <p>No treatment/control training-and-evaluation cohort was completed before the freeze. The central question remains open: does failure targeting outperform uniform sampling? What follows reports what the pipeline does, what its audits found, and what was never measured.</p>
-  </div>
-</section>
-
-<section id="research-question">
-  <div class="prose">
-    <h2><span class="secnum">2.</span>Research question and hypothesis</h2>
-    <p>VGCL was built to answer one question: do failure-targeted verified synthetic curricula produce greater capability transfer than uniformly sampled verified synthetic curricula, under identical compute budgets?</p>
-    <p>The hypothesis under test is that they do: generating synthetic training problems aimed at a model's observed failures is more sample-efficient than generating the same volume of verified problems without that targeting.</p>
-    <p>Testing this hypothesis requires a completed comparison: a treatment cohort and a control cohort, matched on compute budget and pipeline quality, carried through training and evaluation under conditions that isolate targeting as the variable of interest. That comparison was not completed before the project was frozen. Nothing in this document should be read as reporting its result, because no such result exists.</p>
-  </div>
-</section>
-
-<section id="background">
-  <div class="prose">
-    <h2><span class="secnum">3.</span>Background and motivation</h2>
-    <p>Curriculum learning and targeted data selection are established ideas in machine learning: the order and composition of training data can affect what a model learns and how efficiently it learns it. Pairing automated verification with synthetic data generation is a similarly established way to scale training data for program synthesis and code-generation tasks. Tests or differential checks certify that a generated problem and its solution are actually correct, so the resulting data does not depend entirely on human-authored problems.</p>
-    <p>VGCL combines these two ideas and asks a narrower, empirical question: given a verified synthetic-data pipeline capable of generating problems either uniformly across a task distribution or deliberately targeted at a model's observed failures, does the targeted version transfer better under matched compute? Pairing verification or search with iterative training is a related motivation in other machine learning research, in domains such as program synthesis and formal reasoning that differ substantially in scale, method, and verification model from the pipeline described here. VGCL does not extend or depend on results from those systems; it is a self-contained pipeline built to test one specific comparison.</p>
-  </div>
-</section>
-
-<section id="experimental-design">
-  <div class="prose">
-    <h2><span class="secnum">4.</span>Experimental design</h2>
-    <p>The intended experiment compares two conditions under equal compute:</p>
-    <ul>
-      <li><strong>Treatment:</strong> a verified synthetic curriculum generated with generation deliberately targeted at failure clusters observed in the base model.</li>
-      <li><strong>Control:</strong> a verified synthetic curriculum generated uniformly across a fixed set of algorithmic subtypes, without failure targeting.</li>
-    </ul>
-    <p>Both conditions share the same generation, repair, and verification infrastructure; the intended difference between them is the presence or absence of failure targeting. A completed experiment would carry both cohorts through identical training and evaluation and compare capability transfer between them.</p>
-    <p>The frozen repository contains the infrastructure to generate both cohorts and the machinery to gate, validate, and track their provenance. It does not contain a completed run of the comparison itself. Sections 5 through 11 describe that infrastructure: what it does, and what it did and did not establish about the cohorts it can produce.</p>
-  </div>
-</section>
-
-<section id="architecture">
-  <div class="prose">
-    <h2><span class="secnum">5.</span>Final VGCL architecture</h2>
-    <p>The V7 pipeline runs in three stages across two execution environments: local generation and verification, remote probing on Kaggle, and local ingestion of the probe result.</p>
-  </div>
-  <div class="wide">
-    <div class="pipeline">
-      <div class="lane-label">Local generation and verification</div>
-      <div class="step-row">
-        <span class="step-chip">API generation</span><span class="step-arrow">→</span>
-        <span class="step-chip">Syntax / repair</span><span class="step-arrow">→</span>
-        <span class="step-chip">Reference-independence screening</span><span class="step-arrow">→</span>
-        <span class="step-chip">Subtype validation</span><span class="step-arrow">→</span>
-        <span class="step-chip">Phase A verification</span><span class="step-arrow">→</span>
-        <span class="step-chip">Phase B verification</span><span class="step-arrow">→</span>
-        <span class="step-chip">Structural deduplication</span><span class="step-arrow">→</span>
-        <span class="step-chip">Ledger / manifest staging</span><span class="step-arrow">→</span>
-        <span class="status-pill">PENDING_KAGGLE_PROBE</span>
+    <section id="abstract">
+      <div class="prose">
+        <h2><span class="secnum">1.</span>Abstract</h2>
+        <p>Verification-Guided Curriculum Learning (VGCL) asks whether failure-targeted verified synthetic curricula
+          produce better capability transfer than uniformly sampled verified synthetic curricula under equal compute
+          budgets. This document records the final state of the <code>VGCL_Pipeline</code> repository across its V7
+          experimental freeze (11 September 2026) and its V8 execution-security freeze (19 November 2026).</p>
+        <p>The pipeline splits work across two environments: local problem generation, repair, and behavioral
+          verification, followed by remote probing of a small base model to observe where it fails, followed by local
+          ingestion, target checks, and eligibility gating. Successive audits of earlier versions found label-only
+          targeting, synthetic difficulty assignment, drift between treatment and control cohorts, fallback-model
+          contamination, calibration-evaluation leakage, and untrusted code execution inside model-owning and
+          verification processes. Each issue was patched in later revisions, ending with V7's eligibility and provenance
+          layer and V8's sandbox isolation.</p>
+        <p>Software regression suites verify that the code gates, serialization boundaries, and sandbox isolation behave
+          as implemented. Those tests say nothing about model capability or curriculum effectiveness. Because no
+          treatment and control training comparison was ever completed, the central empirical question remains
+          unresolved.</p>
       </div>
-      <div class="lane-connector">↓ manifest sent to Kaggle</div>
-      <div class="lane-label">Remote probing on Kaggle</div>
-      <div class="step-row">
-        <span class="step-chip">Manifest</span><span class="step-arrow">→</span>
-        <span class="step-chip">Qwen/Qwen2.5-1.5B-Instruct</span><span class="step-arrow">→</span>
-        <span class="step-chip">Pass@1 / Pass@10 probing</span><span class="step-arrow">→</span>
-        <span class="step-chip">Probe result</span>
+    </section>
+
+    <section id="research-question">
+      <div class="prose">
+        <h2><span class="secnum">2.</span>Research question and hypothesis</h2>
+        <p>VGCL is designed to test one empirical question: under equal compute budgets, does a verified synthetic
+          programming curriculum targeted at a base model's observed failures transfer capability better than a verified
+          synthetic curriculum sampled uniformly without targeting?</p>
+        <p>The hypothesis expects higher sample efficiency from targeting because generated tasks concentrate on error
+          modes the base model actually exhibits rather than spending capacity on tasks it already solves or rarely
+          encounters.</p>
+        <p>Answering this requires training and evaluating matched treatment and control cohorts under identical
+          hyperparameters, compute limits, and pipeline quality controls. That training and evaluation run was never
+          completed before the repository was frozen, so no outcome is reported here.</p>
       </div>
-      <div class="lane-connector">↓ probe result returned locally</div>
-      <div class="lane-label">Local ingestion</div>
-      <div class="step-row">
-        <span class="step-chip">Probe result</span><span class="step-arrow">→</span>
-        <span class="step-chip">Integrity / provenance checks</span><span class="step-arrow">→</span>
-        <span class="step-chip">Target validation</span><span class="step-arrow">→</span>
-        <span class="step-chip">Primary eligibility</span><span class="step-arrow">→</span>
-        <span class="status-pill">Approved / auxiliary</span>
+    </section>
+
+    <section id="background">
+      <div class="prose">
+        <h2><span class="secnum">3.</span>Background and motivation</h2>
+        <p>Curriculum learning assumes that example selection and ordering alter what a model learns per unit of
+          compute. Automated verification offers a way to scale synthetic code data without relying strictly on
+          human-written problem sets, because differential tests and reference checks filter out broken solutions before
+          training.</p>
+        <p>VGCL combines these two components in a controlled setting. Instead of asking whether synthetic data helps in
+          general, the pipeline isolates the selection policy: given identical generators, verifiers, and budget, does
+          steering generation toward measured model errors beat uniform coverage across problem subtypes? Similar
+          combinations of search, verification, and iterative training exist elsewhere in program synthesis and formal
+          reasoning, though at different scales and with stronger formal guarantees than the behavioral checks used
+          here.</p>
       </div>
+    </section>
+
+    <section id="experimental-design">
+      <div class="prose">
+        <h2><span class="secnum">4.</span>Experimental design</h2>
+        <p>The planned experiment compares two curriculum conditions under a shared compute budget:</p>
+        <ul>
+          <li><strong>Treatment:</strong> verified synthetic programming problems generated to target failure clusters
+            observed on the base model.</li>
+          <li><strong>Control:</strong> verified synthetic programming problems generated round-robin across six
+            Monotonic Queue / Deque subtypes without failure targeting.</li>
+        </ul>
+        <p>Both conditions share the same generation model, repair pass, differential oracle, and structural
+          deduplication machinery. The intended experimental contrast is solely the targeting mechanism. As frozen, the
+          repository implements cohort generation, probing, gating, and provenance tracking, but stops short of training
+          or evaluating models on either cohort.</p>
+      </div>
+    </section>
+
+    <section id="architecture">
+      <div class="prose">
+        <h2><span class="secnum">5.</span>Final VGCL architecture</h2>
+        <p>V7 organizes execution into three stages split between a local workstation and a remote GPU runner on Kaggle.
+        </p>
+      </div>
+      <div class="wide">
+        <div class="pipeline">
+          <div class="lane-label">Local generation and verification</div>
+          <div class="step-row">
+            <span class="step-chip">API generation</span><span class="step-arrow">&rarr;</span>
+            <span class="step-chip">Syntax / repair</span><span class="step-arrow">&rarr;</span>
+            <span class="step-chip">Reference-independence screening</span><span class="step-arrow">&rarr;</span>
+            <span class="step-chip">Subtype validation</span><span class="step-arrow">&rarr;</span>
+            <span class="step-chip">Phase A verification</span><span class="step-arrow">&rarr;</span>
+            <span class="step-chip">Phase B verification</span><span class="step-arrow">&rarr;</span>
+            <span class="step-chip">Structural deduplication</span><span class="step-arrow">&rarr;</span>
+            <span class="step-chip">Ledger / manifest staging</span><span class="step-arrow">&rarr;</span>
+            <span class="status-pill">PENDING_KAGGLE_PROBE</span>
+          </div>
+          <div class="lane-connector">&darr; manifest transferred to Kaggle</div>
+          <div class="lane-label">Remote probing on Kaggle</div>
+          <div class="step-row">
+            <span class="step-chip">Manifest</span><span class="step-arrow">&rarr;</span>
+            <span class="step-chip">Qwen/Qwen2.5-1.5B-Instruct</span><span class="step-arrow">&rarr;</span>
+            <span class="step-chip">Pass@1 / Pass@10 probing</span><span class="step-arrow">&rarr;</span>
+            <span class="step-chip">Isolated sandbox eval</span><span class="step-arrow">&rarr;</span>
+            <span class="step-chip">Probe result</span>
+          </div>
+          <div class="lane-connector">&darr; probe result returned locally</div>
+          <div class="lane-label">Local ingestion</div>
+          <div class="step-row">
+            <span class="step-chip">Probe result</span><span class="step-arrow">&rarr;</span>
+            <span class="step-chip">Integrity / provenance checks</span><span class="step-arrow">&rarr;</span>
+            <span class="step-chip">Target validation</span><span class="step-arrow">&rarr;</span>
+            <span class="step-chip">Primary eligibility</span><span class="step-arrow">&rarr;</span>
+            <span class="status-pill">Approved / auxiliary</span>
+          </div>
+        </div>
+      </div>
+      <div class="prose">
+        <p>Generation and candidate verification run locally one item at a time. An API call generates a task
+          specification, an optimized solution, a test generator, and a separate reference solution. The package
+          undergoes syntax repair, reference-independence screening, subtype checks, two behavioral verification phases,
+          and structural deduplication before being queued in a manifest marked <code>PENDING_KAGGLE_PROBE</code>.</p>
+        <p>Remote probing loads <code>Qwen/Qwen2.5-1.5B-Instruct</code>, samples completions under the Pass@1 and
+          Pass@10 protocol, and evaluates every generated solution alongside its test generator and reference inside a
+          centralized sandbox (<code>isolated_executor.py</code>). Probe results return to local ingestion for hash
+          verification, target validation, and primary eligibility gating into approved or auxiliary pools.</p>
+      </div>
+    </section>
+
+    <section id="model-roles">
+      <div class="prose">
+        <h2><span class="secnum">6.</span>Model roles</h2>
+        <p>Four model roles exist in the pipeline and are kept separate by configuration and prompt boundary.</p>
+      </div>
+      <div class="wide table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Role</th>
+              <th>Model / mechanism</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Generator</td>
+              <td><code>gemini-3.6-flash</code></td>
+            </tr>
+            <tr>
+              <td>Fallback generators</td>
+              <td><code>gemini-3.1-flash-lite</code>, <code>gemini-3.5-flash-lite</code>,
+                <code>gemini-flash-latest</code>
+              </td>
+            </tr>
+            <tr>
+              <td>Base / probe model</td>
+              <td><code>Qwen/Qwen2.5-1.5B-Instruct</code></td>
+            </tr>
+            <tr>
+              <td>Reference</td>
+              <td>Separate API call under the generator policy, prompt-isolated from the optimized solution</td>
+            </tr>
+            <tr>
+              <td>Trained model</td>
+              <td>None present in the frozen repository</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="prose">
+        <p>The Gemini models generate tasks, references, and test suites; Qwen only generates candidate solutions during
+          probing. No fine-tuned checkpoint from VGCL curriculum data exists in the repository.</p>
+      </div>
+    </section>
+
+    <section id="failure-targeting">
+      <div class="prose">
+        <h2><span class="secnum">7.</span>Failure targeting</h2>
+        <p>Failure targeting links generation to observed model errors by categorizing runtime failures on probes and
+          checking whether newly generated tasks trigger the requested failure category.</p>
+
+        <h3>Failure clusters</h3>
+        <p>Eight failure clusters label observed runtime outcomes during execution. They describe test behavior only and
+          make no claim about internal model circuits or latent representations.</p>
+      </div>
+      <div class="wide table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Cluster</th>
+              <th>Runtime condition</th>
+              <th>Known probing limit</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>FC_01_MICRO_CORRECTNESS</code></td>
+              <td>Incorrect output on small-scale inputs</td>
+              <td>Can absorb unrelated small-scale exceptions or errors</td>
+            </tr>
+            <tr>
+              <td><code>FC_02_SCALE_DIVERGENCE</code></td>
+              <td>Breaks down as input scale increases</td>
+              <td>Under-exercised because probing runs small-scale cases</td>
+            </tr>
+            <tr>
+              <td><code>FC_03_TERMINATION</code></td>
+              <td>Exceeds execution time limit or fails to finish cleanly</td>
+              <td>Wall-clock timeouts stop hung code, though slow algorithms still map to the same cluster as infinite
+                loops</td>
+            </tr>
+            <tr>
+              <td><code>FC_04_BOUNDS_VIOLATION</code></td>
+              <td>Violates declared input or output bounds</td>
+              <td>None noted</td>
+            </tr>
+            <tr>
+              <td><code>FC_05_RESOURCE_FAILURE</code></td>
+              <td>Exceeds memory or runtime resource limits</td>
+              <td>Large-scale resource triggers rarely reached on small probes</td>
+            </tr>
+            <tr>
+              <td><code>FC_06_FORMAT_CONTRACT</code></td>
+              <td>Violates expected return type or shape</td>
+              <td>None noted</td>
+            </tr>
+            <tr>
+              <td><code>FC_07_STATE_INCONSISTENCY</code></td>
+              <td>Produces inconsistent output across stateful calls</td>
+              <td>Multi-call state checks are absent in standard small probes</td>
+            </tr>
+            <tr>
+              <td><code>FC_08_UNKNOWN</code></td>
+              <td>Failures outside the categories above</td>
+              <td>Can be shadowed by small-scale fallback classification</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="prose">
+        <p>Sandbox initialization and infrastructure errors (<code>SandboxInfrastructureError</code>) propagate as
+          operational failures rather than being coerced into candidate failure clusters or false <code>Pass@1=0</code>
+          observations.</p>
+
+        <h3>Target validation</h3>
+        <p>Asking a generator for an <code>FC_01</code> problem only records intent. A candidate enters the validated
+          targeted pool only after Qwen runs on it, fails, and yields a failure cluster matching the request. Earlier
+          pipeline versions treated the requested label as sufficient on its own.</p>
+        <div class="flag">
+          <p><strong>Merge-step trust gap:</strong> <code>merge_probe_results.py</code> accepts the declared
+            target-validation status attached to incoming probe metadata rather than recomputing the failure
+            classification from raw execution traces during ingestion. Target authenticity improved once observed
+            probing became mandatory, though local ingestion still trusts the probe-side label assignment.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="probing">
+      <div class="prose">
+        <h2><span class="secnum">8.</span>Base-model probing</h2>
+        <p>Probing evaluates <code>Qwen/Qwen2.5-1.5B-Instruct</code> on each staged item under two sampling settings:
+        </p>
+        <ul>
+          <li><strong>Pass@1:</strong> one greedy completion.</li>
+          <li><strong>Pass@10:</strong> one greedy completion plus nine sampled completions at temperature 0.8 and top-p
+            0.95 (k = 10).</li>
+        </ul>
+        <p class="formula">difficulty = 1.0 &minus; pass@10</p>
+        <p>In the implementation, <code>pass@10</code> is binary per item: 1.0 if any of the ten attempts passes, 0.0 if
+          all ten fail. Item difficulty is therefore binary (0.0 or 1.0) rather than a continuous pass rate across ten
+          samples.</p>
+        <p>Model and tokenizer loading in <code>base_model_prober.py</code>,
+          <code>phase0_calibration/extract_trajectories.py</code>, and
+          <code>phase0_calibration/prepare_calibration_data.py</code> sets <code>trust_remote_code=False</code>, relying
+          on native Hugging Face <code>Qwen2ForCausalLM</code> support rather than executing remote repository code. In
+          <code>kaggle_probe.py</code>, execution checks <code>get_active_sandbox()</code> before downloading or loading
+          model weights and fails closed if no compliant isolation backend is available.
+        </p>
+        <p>Default execution blocks local Qwen loading through a probe guard so GPU probing runs remotely, though
+          explicit overrides exist for controlled local runs and calibration utilities load the model directly.</p>
+        <p>Several provenance fields are missing from probing logs, limiting exact bitwise reproduction of past Kaggle
+          runs:</p>
+        <ul>
+          <li>Model weight SHA-256 hash</li>
+          <li>Tokenizer hash</li>
+          <li>Full library and CUDA dependency versions</li>
+          <li>GPU hardware model</li>
+          <li>Complete RNG state across sampling</li>
+          <li>Full text of all sampled completions</li>
+          <li>Complete stopping specification</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="verification">
+      <div class="prose">
+        <h2><span class="secnum">9.</span>Verification and candidate quality</h2>
+        <p>Generated candidates go through behavioral checks and structural screens rather than formal program proofs.
+        </p>
+
+        <h3>Phase A and Phase B</h3>
+        <p>In <code>oracle_refactor.py</code> (and the legacy verifier path), Phase A tests the optimized solution
+          differentially against the brute-force reference on generated small inputs. Phase B runs the optimized
+          solution alone on larger inputs and compares observed timing and AST complexity heuristics against declared
+          constraints. Neither phase provides formal correctness guarantees, Phase B lacks a reference check at large
+          scale, and minimum large-case input sizes are not strictly enforced across every generator.</p>
+
+        <h3>Isolated execution boundary</h3>
+        <p>In V7, behavioral verification ran via standard multiprocessing and in-process <code>exec()</code> with AST
+          checks and Python socket monkey-patching. In V8, all untrusted execution paths in
+          <code>base_model_prober.py</code>, <code>oracle_refactor.py</code>, <code>legacy/verifier.py</code>, and
+          <code>legacy/audit_curriculum.py</code> were consolidated into <code>isolated_executor.py</code>.
+        </p>
+        <p>Test generators, optimized solutions, and brute-force references now execute in separate sandbox invocations,
+          with differential comparison performed by the trusted parent over bounded, tagged JSON IPC instead of
+          <code>pickle</code>. Each invocation uses a three-process split (non-dumpable supervisor, non-dumpable trusted
+          runner, and candidate) with per-run nonce authentication so the untrusted child never holds the supervisor
+          response descriptor and cannot set <code>passed</code>, <code>execution_time</code>, or
+          <code>memory_mb</code>.
+        </p>
+        <p>Two fail-closed backends are supported via <code>VGCL_SANDBOX_BACKEND</code> (<code>auto</code>,
+          <code>container</code>, or <code>linux_ns</code>), with process-only and in-process fallbacks removed:
+        </p>
+        <ul>
+          <li><strong>Container backend:</strong> Docker or Podman using a digest-pinned Python image
+            (<code>--pull=never</code>, <code>--network none</code>, <code>--read-only</code>,
+            <code>--cap-drop ALL</code>, <code>no-new-privileges</code>, <code>--ipc none</code>, UID/GID 65534,
+            memory/swap/CPU/PID/FD limits, zero host bind mounts, forced <code>rm -f</code> removal on timeout, OCI
+            default seccomp).
+          </li>
+          <li><strong>Linux namespace backend:</strong> unprivileged user, network, PID, and mount namespaces with a
+            read-only minimal root via <code>pivot_root</code>, private <code>/proc</code>, minimal <code>/dev</code>,
+            private <code>tmpfs</code> <code>/tmp</code>, <code>PR_SET_PDEATHSIG</code>, <code>PR_SET_DUMPABLE=0</code>,
+            <code>PR_SET_NO_NEW_PRIVS=1</code>, resource limits, and an architecture-specific seccomp-BPF filter
+            blocking network syscalls and nested namespace creation.
+          </li>
+        </ul>
+        <p>Residual isolation limits remain documented: both backends share the host kernel; candidates under the Linux
+          namespace backend map as UID 0 inside their user namespace (making theoretical
+          <code>/proc/&lt;pid&gt;/mem</code> inspection of the runner possible under <code>--map-root-user</code>, even
+          with <code>ptrace</code> and <code>process_vm_readv/writev</code> seccomp-blocked); container execution uses
+          OCI default seccomp rather than VGCL's custom BPF filter; and <code>per_case_times</code> inside Phase B
+          remains candidate-reported within runner-enforced total wall-clock limits.
+        </p>
+
+        <h3>Reference independence</h3>
+        <p>Reference implementations are generated in a separate prompt-isolated API call and screened against the
+          optimized solution, rejecting pairs whose structural similarity exceeds 0.85. Structural dissimilarity shows
+          the two functions differ syntactically, but does not rule out shared algorithmic misunderstandings or
+          correlated provider priors.</p>
+
+        <h3>Deduplication</h3>
+        <p>Candidates are compared using normalized ASTs, control-flow graphs, hashes, and 4-gram Jaccard similarity
+          with a 0.70 rejection threshold. Deduplication state lives in memory per invocation, meaning separate runs do
+          not deduplicate against one another. Targeted and uniform pipelines also run separate deduplication instances,
+          no deduplication runs against external evaluation benchmarks, and rejected duplicates stay in the per-run
+          index and continue to influence later similarity checks.</p>
+      </div>
+    </section>
+
+    <section id="treatment-control">
+      <div class="prose">
+        <h2><span class="secnum">10.</span>Treatment and uniform control</h2>
+        <p>The control arm is uniform over a closed schedule rather than over all possible programs: generation cycles
+          round-robin across six Monotonic Queue / Deque algorithmic subtypes (Types A through F).</p>
+        <p>Control and treatment share the same generator backend, repair logic, oracle checks, and ledger schema. They
+          differ in prompt framing, absence of failure-cluster targeting, subtype rotation schedule, seed ranges, and
+          eligibility metadata.</p>
+
+        <h3>Eligibility gates</h3>
+        <p>Uniform items require quality verification and receive control status <code>UNIFORM_CONTROL</code> with
+          target status <code>NOT_APPLICABLE</code>. Targeted primary items must clear thirteen conditions:</p>
+        <ul>
+          <li>Phase A verification passed</li>
+          <li>Phase B verification passed</li>
+          <li>Structural hash present</li>
+          <li>Structural similarity below 0.70 threshold</li>
+          <li>No manual reviewer override</li>
+          <li>Neither pass used a fallback generator</li>
+          <li>Primary generator produced both passes</li>
+          <li>Recorded generator policy matches expected policy</li>
+          <li>Canonical subtype label</li>
+          <li>Target validation status equals <code>VALIDATED</code></li>
+          <li>Non-empty probe-result SHA-256 hash</li>
+          <li>Parseable failure evidence payload</li>
+          <li>Generated subtype matches requested subtype</li>
+        </ul>
+        <p>Even with this gate in place, no completed final dataset demonstrates that realized treatment and control
+          pools are matched on empirical difficulty, token length, or subtype proportions. Isolating targeting as the
+          sole difference between arms remains a design intent rather than an observed property of finished cohorts.</p>
+      </div>
+    </section>
+
+    <section id="provenance">
+      <div class="prose">
+        <h2><span class="secnum">11.</span>Provenance, leakage, and dataset integrity</h2>
+
+        <h3>Fallbacks</h3>
+        <p>When API quotas or transient faults interrupt generation, requests can route to fallback models
+          (<code>gemini-3.1-flash-lite</code>, <code>gemini-3.5-flash-lite</code>, or <code>gemini-flash-latest</code>).
+          Because the optimized and reference passes invoke the API separately, a single item can mix models. Primary
+          eligibility rejects any item flagged with fallback usage. Historical archived runs contain fallback-mixed
+          items; because no final training cohort was assembled, purity of a finished experiment population is enforced
+          in code but unobserved on final data.</p>
+
+        <h3>Leakage</h3>
+        <p>Earlier calibration files overlapped with evaluation material. Current calibration data draws from MBPP
+          training data while keeping the older contaminated file archived separately. An ID-overlap guard blocks
+          matching identifiers between calibration and evaluation sets, though ID disjointness alone cannot detect
+          near-duplicate problem statements filed under distinct IDs.</p>
+
+        <h3>Ledger</h3>
+        <p>The SQLite ledger tracks candidate generation, verification, probing, and eligibility outcomes. It uses
+          <code>INSERT OR REPLACE</code> semantics, allows in-place row replacement rather than append-only writes,
+          lacks full foreign-key enforcement across tables, permits duplicate JSONL entries, does not hash full
+          candidate packages end-to-end, and omits complete prompt coverage.
+        </p>
+
+        <h3>Hashes</h3>
+        <p>SHA-256 hashes detect accidental corruption or drift across canonicalized fields. They verify content
+          matching against a recorded digest rather than providing cryptographic authentication of origin or authorship.
+        </p>
+      </div>
+    </section>
+
+    <section id="statistics">
+      <div class="prose">
+        <h2><span class="secnum">12.</span>Statistical analysis framework</h2>
+        <p>The module <code>statistical_analysis.py</code> contains planning utilities that take design parameters such
+          as an assumed intraclass correlation (<code>&rho; = 0.20</code>) and design effect to estimate sample sizes
+          before data collection. Those numbers are prior design inputs rather than empirical power or effect-size
+          measurements from an actual run.</p>
+        <div class="flag">
+          <p><strong>Implementation bug:</strong> <code>statistical_analysis.py</code> labels a normal-tail
+            approximation as a permutation-test p-value, without running permutations and without passing its calculated
+            Welch degrees of freedom into a Student-t distribution. Because no experiment cohort reached analysis, this
+            helper bug did not affect any published result, though it would need fixing before analyzing real trial
+            data.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="audits">
+      <div class="prose">
+        <h2><span class="secnum">13.</span>What the audits revealed</h2>
+        <p>Across versions V1 through V8, the repository changed mainly in response to failure modes uncovered by
+          auditing earlier runs:</p>
+        <ul>
+          <li>Early generation targeted algorithm categories by name, which produced valid exercises without verifying
+            whether the base model actually failed on them.</li>
+          <li>Difficulty scores originally depended on synthetic heuristics or pseudo-random assignment rather than
+            observed Qwen probes.</li>
+          <li>Requested failure targets were trusted as labels before probe behavior confirmed them, and generated
+            problems drifted away from requested subtypes.</li>
+          <li>Treatment and control cohorts differed on auxiliary prompt and fallback paths beyond targeting alone.</li>
+          <li>Earlier calibration splits shared overlap with evaluation material, and provenance hashes lacked
+            end-to-end linkage.</li>
+          <li>Security auditing in V8 found untrusted candidate execution inside the model process via
+            <code>exec()</code>, pickle IPC in oracle workers, mutable container assumptions, inverted seccomp-BPF jump
+            logic in an intermediate patch, forgeable worker response pipes, and <code>trust_remote_code=True</code> on
+            model loading.
+          </li>
+        </ul>
+        <p>V7 consolidated the methodological and gating repairs; V8 closed the execution-boundary findings without
+          modifying prompts, probing logic, or curriculum eligibility rules.</p>
+      </div>
+    </section>
+
+    <section id="frozen-state">
+      <div class="prose">
+        <h2><span class="secnum">14.</span>Final frozen state</h2>
+        <p>Two milestone tags define the archived state of <code>tazwaryayyyy/VGCL_Pipeline</code>:</p>
+        <ul>
+          <li><strong>V7 research methodology freeze (11 September 2026):</strong> tag
+            <code>phase0-experiment-freeze-v7</code>, commit <code>98398d6e49736d83fa3c39560d4d556a8a760419</code>,
+            followed by documentation commit <code>acbea49</code>.
+          </li>
+          <li><strong>V8 security hardening freeze (19 November 2026):</strong> tag
+            <code>phase0-experiment-freeze-v8</code>, commit <code>126ed4351ef2a7176b94004babaafb2ad7dad968</code>,
+            introducing centralized
+            fail-closed sandbox execution and model-loading restrictions.
+          </li>
+        </ul>
+        <p>Under V7 alone, <code>test_phase0_pipeline.py</code> passed all 77 <code>unittest</code> cases. Following the
+          V8 security update, the combined regression suite (<code>test_phase0_pipeline.py</code>,
+          <code>test_security_sandbox.py</code> with 94 security tests, and legacy suites configured in
+          <code>pytest.ini</code>, totaling 179 tests) passed in GitHub Actions
+          (<code>.github/workflows/security-tests.yml</code>) across Ubuntu 22.04 (Python 3.10, 3.11, and 3.12 with both
+          <code>linux_ns</code> and <code>container</code> backends and <code>VGCL_REQUIRE_SANDBOX=1</code>) and on
+          Windows Server for fail-closed policy enforcement without a container runtime. Local validation also passed
+          (170 passed, 9 Linux-only seccomp tests skipped on Windows 10 with Docker Desktop; 179 passed, 0 skipped on
+          Linux 6.x WSL2 with <code>linux_ns</code>). No live Kaggle probing run or full GPU training experiment was run
+          after V8 hardening.
+        </p>
+        <p>Passing software regression tests verifies deterministic code paths, serialization validation, and sandbox
+          boundaries. It does not substitute for empirical training runs or demonstrate model capability gains.</p>
+      </div>
+    </section>
+
+    <section id="limitations">
+      <div class="prose">
+        <h2><span class="secnum">15.</span>Limitations</h2>
+        <p>Known methodological and infrastructure limitations in the frozen repository:</p>
+      </div>
+      <div class="wide table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Area</th>
+              <th>Observed limitation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Probing reproducibility</td>
+              <td>Model-weight hash, tokenizer hash, complete software stack, GPU model, full RNG state, full sampled
+                completions, and complete stopping spec are not recorded</td>
+            </tr>
+            <tr>
+              <td>Failure-cluster reachability</td>
+              <td><code>FC_02</code>, <code>FC_05</code>, and <code>FC_07</code> are under-exercised on small probes;
+                <code>FC_08</code> can be shadowed by small-scale fallback; <code>FC_01</code> can absorb unrelated
+                errors; <code>FC_03</code> conflates slowness with non-termination
+              </td>
+            </tr>
+            <tr>
+              <td>Target-validation trust</td>
+              <td><code>merge_probe_results.py</code> trusts incoming target-validation status rather than recomputing
+                it from raw probe logs</td>
+            </tr>
+            <tr>
+              <td>Behavioral verification</td>
+              <td>Phase B omits reference output comparison; minimum large-input sizes are loosely enforced; scaling
+                checks rely on AST heuristics rather than formal complexity proofs</td>
+            </tr>
+            <tr>
+              <td>Sandbox residual risks</td>
+              <td>Containers and namespaces share the host kernel; Linux namespace candidates map as UID 0 in the user
+                namespace; containers rely on OCI default seccomp; <code>per_case_times</code> are candidate-reported
+                within runner-enforced wall-clock deadlines; aarch64 BPF is simulator-verified only; live Kaggle probing
+                was not re-tested after V8 hardening</td>
+            </tr>
+            <tr>
+              <td>Reference independence</td>
+              <td>Structural screening (&le; 0.85) does not establish semantic independence or protect against shared
+                provider biases</td>
+            </tr>
+            <tr>
+              <td>Deduplication scope</td>
+              <td>Per-run in-memory state; separate engines for treatment and control; no evaluation-set deduplication;
+                rejected duplicates remain in the similarity index</td>
+            </tr>
+            <tr>
+              <td>Fallback purity</td>
+              <td>Exclusion gate exists in eligibility logic, but no finished cohort proves empirical purity</td>
+            </tr>
+            <tr>
+              <td>Leakage guard</td>
+              <td>ID-overlap checks only; cannot detect near-duplicate problems under distinct identifiers</td>
+            </tr>
+            <tr>
+              <td>Ledger semantics</td>
+              <td>Uses <code>INSERT OR REPLACE</code>, lacks foreign-key binding across tables, permits duplicate JSONL
+                rows, and omits full package hashes</td>
+            </tr>
+            <tr>
+              <td>Hashing scope</td>
+              <td>SHA-256 checks content integrity only, not cryptographic authorship</td>
+            </tr>
+            <tr>
+              <td>Statistical helper</td>
+              <td><code>statistical_analysis.py</code> mislabels a normal-tail calculation as a permutation-test p-value
+                and ignores Welch degrees of freedom</td>
+            </tr>
+            <tr>
+              <td>Cohort balance</td>
+              <td>No completed dataset establishes empirical matching on difficulty, length, or subtype ratios between
+                treatment and control</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="scientific-status">
+      <div class="prose">
+        <h2><span class="secnum">16.</span>Scientific status</h2>
+        <p>Because the training and evaluation comparison between targeted and uniform curricula was never run, the
+          repository does not support any claim about empirical performance:</p>
+        <ul>
+          <li>That VGCL improved or failed to improve model capability</li>
+          <li>That VGCL had zero effect</li>
+          <li>That failure targeting outperformed or underperformed uniform sampling</li>
+          <li>Any effect size, confidence interval, or p-value</li>
+          <li>Out-of-distribution generalization or mechanistic insight</li>
+        </ul>
+        <p>What remains in the repository is engineering and experimental groundwork: a documented local-and-remote
+          pipeline, failure modes caught across V1 through V8 audits, an isolated fail-closed execution layer, and a
+          complete protocol ready if a future trial is run.</p>
+      </div>
+    </section>
+
+    <section id="repository">
+      <div class="prose">
+        <h2><span class="secnum">17.</span>Repository and reproducibility</h2>
+        <p>The repository is frozen at <code>tazwaryayyyy/VGCL_Pipeline</code>, anchored at tag
+          <code>phase0-experiment-freeze-v7</code> (<code>98398d6e49736d83fa3c39560d4d556a8a760419</code>) for the
+          experimental design and tag <code>phase0-experiment-freeze-v8</code>
+          (<code>126ed4351ef2a7176b94004babaafb2ad7dad968</code>) for
+          the hardened execution layer.
+        </p>
+        <p>Software claims (gating rules, ledger schema, IPC codec, seccomp policy simulation, and sandbox boundaries)
+          can be reproduced locally via <code>pytest</code> on Linux (with unprivileged user namespaces or Docker/Podman
+          and the pinned Python digest image) or on Windows with Docker Desktop.</p>
+        <p>Kaggle probing runs remain only approximately reproducible because weight hashes, hardware identity, and full
+          RNG state were not logged in V7. No trained model weights or completed experimental datasets exist in the
+          repository.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="prose">
+      <p>Documentation compiled from the V7 and V8 frozen repository records of <code>tazwaryayyyy/VGCL_Pipeline</code>.
+        Unresolved claims and missing measurements are stated directly.</p>
+      <p>Contact: <a href="mailto:tazwardevp@gmail.com">tazwardevp@gmail.com</a></p>
     </div>
-  </div>
-  <div class="prose">
-    <p>Generation and verification happen locally, one candidate at a time. An API call produces a candidate problem and solution, which passes through syntax repair, a check that the reference solution was produced independently of the optimized one, a subtype-validity check, two stages of behavioral verification, and structural deduplication against prior candidates. Candidates that pass are staged into a manifest and marked <code>PENDING_KAGGLE_PROBE</code>.</p>
-    <p>The manifest is then probed remotely against Qwen/Qwen2.5-1.5B-Instruct under a Pass@1 and Pass@10 protocol (Section 8), producing a probe result per candidate. Probe results return to local ingestion, where integrity and provenance checks run, the requested failure target is checked against what the probe actually observed (Section 7), and the candidate is evaluated against the primary eligibility gate (Section 10) before being routed to an approved or auxiliary pool.</p>
-  </div>
-</section>
-
-<section id="model-roles">
-  <div class="prose">
-    <h2><span class="secnum">6.</span>Model roles</h2>
-    <p>Four distinct roles appear in the pipeline, and the audit was specific about not conflating them.</p>
-  </div>
-  <div class="wide table-wrap">
-    <table>
-      <thead><tr><th>Role</th><th>Model / mechanism</th></tr></thead>
-      <tbody>
-        <tr><td>Generator</td><td><code>gemini-3.6-flash</code></td></tr>
-        <tr><td>Fallback generators</td><td><code>gemini-3.1-flash-lite</code>, <code>gemini-3.5-flash-lite</code>, <code>gemini-flash-latest</code></td></tr>
-        <tr><td>Base / probe model</td><td><code>Qwen/Qwen2.5-1.5B-Instruct</code></td></tr>
-        <tr><td>Reference</td><td>a separate generation call under the generator policy, prompt-isolated from the optimized solution</td></tr>
-        <tr><td>Trained model</td><td>none present in the frozen repository</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="prose">
-    <p>The generator is not the model under study, and Qwen is not used to write problems. It only attempts them. No checkpoint resulting from training on VGCL curriculum data exists in the frozen repository; the pipeline produces and gates curriculum data, but does not include a training run.</p>
-  </div>
-</section>
-
-<section id="failure-targeting">
-  <div class="prose">
-    <h2><span class="secnum">7.</span>Failure targeting</h2>
-    <p>Failure targeting is the mechanism meant to distinguish the treatment condition from the control. It rests on classifying observed model failures into clusters, and then checking that a candidate generated to target a cluster actually elicited that cluster's failure.</p>
-
-    <h3>Failure clusters</h3>
-    <p>The pipeline defines eight failure clusters, used as labels for observed runtime behavior rather than as claims about internal model mechanism. The table below expands each label to a short reading.</p>
-  </div>
-  <div class="wide table-wrap">
-    <table>
-      <thead><tr><th>Cluster</th><th>Reading</th><th>Reachability note</th></tr></thead>
-      <tbody>
-        <tr><td><code>FC_01_MICRO_CORRECTNESS</code></td><td>incorrect output on small-scale cases</td><td>can absorb unrelated small-scale failures</td></tr>
-        <tr><td><code>FC_02_SCALE_DIVERGENCE</code></td><td>diverges at larger input scale</td><td>not fully reachable via the current probing path</td></tr>
-        <tr><td><code>FC_03_TERMINATION</code></td><td>fails to terminate, or terminate correctly</td><td>can conflate slow execution with non-termination; hard timeout incomplete</td></tr>
-        <tr><td><code>FC_04_BOUNDS_VIOLATION</code></td><td>violates input/output bounds</td><td>none noted</td></tr>
-        <tr><td><code>FC_05_RESOURCE_FAILURE</code></td><td>exceeds memory or other resource limits</td><td>not fully reachable via the current probing path</td></tr>
-        <tr><td><code>FC_06_FORMAT_CONTRACT</code></td><td>violates the expected output format</td><td>none noted</td></tr>
-        <tr><td><code>FC_07_STATE_INCONSISTENCY</code></td><td>inconsistent state across execution</td><td>not fully reachable via the current probing path</td></tr>
-        <tr><td><code>FC_08_UNKNOWN</code></td><td>failures not classified above</td><td>can be shadowed by the current small-scale fallback</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="prose">
-    <p>These are runtime categories: what a submitted solution did when it ran against a probe. They are not neural mechanisms, reasoning circuits, latent cognitive modules, or internal representations. Nothing in the pipeline inspects model internals. The reachability notes above describe limits of the current probing evidence path, not a claim that the clusters themselves are invalid.</p>
-
-    <h3>Target validation</h3>
-    <p>A more basic distinction underlies all of this: a requested target is not the same as an observed, validated target. Requesting that a candidate be generated for <code>FC_01</code> does not, by itself, establish that the candidate actually elicited <code>FC_01</code> behavior when probed. It establishes only that <code>FC_01</code> was the intended target at generation time.</p>
-    <p>The intended validation path is: requested cluster → candidate → Qwen probe → observed failure → classification → target validation → eligibility. A candidate earns a validated target status only after its probe result is classified and matched back against the request.</p>
-    <div class="flag">
-      <p><strong>What the audit found:</strong> <code>merge_probe_results.py</code> trusts the declared target-validation status attached to a probe result rather than fully recomputing it from raw probe evidence each time. Target authenticity is improved relative to earlier versions, which used requested labels directly. It is not, however, cryptographically or semantically guaranteed by the merge step itself.</p>
-    </div>
-  </div>
-</section>
-
-<section id="probing">
-  <div class="prose">
-    <h2><span class="secnum">8.</span>Base-model probing</h2>
-    <p>The pipeline measures failure by probing Qwen/Qwen2.5-1.5B-Instruct against each generated candidate, under two protocols:</p>
-    <ul>
-      <li><strong>Pass@1:</strong> one greedy completion.</li>
-      <li><strong>Pass@10:</strong> one greedy completion plus nine sampled completions, at temperature 0.8, top-p 0.95, k = 10.</li>
-    </ul>
-    <p class="formula">difficulty = 1.0 − pass@10</p>
-    <p>Pass@10 in the current implementation is a binary any-pass result: at least one of the ten completions is correct, or none is. It is not a smooth pass-rate estimate. Difficulty is therefore binary at the level of an individual item. A description like "the model solved 70% of ten attempts" does not describe what this pipeline measures and should not be inferred from it.</p>
-    <p>The audit recorded several reproducibility limitations in the probing implementation as it stands:</p>
-    <ul>
-      <li>the model-weight hash is not recorded</li>
-      <li>the tokenizer hash is not recorded</li>
-      <li>exact software-version identity is incomplete</li>
-      <li>GPU identity is not recorded</li>
-      <li>the complete RNG state is not recorded</li>
-      <li>the complete set of sampled outputs is not retained</li>
-      <li>the stopping specification is not completely explicit</li>
-    </ul>
-    <p>These are reproducibility limits on the probing step, not indications that the probe results themselves are wrong.</p>
-    <p>Ordinary local execution is separated from base-model probing: the guarded prober blocks Qwen from loading locally by default, and probing is expected to run on Kaggle. Explicit overrides exist for controlled local probing, so the accurate statement is that the default path prevents local loading, not that local loading is categorically impossible. This separation is also not repository-wide: other tooling, such as calibration and trajectory scripts, can load Qwen directly, outside the guarded path.</p>
-  </div>
-</section>
-
-<section id="verification">
-  <div class="prose">
-    <h2><span class="secnum">9.</span>Verification and candidate quality</h2>
-    <p>Verification happens in two phases, and the audit is specific that neither constitutes formal proof: what the pipeline provides is behavioral verification under the tested oracle conditions.</p>
-
-    <h3>Phase A and Phase B</h3>
-    <p>Phase A differentially tests the optimized solution against a brute-force or reference implementation on generated small cases, using the same inputs and checking for the same expected outputs. Phase B runs the optimized implementation alone on larger cases and checks runtime, memory, and scaling behavior against heuristics.</p>
-    <p>Phase B does not compare outputs to a reference at this scale. The minimum case size for large-case testing is not strictly enforced, and the scaling checks are heuristics over the candidate's abstract syntax tree, not formal complexity proofs. Resource enforcement differs by platform, wall-clock timing can include infrastructure overhead unrelated to the candidate's own performance, and the execution sandbox is not hardened security isolation. None of this amounts to a formal proof system; it is closer to a differential and heuristic test suite applied per candidate.</p>
-
-    <h3>Reference independence</h3>
-    <p>Each candidate's reference solution is produced by a separate generation call under the generator policy, prompt-isolated from the call that produced the optimized solution. The pipeline then screens the two for structural similarity, rejecting pairs above a threshold of 0.85.</p>
-    <p>This is structural screening, not proof of semantic independence. Passing the threshold does not establish that the two solutions reflect independent concepts, that they avoid sharing the same underlying mistake, that they are free of shared bias from a single generation provider, or that no leakage occurred at the level of the specification itself.</p>
-
-    <h3>Deduplication</h3>
-    <p>Candidates are deduplicated using a normalized abstract syntax tree, a control-flow-graph representation, AST/CFG hashing, and a normalized four-gram Jaccard similarity over these representations, with a duplicate threshold of 0.70.</p>
-    <p>This has a narrower scope than "semantic uniqueness" might suggest. Corpus scope is in-memory per invocation, so deduplication does not span separate runs of the pipeline. Targeted and uniform generation runs use separate deduplication engines, so a candidate is only checked against others generated under the same condition. There is no demonstrated deduplication between the curriculum corpus and any evaluation set, and candidates rejected for duplication remain in the internal corpus rather than being discarded, so they can still affect later similarity comparisons within the same run.</p>
-  </div>
-</section>
-
-<section id="treatment-control">
-  <div class="prose">
-    <h2><span class="secnum">10.</span>Treatment and uniform control</h2>
-    <p>The control condition is uniform in a specific, narrower sense than "uniform over all possible programs": generation rotates round-robin across six algorithmic subtypes, labeled A through F.</p>
-    <p>The control shares substantial infrastructure with the treatment condition, including the same generation, repair, and verification pipeline. It differs in prompt content, in the absence of failure-targeting instructions, in its subtype schedule, in its metadata, in its target-validation requirement, and in its seed range.</p>
-
-    <h3>Eligibility gates</h3>
-    <p>Uniform-condition candidates share the common quality pipeline with targeted candidates but follow a different eligibility path: uniform primary eligibility marks candidates with a control status of <code>UNIFORM_CONTROL</code> and a target status of <code>NOT_APPLICABLE</code>, and does not require failure-target validation.</p>
-    <p>Targeted primary eligibility is a substantially longer gate. A candidate qualifies as targeted-primary only if all of the following hold:</p>
-    <ul>
-      <li>Phase A verification approved</li>
-      <li>Phase B verification approved</li>
-      <li>a structural hash is present</li>
-      <li>structural similarity below the 0.70 duplication threshold (Section 9)</li>
-      <li>no reviewer override applied</li>
-      <li>neither generation pass used a fallback model</li>
-      <li>the primary generator produced both passes</li>
-      <li>the generator policy matches what was expected</li>
-      <li>the subtype is canonical</li>
-      <li>target status is <code>VALIDATED</code></li>
-      <li>the probe-result hash is non-empty</li>
-      <li>failure evidence is parseable</li>
-      <li>the subtype is compatible with the request</li>
-    </ul>
-    <p>This is a gate on a specific scientific role: separating candidates that can support a targeting claim from those that cannot. It is not a general-purpose quality filter.</p>
-    <p>The audit's central finding here concerns what this machinery has not yet demonstrated: the repository does not contain a completed cohort showing that treatment and control candidates were empirically matched in difficulty, length, subtype distribution, or other realized properties. Consequently, "targeting was the only difference between the two conditions" is not something this repository can state as an observed fact. What can be said is narrower: the intended causal difference was failure targeting.</p>
-  </div>
-</section>
-
-<section id="provenance">
-  <div class="prose">
-    <h2><span class="secnum">11.</span>Provenance, leakage, and dataset integrity</h2>
-
-    <h3>Fallbacks</h3>
-    <p>Generator calls can fail because of quota limits, rate limits, transient errors, or provider-side failures. When they do, the pipeline falls back to one of the alternate generators listed in Section 6. Because the optimized-solution pass and the reference-solution pass are separate calls, they can end up produced by different effective models for the same candidate.</p>
-    <p>Fallback use is recorded in candidate metadata, and primary eligibility rejects any candidate where either pass used a fallback. Archived runs containing fallback-contaminated candidates exist in the repository. But because no final primary cohort has been assembled and run through training, the repository does not demonstrate, empirically, that a completed experiment's population would be free of fallback contamination. It demonstrates only that the gate exists to exclude it.</p>
-
-    <h3>Leakage</h3>
-    <p>Earlier calibration data included material that overlapped with evaluation material, a leakage risk identified and repaired during the project's history. Current calibration data is derived from MBPP training data, and the earlier, contaminated calibration set is preserved separately in the archive rather than deleted.</p>
-    <p>An ID-overlap guard checks for shared identifiers between calibration and evaluation data. The audit's finding here is precise: ID disjointness is not the same as information-flow disjointness. Two datasets can share no identifiers while still sharing information through another channel, such as near-duplicate content filed under different IDs, and the current guard does not close off that possibility. No completed final training/evaluation cohort exists against which this question could be settled either way.</p>
-
-    <h3>Ledger</h3>
-    <p>The pipeline records experiment provenance in a ledger, with fields covering generation, verification, probing, and eligibility outcomes for each candidate. This supports provenance tracking: the ability to trace a candidate's history through the pipeline.</p>
-    <div class="flag">
-      <p><strong>Scope:</strong> "Provenance tracking" accurately describes the ledger. "Immutable, authenticated provenance" does not. The ledger uses <code>INSERT OR REPLACE</code> semantics, so records can be updated in place rather than append-only; it does not enforce full relational foreign-key binding between related records; repeated JSONL records are possible; there is no complete hash over an entire candidate package; and prompt coverage in the ledger is incomplete.</p>
-    </div>
-
-    <h3>Hashes</h3>
-    <p>Integrity checks throughout the pipeline use SHA-256 hashes over canonicalized content. These are integrity and provenance hashes, not cryptographic signatures: hashing can confirm that content matches a recorded value, but it does not, by itself, establish who produced that content or authenticate its origin. No asymmetric signing scheme is present in the frozen repository.</p>
-  </div>
-</section>
-
-<section id="statistics">
-  <div class="prose">
-    <h2><span class="secnum">12.</span>Statistical analysis framework</h2>
-    <p>The repository includes a statistical helper module, but no final scientific dataset to analyze. The module includes sample-size and power-planning functions that take design assumptions as inputs, such as an assumed intraclass correlation (ρ = 0.20) and the resulting design effect, to plan what sample size a future experiment would need. These are planning inputs, not measurements from any completed run, and should not be read as reporting an effect size, a power level, or a required sample size for the VGCL experiment itself, which was never run.</p>
-    <div class="flag">
-      <p><strong>What the audit found:</strong> <code>statistical_analysis.py</code> labels a normal-tail calculation as a permutation-test p-value, even though the code does not perform a permutation test and does not use its own calculated Welch degrees of freedom to evaluate a t-distribution tail. This is a naming and implementation mismatch in the frozen helper code: a limitation of the statistical tooling as written, not a finding about any dataset, since none was run through it as part of a completed experiment.</p>
-    </div>
-    <p>This document does not correct that code or use its output as a statistical result.</p>
-  </div>
-</section>
-
-<section id="audits">
-  <div class="prose">
-    <h2><span class="secnum">13.</span>What the audits revealed</h2>
-    <p>The project's history is best read as a sequence of audits, each finding a way the experiment as built could have produced a misleading answer, followed by a repair.</p>
-    <p>VGCL began as an attempt to construct verified synthetic programming curricula. The initial generation strategy specified problems by algorithm, with prompts like "generate problems for algorithm X." An early audit identified this as distinct from, and weaker than, "generate examples targeting an observed model failure." Producing a problem that exercises an algorithm is not the same as producing one that provokes a failure a model has actually been observed to have.</p>
-    <p>Later audits found further problems: difficulty measured synthetically or by pseudo-random assignment rather than by observed model behavior; targeting based on requested labels rather than validated observed failures; subtype drift between what was requested and what was generated; confounding between treatment and control beyond the intended targeting difference; contamination from fallback generators; leakage between calibration and evaluation data; and provenance binding too weak to fully trust downstream.</p>
-    <p>Each of these was addressed in a subsequent revision rather than left as a caveat. V7 is the version that consolidates the repairs: the two-stage local/Kaggle architecture in Section 5 and the centralized eligibility and provenance machinery in Sections 10 and 11 both date to this version.</p>
-    <p>The project was frozen on 11 September 2026, before the treatment/control training-and-evaluation comparison that would have tested the central hypothesis was run. The methodological repairs are complete relative to the problems that prompted them. The experiment they were built to support is not.</p>
-  </div>
-</section>
-
-<section id="frozen-state">
-  <div class="prose">
-    <h2><span class="secnum">14.</span>Final frozen state</h2>
-    <p>The frozen repository is <code>tazwaryayyyy/VGCL_Pipeline</code>. The V7 freeze tag, <code>phase0-experiment-freeze-v7</code>, resolves to commit <code>98398d6e49736d83fa3c39560d4d556a8a760419</code>. The main branch has since received a documentation-only commit, <code>acbea49</code>, which does not modify the frozen implementation. The freeze date is 11 September 2026, and the repository's current status is frozen and archived.</p>
-    <p>The authoritative test suite, <code>test_phase0_pipeline.py</code>, contains 77 tests. Run directly under <code>unittest</code>, all 77 passed. This is a narrower claim than "all tests pass": the repository has legacy test-discovery complications elsewhere, and <code>pytest</code> is not available in the audit environment, so the finding is specifically about direct <code>unittest</code> execution of this one authoritative suite, not about every test-like artifact in the repository.</p>
-    <p>What 77/77 establishes is that the properties those tests check, which concern implementation behavior and not model behavior, hold as specified. It says nothing about Qwen's failure rates, about targeting effectiveness, or about the central hypothesis. Software tests and empirical model results are different kinds of evidence, and this document does not treat one as a substitute for the other.</p>
-  </div>
-</section>
-
-<section id="limitations">
-  <div class="prose">
-    <h2><span class="secnum">15.</span>Limitations</h2>
-    <p>The limitations discussed in earlier sections, gathered here by area:</p>
-  </div>
-  <div class="wide table-wrap">
-    <table>
-      <thead><tr><th>Area</th><th>What the audit found</th></tr></thead>
-      <tbody>
-        <tr><td>Base-model probing reproducibility</td><td>model-weight hash, tokenizer hash, full software-version identity, GPU identity, complete RNG state, complete output set, and explicit stopping specification are absent or incomplete</td></tr>
-        <tr><td>Failure-cluster reachability</td><td><code>FC_02</code>, <code>FC_05</code>, <code>FC_07</code> not fully reachable via the current probing path; <code>FC_08</code> can be shadowed by the small-scale fallback; <code>FC_01</code> can absorb unrelated failures; <code>FC_03</code> can conflate slowness with non-termination</td></tr>
-        <tr><td>Target-validation trust</td><td>the merge step trusts a declared status rather than fully recomputing it from raw probe evidence</td></tr>
-        <tr><td>Verification scope</td><td>Phase B does not compare outputs to a reference; large-case minimum size not strictly enforced; scaling checks are heuristic; sandbox is not hardened isolation</td></tr>
-        <tr><td>Reference independence</td><td>structural screening only; does not establish semantic independence, shared-mistake avoidance, or freedom from provider bias</td></tr>
-        <tr><td>Deduplication scope</td><td>in-memory and per-run; targeted and uniform runs use separate engines; no curriculum-vs-evaluation deduplication; rejected candidates remain in the corpus</td></tr>
-        <tr><td>Fallback purity</td><td>the gate exists, but no completed final cohort demonstrates realized purity</td></tr>
-        <tr><td>Leakage guard</td><td>checks ID overlap only; ID disjointness is not information-flow disjointness</td></tr>
-        <tr><td>Ledger scope</td><td>allows in-place updates, lacks full relational binding, permits repeated records</td></tr>
-        <tr><td>Hashing scope</td><td>integrity only; does not establish authorship or authenticity</td></tr>
-        <tr><td>Statistical helper code</td><td>a p-value calculation is mislabeled; never run on a completed dataset</td></tr>
-        <tr><td>Treatment/control matching</td><td>no completed cohort demonstrates empirical matching on difficulty, length, or subtype distribution</td></tr>
-      </tbody>
-    </table>
-  </div>
-</section>
-
-<section id="scientific-status">
-  <div class="prose">
-    <h2><span class="secnum">16.</span>Scientific status</h2>
-    <p>The central hypothesis, that failure-targeted verified synthetic curricula transfer capability better than uniformly sampled verified synthetic curricula under identical compute, was not tested to completion. This document, and the repository it describes, does not support any of the following claims:</p>
-    <ul>
-      <li>that VGCL improved capability</li>
-      <li>that VGCL failed to improve capability</li>
-      <li>that VGCL had no effect</li>
-      <li>that targeting was superior to uniform sampling</li>
-      <li>that targeting was inferior to uniform sampling</li>
-      <li>a statistically significant result in either direction</li>
-      <li>a measured effect size</li>
-      <li>a confidence interval</li>
-      <li>successful generalization</li>
-      <li>mechanistic confirmation of any kind</li>
-    </ul>
-    <p>This is not a weakness to disguise. It is the scientific boundary of a project that was frozen at a specific point in its development, with its infrastructure complete and its decisive experiment not yet run. What the repository does support is narrower, and within its scope, real: a working two-environment pipeline, a set of methodological problems identified and repaired across several revisions, and a precise account of what would still need to happen for the central question to receive an answer.</p>
-  </div>
-</section>
-
-<section id="repository">
-  <div class="prose">
-    <h2><span class="secnum">17.</span>Repository and reproducibility</h2>
-    <p>The frozen implementation is available at the <code>phase0-experiment-freeze-v7</code> tag (commit <code>98398d6e49736d83fa3c39560d4d556a8a760419</code>) in <code>tazwaryayyyy/VGCL_Pipeline</code>. Reproducing the software-level claims in this document (the 77/77 test result, the pipeline's gating logic, the structure of the ledger) requires only that tag and a direct <code>unittest</code> run of <code>test_phase0_pipeline.py</code>.</p>
-    <p>Reproducing the probing results is a different matter, and the limitations described in Section 8 apply directly: without a recorded model-weight hash, tokenizer hash, complete software-version identity, GPU identity, full RNG state, complete output set, and explicit stopping specification, an independent run of the Kaggle probe stage should be expected to approximate the original probing conditions rather than reproduce them exactly.</p>
-    <p>No trained model, and no completed treatment/control cohort, exists to reproduce, because neither was produced before the freeze.</p>
-    <p>A working, tested, two-environment pipeline exists at the V7 tag. Each audit in the project's history found a specific way the experiment could have produced a misleading answer, and each was repaired in a later revision. No result exists, and the central hypothesis about failure-targeted versus uniform curricula is exactly as open as it was before the pipeline was built. If the comparison runs now, it runs on infrastructure built specifically not to repeat the mistakes this history catalogs.</p>
-  </div>
-</section>
-
-</main>
-
-<footer>
-  <div class="prose">
-    <p>This document is a research-facing synthesis prepared from a forensic audit of the frozen <code>tazwaryayyyy/VGCL_Pipeline</code> repository. It does not modify the repository's source code or research data. Where the underlying audit found a claim unsupported, incomplete, or unresolved, this document states that directly rather than resolving it in either direction.</p>
-    <p>Contact: <a href="mailto:tazwardevp@gmail.com">tazwardevp@gmail.com</a></p>
-  </div>
-</footer>
+  </footer>
 
 </body>
+
 </html>
