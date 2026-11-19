@@ -1,0 +1,1996 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Water Break-Even: Frozen Monte Carlo Scenario and Threshold Analysis (v0.2.0)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <style>
+        :root {
+            --bg: #ffffff;
+            --ink: #1a1a18;
+            --ink-soft: #5c5a52;
+            --ink-faint: #8a8779;
+            --line: #e4e1d8;
+            --line-strong: #c9c5b7;
+            --accent: #2e4a52;
+            --accent-soft: #eef2f1;
+            --flag: #93582b;
+            --flag-bg: #f8f3e9;
+            --mono-bg: #f1efe7;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+            font-size: 17px;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .prose {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .wide {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        code,
+        .k {
+            font-family: 'IBM Plex Mono', monospace;
+            background: var(--mono-bg);
+            padding: 0.1em 0.4em;
+            border-radius: 3px;
+            font-size: 0.86em;
+            white-space: normal;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration-thickness: 1px;
+            text-underline-offset: 2px;
+        }
+
+        a:hover {
+            text-decoration: none;
+        }
+
+        header.head {
+            padding: 76px 0 40px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        h1 {
+            font-size: 2.15rem;
+            font-weight: 600;
+            line-height: 1.28;
+            letter-spacing: -0.01em;
+            margin: 0 0 14px;
+            max-width: 15ch;
+        }
+
+        .subtitle {
+            font-size: 1.06rem;
+            color: var(--ink-soft);
+            margin: 0 0 24px;
+            max-width: 46ch;
+            font-weight: 400;
+        }
+
+        .intro-line {
+            font-size: 0.98rem;
+            color: var(--ink-soft);
+            margin: 0;
+            max-width: 62ch;
+        }
+
+        .intro-line code {
+            font-size: 0.84em;
+        }
+
+        nav.toc {
+            padding: 34px 0;
+            border-bottom: 1px solid var(--line);
+        }
+
+        nav.toc h2 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin: 0 0 14px;
+            color: var(--ink);
+        }
+
+        nav.toc ol {
+            columns: 2;
+            column-gap: 36px;
+            padding-left: 1.1em;
+            margin: 0;
+        }
+
+        nav.toc li {
+            break-inside: avoid;
+            margin-bottom: 7px;
+            font-size: 0.92rem;
+            padding-left: 2px;
+        }
+
+        nav.toc a {
+            color: var(--ink);
+        }
+
+        nav.toc a:hover {
+            color: var(--accent);
+        }
+
+        main {
+            padding: 6px 0 10px;
+        }
+
+        section {
+            padding: 46px 0;
+            border-bottom: 1px solid var(--line);
+            scroll-margin-top: 20px;
+        }
+
+        h2 {
+            font-size: 1.42rem;
+            font-weight: 600;
+            margin: 0 0 20px;
+            letter-spacing: -0.005em;
+        }
+
+        h2 .secnum {
+            color: var(--accent);
+            font-variant-numeric: tabular-nums;
+            margin-right: 0.42em;
+        }
+
+        h3 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin: 30px 0 12px;
+        }
+
+        p {
+            margin: 0 0 17px;
+        }
+
+        section p:last-child,
+        section ul:last-child,
+        section .table-wrap:last-child,
+        section .flag:last-child {
+            margin-bottom: 0;
+        }
+
+        ul {
+            margin: 0 0 17px;
+            padding-left: 1.35em;
+        }
+
+        li {
+            margin-bottom: 7px;
+        }
+
+        li:last-child {
+            margin-bottom: 0;
+        }
+
+        .flag {
+            background: var(--flag-bg);
+            border-left: 3px solid var(--flag);
+            padding: 15px 20px;
+            margin: 24px 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .flag p {
+            margin: 0;
+            font-size: 0.97rem;
+        }
+
+        .flag strong {
+            color: var(--flag);
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            margin-top: 22px;
+            margin-bottom: 22px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.92rem;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--line);
+            vertical-align: top;
+        }
+
+        th {
+            font-weight: 600;
+            border-bottom: 2px solid var(--ink);
+            white-space: nowrap;
+        }
+
+        td:first-child,
+        th:first-child {
+            padding-left: 0;
+        }
+
+        td:last-child,
+        th:last-child {
+            padding-right: 0;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .formula {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.95rem;
+            background: var(--mono-bg);
+            padding: 14px 18px;
+            border-radius: 4px;
+            margin: 20px 0;
+            display: inline-block;
+            line-height: 1.55;
+        }
+
+        .pipeline {
+            margin: 26px 0 6px;
+        }
+
+        .lane-label {
+            font-weight: 600;
+            color: var(--accent);
+            font-size: 0.95rem;
+            margin-bottom: 11px;
+        }
+
+        .step-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 9px 6px;
+        }
+
+        .step-chip {
+            border: 1px solid var(--line-strong);
+            background: #fff;
+            padding: 7px 13px;
+            border-radius: 5px;
+            font-size: 0.82rem;
+            white-space: normal;
+            line-height: 1.35;
+        }
+
+        .step-arrow {
+            color: var(--ink-faint);
+            font-size: 0.95rem;
+        }
+
+        .status-pill {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.74rem;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 5px 12px;
+            border-radius: 999px;
+        }
+
+        .lane-connector {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            color: var(--ink-soft);
+            font-size: 0.86rem;
+            font-style: italic;
+            margin: 16px 0 16px 2px;
+        }
+
+        .num-audit {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 0.88rem;
+            padding: 8px 0;
+            border-bottom: 1px dotted var(--line-strong);
+        }
+
+        .num-audit:last-child {
+            border-bottom: none;
+        }
+
+        .num-audit .n {
+            font-family: 'IBM Plex Mono', monospace;
+            color: var(--ink);
+            white-space: nowrap;
+        }
+
+        .num-audit .s {
+            color: var(--ink-soft);
+            text-align: right;
+        }
+
+        .ref-list {
+            padding-left: 0;
+            list-style: none;
+            margin: 0;
+        }
+
+        .ref-list li {
+            padding-left: 1.8em;
+            text-indent: -1.8em;
+            margin-bottom: 12px;
+            font-size: 0.94rem;
+        }
+
+        footer {
+            padding: 44px 0 88px;
+        }
+
+        footer p {
+            font-size: 0.88rem;
+            color: var(--ink-soft);
+            max-width: 62ch;
+            margin: 0 0 10px;
+        }
+
+        footer a {
+            color: var(--ink-soft);
+        }
+
+        @media (max-width: 640px) {
+            body {
+                font-size: 16px;
+            }
+
+            header.head {
+                padding: 52px 0 32px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                max-width: none;
+            }
+
+            nav.toc ol {
+                columns: 1;
+            }
+
+            section {
+                padding: 34px 0;
+            }
+
+            .step-chip {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="head">
+        <div class="prose">
+            <h1>AI Water Break-Even</h1>
+            <p class="subtitle">Monte Carlo scenario and threshold analysis of conditions for attributing water benefits
+                to
+                artificial intelligence.</p>
+            <p class="intro-line">This document records the frozen global consumption-basis study generated from
+                <code>tazwaryayyyy/ai-water-breakeven</code> at tag <code>0.2.0</code> (commit
+                <code>bfcfffc25eeec55ecd6995ba21e9b60ae2192a37</code>, verified by CI on 19 November 2026). Joint
+                unconditional probabilities incorporate unverified priors tagged
+                <code>PLACEHOLDER INPUTS - NOT FOR PUBLICATION</code>
+                and represent exploratory scenario counts rather than real-world forecasts.
+            </p>
+        </div>
+    </header>
+
+    <nav class="toc">
+        <div class="prose">
+            <h2>Contents</h2>
+            <ol>
+                <li><a href="#abstract">Abstract</a></li>
+                <li><a href="#research-question">Research question and scale check</a></li>
+                <li><a href="#background">Background and pathway framing</a></li>
+                <li><a href="#architecture">Model pipeline and experimental design</a></li>
+                <li><a href="#accounting">Accounting scope, equations, and parameters</a></li>
+                <li><a href="#cost-balance">Compute water trajectory and baseline balance</a></li>
+                <li><a href="#pathways">Consumption offsets versus supply credits</a></li>
+                <li><a href="#timing">Solar-food timing scenarios</a></li>
+                <li><a href="#thresholds">Two-parameter threshold surfaces</a></li>
+                <li><a href="#sensitivity">Sensitivity and dominance diagnostics</a></li>
+                <li><a href="#audits">What the code and citation audits resolved</a></li>
+                <li><a href="#limitations">Limitations</a></li>
+                <li><a href="#scientific-status">Scientific status and interpretive bounds</a></li>
+                <li><a href="#reproducibility">Reproducibility, code, and AI disclosure</a></li>
+                <li><a href="#references">References</a></li>
+            </ol>
+        </div>
+    </nav>
+
+    <main>
+
+        <section id="abstract">
+            <div class="prose">
+                <h2><span class="secnum">1.</span>Abstract</h2>
+                <p>Evaluating whether water savings or supply gains linked to artificial intelligence (AI) can offset
+                    the
+                    operational water footprint of AI compute requires separating physical scale limits from unmeasured
+                    counterfactual
+                    assumptions. This study implements a 50-year global consumptive water ledger evaluated over
+                    <code>100,000</code> Latin hypercube samples (<code>seed = 42</code>). Operational Scope 1 and Scope
+                    2 compute
+                    consumption starts at <code>0.38-0.60 km&sup3;/yr</code> in 2027 and compounds under a two-phase
+                    trajectory.
+                    Two benefit pathways are tested against that demand: crop blue-water displacement via solar-driven
+                    microbial
+                    food production (<code>1,080 km&sup3;/yr</code> central agricultural baseline) and coastal
+                    desalinated supply
+                    augmentation (<code>35 km&sup3;/yr</code> central global output).
+                </p>
+                <p>In <code>100,000</code> baseline runs, <code>18.46%</code> (95% Wilson interval:
+                    <code>18.22-18.70%</code>) reach sustained volumetric break-even by year 30 and <code>32.44%</code>
+                    (<code>32.15-32.73%</code>) by year 50. Common-random-number isolation separates the two accounting
+                    ledgers:
+                    consumptive displacement alone (<code>solar_food_only</code>) reaches <code>16.64%</code> by year 30
+                    and
+                    <code>31.69%</code> by year 50, whereas desalinated supply augmentation alone
+                    (<code>desal_only</code>)
+                    reaches <code>0.058%</code> and <code>0.232%</code>. Conditional on solar-food deployment
+                    (<code>35.06%</code>
+                    of baseline runs), <code>52.55%</code> break even by year 30 and <code>92.10%</code> by year 50,
+                    with
+                    deployment lag acting as the dominant rank correlate (<code>0.890</code>). Conditional two-parameter
+                    threshold
+                    maps evaluated through year 50 indicate that a <code>50%</code> break-even share by year 30 requires
+                    an
+                    AI-attributed crop-water displacement product <code>&alpha; &middot; &phi;</code> near
+                    <code>0.014</code>
+                    under baseline timing, and that break-even falls sharply once deployment lags exceed
+                    <code>20-24 yr</code>.
+                </p>
+            </div>
+        </section>
+
+        <section id="research-question">
+            <div class="prose">
+                <h2><span class="secnum">2.</span>Research question and scale check</h2>
+                <p>The model addresses a conditional accounting question: under what combinations of deployment
+                    probability,
+                    commercialization timing, rebound, and causal attribution could water benefits credited to AI offset
+                    global
+                    operational AI compute water consumption over a 50-year horizon?</p>
+                <p>At current baseline estimates, global AI operational water consumption sits three orders of magnitude
+                    below
+                    crop irrigation. Li et al. (2025) project 2027 global Scope 1 and Scope 2 AI water demand at
+                    <code>4.2-6.6 km&sup3;/yr</code> of freshwater withdrawals and <code>0.38-0.60 km&sup3;/yr</code> of
+                    water
+                    consumption. Broader industry assessments that include electricity supply chains and chip
+                    fabrication project
+                    continued growth: the International Energy Agency (IEA, 2025) reports global data-center water
+                    consumption at
+                    roughly <code>560 billion L</code> in 2023 rising to <code>1,200 billion L</code> in 2030, while
+                    Xylem and
+                    Global Water Intelligence (2026) project a <code>129%</code> increase across the AI value chain by
+                    2050.
+                </p>
+                <p>Against that compute baseline, Chukalla et al. (2025) report <code>1,080 km&sup3;/yr</code> of
+                    blue-water
+                    consumption across 46 crops in 2020 (<code>1,228 km&sup3;/yr</code> including paddy flooding),
+                    consistent with
+                    Mekonnen and Hoekstra (2011), who placed blue water at roughly <code>12%</code> of a
+                    <code>7,404 Gm&sup3;/yr</code>
+                    total crop water footprint (<code>0.89 trillion m&sup3;/yr</code>) for 1996-2005. Dividing the 2020
+                    crop
+                    central figure (<code>1,080 km&sup3;/yr</code>) by the 2027 AI consumption midpoint
+                    (<code>0.49 km&sup3;/yr</code>) yields a ratio near <code>2,200</code>. That ratio functions
+                    strictly as an
+                    order-of-magnitude check across two distinct base years and boundaries, because local watershed
+                    scarcity
+                    prevents agricultural savings in one basin from replacing evaporative cooling losses in another.</p>
+            </div>
+        </section>
+
+        <section id="background">
+            <div class="prose">
+                <h2><span class="secnum">3.</span>Background and pathway framing</h2>
+                <p>Assigning the entire water gain of a clean technology to AI would overstate AI's causal role, because
+                    materials research, capital cost declines, energy prices, and regulation drive adoption even without
+                    AI. The
+                    relevant quantity is the counterfactual fraction attributable to AI alongside the timeline over
+                    which a
+                    technology actually scales.</p>
+                <p>Two pathways represent distinct physical mechanisms:</p>
+                <ul>
+                    <li><strong>Desalination (supply credit):</strong> Global operational desalination capacity totals
+                        <code>95.37 million m&sup3;/day</code> (<code>34.81 km&sup3;/yr</code> across 15,906 plants;
+                        Jones et al.,
+                        2019). Reverse osmosis already operates close to thermodynamic energy limits (Elimelech and
+                        Phillip, 2011),
+                        constraining plausible cost-driven expansion. Because desalination produces new coastal
+                        freshwater rather than
+                        reducing evaporative consumption, it enters the volumetric ledger as an explicit supply credit.
+                    </li>
+                    <li><strong>Solar-driven microbial food ("solar food", consumptive displacement):</strong>
+                        Power-to-food
+                        microbial protein routes can produce protein using substantially less blue water per kilogram
+                        than
+                        conventional soybean crops (Sillman et al., 2020, 2022), and scenario modeling suggests
+                        microbial protein
+                        could reduce global cropland demand by <code>0-13%</code> (central <code>6%</code>) by 2050 when
+                        substituting for animal feed (Pikaar et al., 2018).
+                    </li>
+                </ul>
+                <p>Because real-world deployment probabilities, 50-year rebound fractions, and counterfactual AI
+                    attribution shares
+                    cannot be measured empirically today, the model treats joint probabilities as exploratory priors and
+                    focuses
+                    on conditional outcomes, structural knockouts, sensitivity rankings, and break-even threshold maps.
+                </p>
+            </div>
+        </section>
+
+        <section id="architecture">
+            <div class="prose">
+                <h2><span class="secnum">4.</span>Model pipeline and experimental design</h2>
+                <p>The pipeline validates parameter domains and physical basis consistency before drawing independent
+                    Latin
+                    hypercube samples (<code>seed = 42</code>) and branching into baseline, conditional, knockout,
+                    timing, and threshold
+                    evaluations.</p>
+            </div>
+            <div class="wide">
+                <div class="pipeline">
+                    <div class="lane-label">Baseline and conditional simulation (N = 100,000, T = 50 yr)</div>
+                    <div class="step-row">
+                        <span class="step-chip"><code>data/parameters.csv</code></span><span
+                            class="step-arrow">&rarr;</span>
+                        <span class="step-chip">Basis &amp; schema validation</span><span
+                            class="step-arrow">&rarr;</span>
+                        <span class="step-chip">Latin hypercube + Bernoulli draws</span><span
+                            class="step-arrow">&rarr;</span>
+                        <span class="step-chip">Two-phase cost &amp; pathway balance</span><span
+                            class="step-arrow">&rarr;</span>
+                        <span class="status-pill">summary / conditional / fig1-5, fig8</span>
+                    </div>
+                    <div class="lane-connector">&darr; shared base draws reused for paired structural experiments</div>
+                    <div class="lane-label">Perturbation, timing, and threshold experiments</div>
+                    <div class="step-row">
+                        <span class="step-chip">9 CRN knockouts (<code>fig6</code>)</span><span
+                            class="step-arrow">&rarr;</span>
+                        <span class="step-chip">Fast / Central / Slow fixed timing</span><span
+                            class="step-arrow">&rarr;</span>
+                        <span class="step-chip">15&times;15 threshold grids (<code>n = 5,000/cell</code>,
+                            <code>fig7</code>)</span><span class="step-arrow">&rarr;</span>
+                        <span class="step-chip">PRCC &amp; midpoint tornado (<code>fig4</code>)</span><span
+                            class="step-arrow">&rarr;</span>
+                        <span class="status-pill">sourcing_priority / threshold_map</span>
+                    </div>
+                </div>
+            </div>
+            <div class="prose">
+                <p>Every simulation branch runs with <code>--region global --basis consumption</code>. The nine
+                    common-random-number (CRN) knockouts reuse identical baseline random draws while toggling individual
+                    mechanisms: <code>alpha_1</code> (<code>&alpha;<sub>i</sub> = 1</code>), <code>success_1</code>
+                    (<code>p<sub>i</sub> = 1</code>
+                    and <code>s<sub>i</sub> = 1</code>), <code>no_rebound</code> (<code>&rho;<sub>i</sub> = 0</code>),
+                    <code>no_delay</code>
+                    (<code>L<sub>i</sub> = R<sub>i</sub> = 0</code>), <code>flat_cost</code>
+                    (<code>g<sub>1</sub> = g<sub>2</sub> = 0</code>),
+                    <code>desal_only</code> (<code>p_solar_food = 0</code>), <code>solar_food_only</code>
+                    (<code>p_desal = 0</code>), and <code>ceiling</code> (<code>&alpha;<sub>i</sub> = 1</code>,
+                    <code>p<sub>i</sub> = 1</code>,
+                    <code>s<sub>i</sub> = 1</code>, <code>&rho;<sub>i</sub> = 0</code> with baseline timing and cost
+                    growth kept intact).
+                </p>
+            </div>
+        </section>
+
+        <section id="accounting">
+            <div class="prose">
+                <h2><span class="secnum">5.</span>Accounting scope, equations, and parameters</h2>
+
+                <h3>Basis separation and regional boundaries</h3>
+                <p>Water withdrawals (total extracted volume) and water consumption (evaporated, transpired, or
+                    product-bound
+                    removal from the local basin) are never mixed within a scenario. Although
+                    <code>configs/base.toml</code>
+                    defaults to <code>withdrawal</code>, the global withdrawal-basis agricultural rows
+                    (<code>A_solar_food</code>
+                    and <code>r_solar_food</code>) carry <code>MISSING</code> sources in
+                    <code>data/parameters.csv</code>. All
+                    model runs here therefore use the sourced <code>consumption</code> basis. Five US compute rows
+                    informed by
+                    Shehabi et al. (2024; LBNL-2001637) reside in the catalog for reference, but
+                    <code>region = "us"</code> is
+                    blocked by validation because US-scale benefit baselines are absent.</p>
+                <p>Because the global AI baseline of Li et al. (2025) already combines Scope 1 cooling and Scope 2
+                    power-plant
+                    water into <code>W_direct_global_consumption</code>, the separate indirect row
+                    <code>W_indirect_global_consumption</code> is fixed at zero and indirect switch <code>k</code> has
+                    no effect
+                    on global runs. Scope 3 water embedded in chip fabrication and facility construction is excluded.
+                </p>
+
+                <div class="flag">
+                    <p><strong>Supply credit versus consumptive offset:</strong> Desalination adds new coastal supply
+                        instead of
+                        preventing evaporative consumption. While the baseline ledger sums both pathways for
+                        completeness, the
+                        <code>solar_food_only</code> knockout provides the clean consumptive-displacement ledger and
+                        <code>desal_only</code> provides the isolated supply-credit benchmark.
+                    </p>
+                </div>
+
+                <h3>Governing equations</h3>
+                <p>Across annual time steps <code>t &isin; {1, ..., T}</code> (where <code>t = 0</code> is 2027 and
+                    <code>t = 50</code> is 2077), compute water consumption <code>C(t)</code> compounds over two growth
+                    phases:
+                </p>
+                <p class="formula">C(t) = (W_direct + k &middot; W_indirect) &middot; (1 + g<sub>1</sub>)<sup>min(t,
+                        G<sub>1</sub>)</sup>
+                    &middot; (1 + g<sub>2</sub>)<sup>max(t &minus; G<sub>1</sub>, 0)</sup></p>
+
+                <p>Each benefit pathway <code>i &isin; {desal, solar_food}</code> draws a single Bernoulli deployment
+                    indicator
+                    <code>s<sub>i</sub> ~ Bernoulli(p<sub>i</sub>)</code> per run, multiplied by AI attribution share
+                    <code>&alpha;<sub>i</sub></code>, gross pathway potential, adoption ramp, and rebound offset:
+                </p>
+                <p class="formula">B<sub>i</sub>(t) = s<sub>i</sub> &middot; &alpha;<sub>i</sub> &middot;
+                    Gross<sub>i</sub> &middot;
+                    ramp<sub>i</sub>(t) &middot; (1 &minus; &rho;<sub>i</sub>)<br />
+                    ramp<sub>i</sub>(t) = 1[t &gt; L<sub>i</sub>] if R<sub>i</sub> = 0, else clip((t &minus;
+                    L<sub>i</sub>) / R<sub>i</sub>, 0, 1)<br />
+                    Gross_desal = D &middot; &theta;&nbsp;&nbsp;|&nbsp;&nbsp;Gross_solar_food = &phi; &middot; A
+                    &middot; (1
+                    &minus; r)</p>
+
+                <p>Cumulative net balance through year <code>t</code> is
+                    <code>N(t) = &Sigma;<sub>&tau;=1..t</sub> (B_desal(&tau;) + B_solar_food(&tau;) &minus; C(&tau;))</code>.
+                    Sustained break-even year <code>t*</code> is the earliest step <code>t &isin; [1, T]</code> such
+                    that
+                    <code>N(&tau;) &ge; 0</code> for every subsequent step <code>&tau; &isin; [t, T]</code>. Temporary
+                    positive
+                    balances that revert below zero under later cost growth do not qualify. Runs without sustained
+                    break-even by
+                    year 50 are classified as <code>never</code> and coded as <code>T + 1 = 51</code> in rank
+                    correlations.
+                </p>
+
+                <h3>Parameter catalog</h3>
+                <p>Of the 29 rows in <code>data/parameters.csv</code>, 20 are active on the global consumption basis
+                    (Table 1; 2
+                    global withdrawal rows, 2 <code>MISSING</code> withdrawal agricultural rows, and 5 reserved US rows
+                    are
+                    inactive). Compute growth assumptions (<code>g_global</code>, <code>G_global</code>,
+                    <code>g2_global</code>)
+                    are anchored to near-term IEA (2025) electricity and water figures (<code>415 TWh</code> in 2024 to
+                    <code>1,200 TWh</code> in 2035; <code>560 billion L</code> in 2023 to <code>1,200 billion L</code>
+                    in 2030),
+                    Shehabi et al. (2024), and Xylem and Global Water Intelligence (2026), with no cited source covering
+                    2035-2077.
+                    Solar-food lag anchors to the April 2024 startup of Solar Foods' commercial <code>Factory 01</code>
+                    (<code>160 t/yr</code> company-reported capacity; Solar Foods Oyj, 2025) shifted by historical
+                    energy-technology
+                    formative phases measured across 16 technologies (<code>10 yr</code> fastest, <code>22 yr</code>
+                    mean; Bento
+                    and Wilson, 2016) alongside transition durations from Grubler et al. (2016) and Gross et al. (2018).
+                </p>
+            </div>
+            <div class="wide table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Description (units)</th>
+                            <th>Dist.</th>
+                            <th>Low / Mode / High</th>
+                            <th>Tier</th>
+                            <th>Status &amp; source</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>W_direct_global_consumption</code></td>
+                            <td>2027 Scope 1+2 AI consumption (km&sup3;/yr)</td>
+                            <td>Uniform</td>
+                            <td><code>0.38 / 0.49 / 0.60</code></td>
+                            <td>B</td>
+                            <td>Sourced: Li et al. (2025)</td>
+                        </tr>
+                        <tr>
+                            <td><code>W_indirect_global_consumption</code></td>
+                            <td>Separate Scope 2 term (km&sup3;/yr)</td>
+                            <td>Fixed</td>
+                            <td><code>0.0 / 0.0 / 0.0</code></td>
+                            <td>B</td>
+                            <td>Sourced: combined above</td>
+                        </tr>
+                        <tr>
+                            <td><code>g_global</code></td>
+                            <td>Phase 1 growth rate (yr<sup>&minus;1</sup>)</td>
+                            <td>Triangular</td>
+                            <td><code>0.10 / 0.20 / 0.30</code></td>
+                            <td>C</td>
+                            <td>Assumption: IEA (2025); Shehabi et al. (2024); Xylem &amp; GWI (2026)</td>
+                        </tr>
+                        <tr>
+                            <td><code>G_global</code></td>
+                            <td>Phase 1 duration (yr)</td>
+                            <td>Triangular</td>
+                            <td><code>1.0 / 3.0 / 8.0</code></td>
+                            <td>C</td>
+                            <td>Assumption: same near-term anchors</td>
+                        </tr>
+                        <tr>
+                            <td><code>g2_global</code></td>
+                            <td>Phase 2 growth rate (yr<sup>&minus;1</sup>)</td>
+                            <td>Triangular</td>
+                            <td><code>&minus;0.02 / 0.02 / 0.05</code></td>
+                            <td>C</td>
+                            <td>Assumption: same; unverified post-2035</td>
+                        </tr>
+                        <tr>
+                            <td><code>p_desal</code></td>
+                            <td>Desalination deployment probability</td>
+                            <td>Uniform</td>
+                            <td><code>0.50 / 0.80* / 0.95</code></td>
+                            <td>C</td>
+                            <td><code>PLACEHOLDER</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>alpha_desal</code></td>
+                            <td>AI attribution share (desalination)</td>
+                            <td>Triangular</td>
+                            <td><code>0.05 / 0.15 / 0.30</code></td>
+                            <td>C</td>
+                            <td><code>PLACEHOLDER</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>rho_desal</code></td>
+                            <td>Rebound fraction (desalination)</td>
+                            <td>Triangular</td>
+                            <td><code>0.00 / 0.10 / 0.30</code></td>
+                            <td>C</td>
+                            <td><code>PLACEHOLDER</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>L_desal</code></td>
+                            <td>Deployment lag (desalination, yr)</td>
+                            <td>Triangular</td>
+                            <td><code>3.0 / 5.0 / 10.0</code></td>
+                            <td>C</td>
+                            <td><code>PLACEHOLDER</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>R_desal</code></td>
+                            <td>Ramp duration (desalination, yr)</td>
+                            <td>Triangular</td>
+                            <td><code>5.0 / 10.0 / 20.0</code></td>
+                            <td>C</td>
+                            <td><code>PLACEHOLDER</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>D_desal</code></td>
+                            <td>Global desalinated output (km&sup3;/yr)</td>
+                            <td>Triangular</td>
+                            <td><code>25.0 / 35.0 / 45.0</code></td>
+                            <td>A</td>
+                            <td>Sourced: Jones et al. (2019)</td>
+                        </tr>
+                        <tr>
+                            <td><code>theta_desal</code></td>
+                            <td>Output increase from cost/energy gains</td>
+                            <td>Triangular</td>
+                            <td><code>0.01 / 0.05 / 0.15</code></td>
+                            <td>C</td>
+                            <td><code>PLACEHOLDER</code> (context: Elimelech &amp; Phillip, 2011)</td>
+                        </tr>
+                        <tr>
+                            <td><code>p_solar_food</code></td>
+                            <td>Solar-food deployment probability</td>
+                            <td>Uniform</td>
+                            <td><code>0.10 / 0.30* / 0.60</code></td>
+                            <td>C</td>
+                            <td><code>PLACEHOLDER</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>alpha_solar_food</code></td>
+                            <td>AI attribution share (solar food)</td>
+                            <td>Triangular</td>
+                            <td><code>0.10 / 0.25 / 0.50</code></td>
+                            <td>C</td>
+                            <td><code>PLACEHOLDER</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>rho_solar_food</code></td>
+                            <td>Rebound fraction (solar food)</td>
+                            <td>Triangular</td>
+                            <td><code>0.00 / 0.10 / 0.40</code></td>
+                            <td>C</td>
+                            <td><code>PLACEHOLDER</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>L_solar_food</code></td>
+                            <td>Deployment lag (solar food, yr)</td>
+                            <td>Triangular</td>
+                            <td><code>7.0 / 19.0 / 30.0</code></td>
+                            <td>C</td>
+                            <td>Assumption: Bento &amp; Wilson (2016); Grubler et al. (2016); Gross et al. (2018); Solar
+                                Foods Oyj (2025)</td>
+                        </tr>
+                        <tr>
+                            <td><code>R_solar_food</code></td>
+                            <td>Ramp duration (solar food, yr)</td>
+                            <td>Triangular</td>
+                            <td><code>10.0 / 25.0 / 45.0</code></td>
+                            <td>C</td>
+                            <td>Assumption: Grubler et al. (2016)</td>
+                        </tr>
+                        <tr>
+                            <td><code>phi_solar_food</code></td>
+                            <td>Displaced crop-water share</td>
+                            <td>Triangular</td>
+                            <td><code>0.00 / 0.06 / 0.13</code></td>
+                            <td>C</td>
+                            <td>Assumption: Pikaar et al. (2018)</td>
+                        </tr>
+                        <tr>
+                            <td><code>A_solar_food_consumption</code></td>
+                            <td>Global crop blue-water use (km&sup3;/yr)</td>
+                            <td>Triangular</td>
+                            <td><code>890 / 1,080 / 1,230</code></td>
+                            <td>B</td>
+                            <td>Sourced: Chukalla et al. (2025); Mekonnen &amp; Hoekstra (2011)</td>
+                        </tr>
+                        <tr>
+                            <td><code>r_solar_food_consumption</code></td>
+                            <td>Relative water intensity of solar food</td>
+                            <td>Triangular</td>
+                            <td><code>0.002 / 0.01 / 0.10</code></td>
+                            <td>C</td>
+                            <td>Assumption: Sillman et al. (2020, 2022)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="prose">
+                <p>*Latin hypercube sampling ignores the catalog <code>mode</code> column on uniform distributions;
+                    their true
+                    expected values are <code>0.725</code> (<code>p_desal</code>) and <code>0.35</code>
+                    (<code>p_solar_food</code>), which deterministic tornado baselines use.</p>
+            </div>
+        </section>
+
+        <section id="cost-balance">
+            <div class="prose">
+                <h2><span class="secnum">6.</span>Compute water trajectory and baseline balance</h2>
+                <p>Under the two-phase cost function, median operational AI water consumption grows from
+                    <code>0.49 km&sup3;/yr</code> in 2027 to <code>0.97 km&sup3;/yr</code> by year 5
+                    (<code>1.99&times;</code>),
+                    <code>1.08 km&sup3;/yr</code> by year 10 (<code>2.21&times;</code>), <code>1.42 km&sup3;/yr</code>
+                    by year 25
+                    (<code>2.92&times;</code>), and <code>2.20 km&sup3;/yr</code> by year 50 (<code>4.53&times;</code>;
+                    Table 2).
+                    At the 95th percentile, year-50 demand reaches <code>6.74 km&sup3;/yr</code>
+                    (<code>13.57&times;</code>).
+                    Cumulative 50-year compute consumption spans <code>16.14-517.57 km&sup3;</code> across all runs
+                    (median
+                    <code>73.61 km&sup3;</code>).
+                </p>
+                <p>Because deployment delays accumulate deficits early while roughly two-thirds of runs fail to deploy
+                    solar
+                    food, median cumulative net balance <code>N(t)</code> stays negative across every benchmark year,
+                    shifting from
+                    <code>&minus;8.99 km&sup3;</code> at year 10 to <code>&minus;42.82 km&sup3;</code> at year 50 (Table
+                    2;
+                    <code>fig3_net_balance_fan</code>). Upper quantiles cross zero between years 20 and 30, reaching
+                    <code>+65.30 km&sup3;</code> at the 95th percentile by year 30 and <code>+92.91 km&sup3;</code> at
+                    the 75th
+                    percentile (<code>+407.16 km&sup3;</code> at the 95th) by year 50.
+                </p>
+                <p>Overall, <code>2</code> runs (<code>0.002%</code>, 95% Wilson CI: <code>0.0005-0.0073%</code>)
+                    achieve
+                    sustained break-even by year 10, <code>3,782</code> (<code>3.78%</code>, <code>3.67-3.90%</code>) by
+                    year 20,
+                    <code>18,460</code> (<code>18.46%</code>, <code>18.22-18.70%</code>) by year 30, and
+                    <code>32,438</code>
+                    (<code>32.44%</code>, <code>32.15-32.73%</code>) by year 50, while <code>67,562</code>
+                    (<code>67.56%</code>)
+                    never reach sustained break-even within 50 years (<code>fig1_breakeven_dist</code>,
+                    <code>fig2_p_breakeven_horizon</code>, <code>fig5_scope_comparison</code>). Successful runs break
+                    even at a
+                    median of year <code>29</code> (5th-95th percentile: <code>18-44 yr</code>). Five baseline runs
+                    cross
+                    <code>N(t) &ge; 0</code> temporarily and revert below zero before year 50, including three runs that
+                    remain
+                    non-negative at year 30 before late Phase 2 compute growth drives <code>N(50) &lt; 0</code>.
+                </p>
+            </div>
+            <div class="wide table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Year / Horizon</th>
+                            <th>C(t) p5 / p50 / p95 (km&sup3;/yr)</th>
+                            <th>C(t)/C(0) p5 / p50 / p95</th>
+                            <th>N(t) p5 (km&sup3;)</th>
+                            <th>N(t) p25 (km&sup3;)</th>
+                            <th>N(t) p50 (km&sup3;)</th>
+                            <th>N(t) p75 (km&sup3;)</th>
+                            <th>N(t) p95 (km&sup3;)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>5 yr</td>
+                            <td><code>0.64 / 0.97 / 1.52</code></td>
+                            <td><code>1.42 / 1.99 / 2.98</code></td>
+                            <td>n/a</td>
+                            <td>n/a</td>
+                            <td>n/a</td>
+                            <td>n/a</td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td>10 yr</td>
+                            <td><code>0.68 / 1.08 / 1.98</code></td>
+                            <td><code>1.48 / 2.21 / 3.93</code></td>
+                            <td><code>&minus;14.36</code></td>
+                            <td><code>&minus;10.81</code></td>
+                            <td><code>&minus;8.99</code></td>
+                            <td><code>&minus;7.56</code></td>
+                            <td><code>&minus;5.99</code></td>
+                        </tr>
+                        <tr>
+                            <td>20 yr</td>
+                            <td>n/a</td>
+                            <td>n/a</td>
+                            <td><code>&minus;34.25</code></td>
+                            <td><code>&minus;23.55</code></td>
+                            <td><code>&minus;18.23</code></td>
+                            <td><code>&minus;13.74</code></td>
+                            <td><code>&minus;3.81</code></td>
+                        </tr>
+                        <tr>
+                            <td>25 yr</td>
+                            <td><code>0.69 / 1.42 / 2.91</code></td>
+                            <td><code>1.47 / 2.92 / 5.78</code></td>
+                            <td>n/a</td>
+                            <td>n/a</td>
+                            <td>n/a</td>
+                            <td>n/a</td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td>30 yr</td>
+                            <td>n/a</td>
+                            <td>n/a</td>
+                            <td><code>&minus;57.58</code></td>
+                            <td><code>&minus;36.70</code></td>
+                            <td><code>&minus;25.39</code></td>
+                            <td><code>&minus;11.49</code></td>
+                            <td><code>+65.30</code></td>
+                        </tr>
+                        <tr>
+                            <td>50 yr</td>
+                            <td><code>0.62 / 2.20 / 6.74</code></td>
+                            <td><code>1.30 / 4.53 / 13.57</code></td>
+                            <td><code>&minus;137.61</code></td>
+                            <td><code>&minus;76.19</code></td>
+                            <td><code>&minus;42.82</code></td>
+                            <td><code>+92.91</code></td>
+                            <td><code>+407.16</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="pathways">
+            <div class="prose">
+                <h2><span class="secnum">7.</span>Consumption offsets versus supply credits</h2>
+                <p>The two pathways differ in physical scale by more than an order of magnitude. When deployed,
+                    desalination
+                    reaches a year-50 plateau credit of <code>0.314 km&sup3;/yr</code> at the median (5th-95th:
+                    <code>0.107-0.738 km&sup3;/yr</code>), below 2027 AI water demand (<code>0.49 km&sup3;/yr</code>)
+                    and roughly
+                    one-seventh of median year-50 demand (<code>2.20 km&sup3;/yr</code>). When deployed, solar food
+                    reaches a
+                    year-50 displacement of <code>13.38 km&sup3;/yr</code> at the median
+                    (<code>3.77-29.97 km&sup3;/yr</code>),
+                    more than 42 times larger. Across all runs and years, solar food generates <code>91.03%</code> of
+                    total
+                    credited volume and desalination generates <code>8.97%</code>.
+                </p>
+                <p>Isolating each pathway via CRN knockouts separates the consumptive ledger from the supply credit
+                    (Table 3,
+                    <code>fig6_knockouts</code>). Restricting benefits solely to consumptive crop displacement
+                    (<code>solar_food_only</code>) yields sustained break-even in <code>16.64%</code>
+                    (<code>16.41-16.87%</code>)
+                    of runs by year 30 and <code>31.69%</code> (<code>31.41-31.98%</code>) by year 50. Isolating
+                    desalination alone
+                    (<code>desal_only</code>) succeeds in <code>0.058%</code> (<code>0.045-0.075%</code>) of runs by
+                    year 30 and
+                    <code>0.232%</code> (<code>0.204-0.264%</code>) by year 50 (median
+                    <code>N(50) = &minus;64.30 km&sup3;</code>).
+                </p>
+
+                <div class="flag">
+                    <p><strong>Conditional subsets do not isolate pathways:</strong> In <code>conditional.csv</code>,
+                        runs where
+                        <code>s_desal = 1</code> break even in <code>19.05%</code> of cases by year 30 and
+                        <code>32.59%</code> by
+                        year 50 only because solar food deploys independently in <code>34.97%</code>
+                        (<code>25,326 / 72,425</code>)
+                        of those runs. Use <code>desal_only</code> and <code>solar_food_only</code> for isolated pathway
+                        attribution.
+                    </p>
+                </div>
+
+                <p>Among the <code>35,057</code> baseline runs where solar food deploys (<code>35.06%</code>, matching
+                    its
+                    <code>0.35</code> uniform mean), <code>52.55%</code> (<code>52.03-53.07%</code>) reach sustained
+                    break-even by
+                    year 30 and <code>92.10%</code> (<code>91.81-92.38%</code>) by year 50
+                    (<code>fig8_breakeven_given_solar_food</code>).
+                    Comparing CRN structural overrides measures how individual assumptions alter outcomes: forcing full
+                    AI attribution
+                    (<code>alpha_1</code>) lifts 30-year break-even by <code>35.99</code> percentage points to
+                    <code>54.45%</code>, though 50-year success stops at <code>59.08%</code> because <code>40.92%</code>
+                    of runs
+                    never deploy solar food. Forcing full deployment (<code>success_1</code>) matches that 30-year mark
+                    (<code>54.40%</code>) while lifting 50-year break-even to <code>92.78%</code> (median
+                    <code>N(50) = +181.22 km&sup3;</code>). Removing lags and ramps (<code>no_delay</code>) triggers
+                    immediate
+                    step benefits from <code>t = 1</code> (<code>median t* = 1 yr</code>, <code>35.21%</code> by year
+                    30).
+                    Freezing compute growth (<code>flat_cost</code>) reaches <code>31.31%</code> by year 30 and
+                    <code>40.03%</code> by year 50, removing rebound (<code>no_rebound</code>) adds <code>2.47</code>
+                    percentage
+                    points at year 30 (<code>20.93%</code>), and the combined <code>ceiling</code> case reaches
+                    <code>97.67%</code>
+                    by year 30 and <code>99.93%</code> by year 50.
+                </p>
+            </div>
+            <div class="wide table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Case / subset</th>
+                            <th>Runs (n)</th>
+                            <th>Yr 20 (%)</th>
+                            <th>Yr 30 (%, 95% CI)</th>
+                            <th>Yr 50 (%, 95% CI)</th>
+                            <th>Never (%)</th>
+                            <th>Median t* (yr)</th>
+                            <th>Median N(50) (km&sup3;)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Baseline (combined ledger)</strong></td>
+                            <td><code>100,000</code></td>
+                            <td><code>3.78</code></td>
+                            <td><code>18.46 (18.22, 18.70)</code></td>
+                            <td><code>32.44 (32.15, 32.73)</code></td>
+                            <td><code>67.56</code></td>
+                            <td><code>29</code></td>
+                            <td><code>&minus;42.82</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>solar_food_only</code> (consumptive)</td>
+                            <td><code>100,000</code></td>
+                            <td><code>3.23</code></td>
+                            <td><code>16.64 (16.41, 16.87)</code></td>
+                            <td><code>31.69 (31.41, 31.98)</code></td>
+                            <td><code>68.31</code></td>
+                            <td><code>30</code></td>
+                            <td><code>&minus;52.84</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>desal_only</code> (supply credit)</td>
+                            <td><code>100,000</code></td>
+                            <td><code>0.006</code></td>
+                            <td><code>0.058 (0.045, 0.075)</code></td>
+                            <td><code>0.232 (0.204, 0.264)</code></td>
+                            <td><code>99.77</code></td>
+                            <td><code>38</code></td>
+                            <td><code>&minus;64.30</code></td>
+                        </tr>
+                        <tr>
+                            <td>Given <code>s_solar_food = 1</code></td>
+                            <td><code>35,057</code></td>
+                            <td><code>10.78</code></td>
+                            <td><code>52.55 (52.03, 53.07)</code></td>
+                            <td><code>92.10 (91.81, 92.38)</code></td>
+                            <td><code>7.90</code></td>
+                            <td><code>29</code></td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td>Given <code>s_desal = 1</code></td>
+                            <td><code>72,425</code></td>
+                            <td><code>4.00</code></td>
+                            <td><code>19.05 (18.77, 19.34)</code></td>
+                            <td><code>32.59 (32.25, 32.93)</code></td>
+                            <td><code>67.41</code></td>
+                            <td><code>29</code></td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td>Given either deployed</td>
+                            <td><code>82,156</code></td>
+                            <td><code>4.60</code></td>
+                            <td><code>22.47 (22.19, 22.76)</code></td>
+                            <td><code>39.48 (39.15, 39.82)</code></td>
+                            <td><code>60.52</code></td>
+                            <td><code>29</code></td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td><code>alpha_1</code> (&alpha;<sub>i</sub> = 1)</td>
+                            <td><code>100,000</code></td>
+                            <td><code>32.85</code></td>
+                            <td><code>54.45 (54.14, 54.76)</code></td>
+                            <td><code>59.08 (58.77, 59.38)</code></td>
+                            <td><code>40.92</code></td>
+                            <td><code>20</code></td>
+                            <td><code>+24.81</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>success_1</code> (p<sub>i</sub> = 1, s<sub>i</sub> = 1)</td>
+                            <td><code>100,000</code></td>
+                            <td><code>11.16</code></td>
+                            <td><code>54.40 (54.09, 54.71)</code></td>
+                            <td><code>92.78 (92.62, 92.94)</code></td>
+                            <td><code>7.22</code></td>
+                            <td><code>29</code></td>
+                            <td><code>+181.22</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>no_rebound</code> (&rho;<sub>i</sub> = 0)</td>
+                            <td><code>100,000</code></td>
+                            <td><code>4.74</code></td>
+                            <td><code>20.93 (20.68, 21.19)</code></td>
+                            <td><code>33.51 (33.22, 33.80)</code></td>
+                            <td><code>66.49</code></td>
+                            <td><code>28</code></td>
+                            <td><code>&minus;40.87</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>no_delay</code> (L<sub>i</sub> = R<sub>i</sub> = 0)</td>
+                            <td><code>100,000</code></td>
+                            <td><code>35.19</code></td>
+                            <td><code>35.21 (34.91, 35.51)</code></td>
+                            <td><code>35.28 (34.98, 35.58)</code></td>
+                            <td><code>64.72</code></td>
+                            <td><code>1</code></td>
+                            <td><code>&minus;38.63</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>flat_cost</code> (g<sub>1</sub> = g<sub>2</sub> = 0)</td>
+                            <td><code>100,000</code></td>
+                            <td><code>9.04</code></td>
+                            <td><code>31.31 (31.02, 31.60)</code></td>
+                            <td><code>40.03 (39.72, 40.33)</code></td>
+                            <td><code>59.97</code></td>
+                            <td><code>25</code></td>
+                            <td><code>&minus;8.06</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>ceiling</code> (&alpha;=1, p=1, &rho;=0)</td>
+                            <td><code>100,000</code></td>
+                            <td><code>66.53</code></td>
+                            <td><code>97.67 (97.57, 97.76)</code></td>
+                            <td><code>99.93 (99.92, 99.95)</code></td>
+                            <td><code>0.066</code></td>
+                            <td><code>18</code></td>
+                            <td><code>+1,129.75</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="timing">
+            <div class="prose">
+                <h2><span class="secnum">8.</span>Solar-food timing scenarios</h2>
+                <p>Fixing solar-food lag <code>L_solar_food</code> and ramp <code>R_solar_food</code> to fast
+                    (<code>7</code>
+                    and <code>10 yr</code>), central (<code>19</code> and <code>25 yr</code>), and slow (<code>30</code>
+                    and
+                    <code>45 yr</code>) schedules separates near-term payback from late-century payback (Table 4).
+                    Within the
+                    <code>s_solar_food = 1</code> subset (<code>n = 35,057</code>), fast timing achieves
+                    <code>44.37%</code>
+                    break-even by year 10, <code>98.45%</code> by year 30, and <code>98.55%</code> by year 50 (median
+                    <code>11 yr</code>). Central timing delays break-even past year 20 (<code>0.017%</code>), reaching
+                    <code>58.43%</code> by year 30 and <code>94.24%</code> by year 50 (median <code>29 yr</code>). Slow
+                    timing
+                    leaves solar-food output at zero through year 30 (<code>t &le; L = 30</code>), so only
+                    <code>0.060%</code>
+                    break even by year 30 (driven by co-deployed desalination), rising to <code>49.87%</code> by year 50
+                    (median <code>44 yr</code>).
+                </p>
+            </div>
+            <div class="wide table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Scenario (L / R yr)</th>
+                            <th>Cohort</th>
+                            <th>Yr 10 (%)</th>
+                            <th>Yr 20 (%)</th>
+                            <th>Yr 30 (%, 95% CI)</th>
+                            <th>Yr 50 (%, 95% CI)</th>
+                            <th>Never (%)</th>
+                            <th>Median t* (p5-p95)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Fast (<code>7 / 10</code>)</td>
+                            <td>All runs</td>
+                            <td><code>15.55</code></td>
+                            <td><code>34.31</code></td>
+                            <td><code>34.55 (34.26, 34.85)</code></td>
+                            <td><code>34.70 (34.41, 35.00)</code></td>
+                            <td><code>65.30</code></td>
+                            <td><code>11 (9-15)</code></td>
+                        </tr>
+                        <tr>
+                            <td>Fast (<code>7 / 10</code>)</td>
+                            <td><code>s_solar_food = 1</code></td>
+                            <td><code>44.37</code></td>
+                            <td><code>97.86</code></td>
+                            <td><code>98.45 (98.31, 98.57)</code></td>
+                            <td><code>98.55 (98.42, 98.67)</code></td>
+                            <td><code>1.45</code></td>
+                            <td><code>11 (9-15)</code></td>
+                        </tr>
+                        <tr>
+                            <td>Central (<code>19 / 25</code>)</td>
+                            <td>All runs</td>
+                            <td><code>0.000</code></td>
+                            <td><code>0.008</code></td>
+                            <td><code>20.52 (20.27, 20.77)</code></td>
+                            <td><code>33.19 (32.90, 33.48)</code></td>
+                            <td><code>66.81</code></td>
+                            <td><code>29 (24-41)</code></td>
+                        </tr>
+                        <tr>
+                            <td>Central (<code>19 / 25</code>)</td>
+                            <td><code>s_solar_food = 1</code></td>
+                            <td><code>0.000</code></td>
+                            <td><code>0.017</code></td>
+                            <td><code>58.43 (57.91, 58.94)</code></td>
+                            <td><code>94.24 (93.99, 94.48)</code></td>
+                            <td><code>5.76</code></td>
+                            <td><code>29 (24-41)</code></td>
+                        </tr>
+                        <tr>
+                            <td>Slow (<code>30 / 45</code>)</td>
+                            <td>All runs</td>
+                            <td><code>0.000</code></td>
+                            <td><code>0.006</code></td>
+                            <td><code>0.058 (0.045, 0.075)</code></td>
+                            <td><code>17.63 (17.40, 17.87)</code></td>
+                            <td><code>82.37</code></td>
+                            <td><code>44 (38-50)</code></td>
+                        </tr>
+                        <tr>
+                            <td>Slow (<code>30 / 45</code>)</td>
+                            <td><code>s_solar_food = 1</code></td>
+                            <td><code>0.000</code></td>
+                            <td><code>0.011</code></td>
+                            <td><code>0.060 (0.039, 0.092)</code></td>
+                            <td><code>49.87 (49.34, 50.39)</code></td>
+                            <td><code>50.13</code></td>
+                            <td><code>44 (38-50)</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="thresholds">
+            <div class="prose">
+                <h2><span class="secnum">9.</span>Two-parameter threshold surfaces</h2>
+                <p>Two <code>15 &times; 15</code> threshold grids (<code>5,000</code> shared base draws per cell)
+                    evaluate
+                    sustained break-even by year 30 while tracking trajectories through <code>eval_horizon = 50</code>
+                    years to
+                    catch late reversals (<code>fig7_threshold_map</code>, Table 5). The conditional surfaces
+                    (<code>--conditional solar_food</code>) isolate the physical parameter thresholds from the random
+                    <code>34.62%</code> deployment draw (<code>1,731 / 5,000</code>) present in the shared base matrix.
+                </p>
+                <p>On the conditional <code>&alpha;_solar_food &times; &phi;_solar_food</code> log-spaced grid,
+                    break-even
+                    tracks the attributed displacement product <code>&alpha; &middot; &phi;</code>. The <code>10%</code>
+                    probability
+                    contour runs near <code>&alpha; &middot; &phi; &asymp; 0.0043-0.0045</code> (<code>9.42%</code> at
+                    <code>0.132 &times; 0.0324 = 0.00427</code>; <code>10.42%</code> at
+                    <code>0.0349 &times; 0.130 = 0.00453</code>).
+                    The <code>50%</code> contour sits near <code>&alpha; &middot; &phi; &asymp; 0.014</code>
+                    (<code>48.04%</code> at <code>0.2058 &times; 0.0649 = 0.01335</code>; <code>51.78%</code> at
+                    <code>0.3208 &times; 0.0458 = 0.01469</code>), corresponding to roughly
+                    <code>13.5 km&sup3;/yr</code> of
+                    attributed annual plateau displacement at central catalog values of <code>A</code>, <code>r</code>,
+                    and
+                    <code>&rho;</code>. At the upper grid corner (<code>0.50 &times; 0.13 = 0.065</code>), conditional
+                    break-even
+                    reaches <code>89.40%</code> (<code>88.52-90.22%</code>).
+                </p>
+                <p>On the conditional <code>L_solar_food &times; R_solar_food</code> grid, zero ramp
+                    (<code>R = 0</code>)
+                    keeps 30-year break-even above <code>90%</code> up to <code>L = 23.57 yr</code>
+                    (<code>91.54%</code>) and at
+                    <code>64.56%</code> at <code>L = 27.86 yr</code> before dropping to <code>0.10%</code> at
+                    <code>L = 30 yr</code>.
+                    With a <code>22.5 yr</code> ramp, break-even crosses <code>50%</code> between
+                    <code>L = 19.29 yr</code>
+                    (<code>61.52%</code>) and <code>L = 21.43 yr</code> (<code>38.96%</code>), dropping to
+                    <code>2.16%</code> at
+                    <code>L = 25.71 yr</code>. With a <code>45 yr</code> ramp, break-even drops below <code>50%</code>
+                    at
+                    <code>L = 17.14 yr</code> (<code>43.42%</code>).
+                </p>
+
+                <div class="flag">
+                    <p><strong>Why unconditional surfaces cap below 35%:</strong> Leaving <code>p_solar_food</code>
+                        active in
+                        unconditional threshold grids restricts solar-food deployment to <code>34.62%</code> of the
+                        5,000 draws per
+                        cell, capping maximum probability at <code>31.10%</code> on <code>&alpha; &times; &phi;</code>
+                        and
+                        <code>34.34%</code> on <code>L &times; R</code>. Verifying stability through
+                        <code>eval_horizon = 50</code>
+                        also catches slight late-horizon reversals compared with a 30-year-only evaluation
+                        (<code>34.34%</code>
+                        versus <code>34.52%</code> at <code>L = 0, R = 0</code>).
+                    </p>
+                </div>
+            </div>
+            <div class="wide table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Surface &amp; grid point</th>
+                            <th>Product / timing note</th>
+                            <th>Conditional (s_solar_food = 1) P (%, 95% CI)</th>
+                            <th>Unconditional P (%, 95% CI)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>&alpha; = 0.0010, &phi; = 0.0010</code></td>
+                            <td><code>&alpha; &middot; &phi; = 0.000001</code></td>
+                            <td><code>0.08 (0.03, 0.21)</code></td>
+                            <td><code>0.08 (0.03, 0.21)</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>&alpha; = 0.0543, &phi; = 0.0229</code></td>
+                            <td><code>&alpha; &middot; &phi; = 0.00124</code></td>
+                            <td><code>0.50 (0.34, 0.74)</code></td>
+                            <td><code>0.30 (0.18, 0.49)</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>&alpha; = 0.1320, &phi; = 0.0324</code></td>
+                            <td><code>&alpha; &middot; &phi; = 0.00427</code></td>
+                            <td><code>9.42 (8.64, 10.26)</code></td>
+                            <td><code>3.44 (2.97, 3.98)</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>&alpha; = 0.1320, &phi; = 0.0458</code></td>
+                            <td><code>&alpha; &middot; &phi; = 0.00605</code></td>
+                            <td><code>18.24 (17.19, 19.33)</code></td>
+                            <td><code>6.48 (5.83, 7.20)</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>&alpha; = 0.2058, &phi; = 0.0649</code></td>
+                            <td><code>&alpha; &middot; &phi; = 0.01335</code></td>
+                            <td><code>48.04 (46.66, 49.43)</code></td>
+                            <td><code>16.54 (15.54, 17.60)</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>&alpha; = 0.3208, &phi; = 0.0458</code></td>
+                            <td><code>&alpha; &middot; &phi; = 0.01469</code></td>
+                            <td><code>51.78 (50.39, 53.16)</code></td>
+                            <td><code>17.88 (16.84, 18.97)</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>&alpha; = 0.3208, &phi; = 0.0918</code></td>
+                            <td><code>&alpha; &middot; &phi; = 0.02945</code></td>
+                            <td><code>73.92 (72.68, 75.12)</code></td>
+                            <td><code>25.44 (24.25, 26.67)</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>&alpha; = 0.5000, &phi; = 0.1300</code></td>
+                            <td><code>&alpha; &middot; &phi; = 0.06500</code></td>
+                            <td><code>89.40 (88.52, 90.22)</code></td>
+                            <td><code>31.10 (29.83, 32.40)</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>L = 0.00, R = 0.00</code></td>
+                            <td>Immediate step adoption</td>
+                            <td><code>99.24 (98.96, 99.45)</code></td>
+                            <td><code>34.34 (33.04, 35.67)</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>L = 0.00, R = 45.00</code></td>
+                            <td>Zero lag, 45 yr ramp</td>
+                            <td><code>95.84 (95.25, 96.36)</code></td>
+                            <td><code>33.20 (31.91, 34.52)</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>L = 15.00, R = 22.50</code></td>
+                            <td>Mid-grid timing</td>
+                            <td><code>85.60 (84.60, 86.55)</code></td>
+                            <td><code>29.58 (28.33, 30.86)</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>L = 19.29, R = 25.71</code></td>
+                            <td>Near catalog mode</td>
+                            <td><code>54.86 (53.48, 56.24)</code></td>
+                            <td><code>18.80 (17.74, 19.91)</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>L = 21.43, R = 22.50</code></td>
+                            <td>Post-20 yr lag cliff</td>
+                            <td><code>38.96 (37.62, 40.32)</code></td>
+                            <td><code>13.12 (12.21, 14.08)</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>L = 23.57, R = 0.00</code></td>
+                            <td>Late step adoption</td>
+                            <td><code>91.54 (90.74, 92.28)</code></td>
+                            <td><code>31.66 (30.39, 32.96)</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>L = 30.00, R = 0.00 / 45.00</code></td>
+                            <td>Lag equals horizon</td>
+                            <td><code>0.10 (0.04, 0.23)</code></td>
+                            <td><code>0.08 (0.03, 0.21)</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="sensitivity">
+            <div class="prose">
+                <h2><span class="secnum">10.</span>Sensitivity and dominance diagnostics</h2>
+                <p>Comparing pooled and conditional rank correlations separates binary deployment gating from timing and
+                    scale
+                    drivers (Table 6). Across all <code>100,000</code> runs, the binary deployment draw
+                    <code>s_solar_food</code>
+                    dominates <code>abs_corr_breakeven</code> (<code>0.927</code>, tripping
+                    <code>breakeven_dominance_warning</code> above <code>0.85</code>). Because <code>s_solar_food</code>
+                    mediates
+                    <code>p_solar_food</code> in that pooled regression, <code>p_solar_food</code> drops to
+                    <code>0.0012</code>
+                    in <code>abs_corr_breakeven</code> despite ranking second in terminal balance PRCC
+                    (<code>+0.275</code>).
+                </p>
+                <p>Evaluating partial rank correlations strictly inside the deployed subset
+                    (<code>s_solar_food = 1</code>,
+                    <code>n = 35,057</code>) removes that mediation artifact and exposes the ordering of parameters
+                    governing when
+                    break-even occurs: lag <code>L_solar_food</code> leads at <code>0.890</code>, followed by
+                    displacement share
+                    <code>&phi;_solar_food</code> (<code>0.754</code>), attribution <code>&alpha;_solar_food</code>
+                    (<code>0.564</code>), ramp <code>R_solar_food</code> (<code>0.518</code>), Phase 1 duration
+                    <code>G_global</code> (<code>0.506</code>), and Phase 2 growth <code>g2_global</code>
+                    (<code>0.446</code>).
+                    For terminal net balance <code>N(50)</code>, no continuous parameter exceeds <code>0.85</code>
+                    (<code>g2_global</code> is largest at <code>&minus;0.382</code>). In deterministic tornado swings
+                    around the
+                    expected-value midpoint baseline (<code>+34.44 km&sup3;</code>; <code>fig4_tornado</code>),
+                    <code>&phi;_solar_food</code> (<code>207.97 km&sup3;</code>), <code>&alpha;_solar_food</code>
+                    (<code>153.58 km&sup3;</code>), <code>p_solar_food</code> (<code>137.12 km&sup3;</code>),
+                    <code>g2_global</code> (<code>132.92 km&sup3;</code>), and <code>L_solar_food</code>
+                    (<code>114.17 km&sup3;</code>) generate the widest swings.
+                </p>
+            </div>
+            <div class="wide table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>abs_corr_breakeven (all)</th>
+                            <th>Given s_solar_food = 1</th>
+                            <th>PRCC vs N(50)</th>
+                            <th>Tornado swing (km&sup3;)</th>
+                            <th>Status (tier)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>s_solar_food</code></td>
+                            <td><code>0.927*</code></td>
+                            <td>n/a</td>
+                            <td>n/a</td>
+                            <td>n/a</td>
+                            <td>Deployment draw</td>
+                        </tr>
+                        <tr>
+                            <td><code>L_solar_food</code></td>
+                            <td><code>0.326</code></td>
+                            <td><code>0.890</code></td>
+                            <td><code>&minus;0.066</code></td>
+                            <td><code>114.17</code></td>
+                            <td>Assumption (C)</td>
+                        </tr>
+                        <tr>
+                            <td><code>phi_solar_food</code></td>
+                            <td><code>0.282</code></td>
+                            <td><code>0.754</code></td>
+                            <td><code>+0.120</code></td>
+                            <td><code>207.97</code></td>
+                            <td>Assumption (C)</td>
+                        </tr>
+                        <tr>
+                            <td><code>alpha_solar_food</code></td>
+                            <td><code>0.160</code></td>
+                            <td><code>0.564</code></td>
+                            <td><code>+0.066</code></td>
+                            <td><code>153.58</code></td>
+                            <td><code>PLACEHOLDER</code> (C)</td>
+                        </tr>
+                        <tr>
+                            <td><code>g2_global</code></td>
+                            <td><code>0.156</code></td>
+                            <td><code>0.446</code></td>
+                            <td><code>&minus;0.382</code></td>
+                            <td><code>132.92</code></td>
+                            <td>Assumption (C)</td>
+                        </tr>
+                        <tr>
+                            <td><code>G_global</code></td>
+                            <td><code>0.145</code></td>
+                            <td><code>0.506</code></td>
+                            <td><code>&minus;0.264</code></td>
+                            <td><code>99.36</code></td>
+                            <td>Assumption (C)</td>
+                        </tr>
+                        <tr>
+                            <td><code>R_solar_food</code></td>
+                            <td><code>0.129</code></td>
+                            <td><code>0.518</code></td>
+                            <td><code>&minus;0.041</code></td>
+                            <td><code>78.19</code></td>
+                            <td>Assumption (C)</td>
+                        </tr>
+                        <tr>
+                            <td><code>g_global</code></td>
+                            <td><code>0.086</code></td>
+                            <td><code>0.327</code></td>
+                            <td><code>&minus;0.151</code></td>
+                            <td><code>34.01</code></td>
+                            <td>Assumption (C)</td>
+                        </tr>
+                        <tr>
+                            <td><code>W_direct_global_consumption</code></td>
+                            <td><code>0.083</code></td>
+                            <td><code>0.324</code></td>
+                            <td><code>&minus;0.144</code></td>
+                            <td><code>30.75</code></td>
+                            <td>Sourced (B)</td>
+                        </tr>
+                        <tr>
+                            <td><code>rho_solar_food</code></td>
+                            <td><code>0.055</code></td>
+                            <td><code>0.229</code></td>
+                            <td><code>&minus;0.025</code></td>
+                            <td><code>42.66</code></td>
+                            <td><code>PLACEHOLDER</code> (C)</td>
+                        </tr>
+                        <tr>
+                            <td><code>s_desal</code></td>
+                            <td><code>0.045</code></td>
+                            <td><code>0.193</code></td>
+                            <td>n/a</td>
+                            <td>n/a</td>
+                            <td>Deployment draw</td>
+                        </tr>
+                        <tr>
+                            <td><code>theta_desal</code></td>
+                            <td><code>0.038</code></td>
+                            <td><code>0.143</code></td>
+                            <td><code>+0.065</code></td>
+                            <td><code>19.42</code></td>
+                            <td><code>PLACEHOLDER</code> (C)</td>
+                        </tr>
+                        <tr>
+                            <td><code>A_solar_food_consumption</code></td>
+                            <td><code>0.037</code></td>
+                            <td><code>0.147</code></td>
+                            <td><code>+0.015</code></td>
+                            <td><code>30.22</code></td>
+                            <td>Sourced (B)</td>
+                        </tr>
+                        <tr>
+                            <td><code>alpha_desal</code></td>
+                            <td><code>0.030</code></td>
+                            <td><code>0.108</code></td>
+                            <td><code>+0.045</code></td>
+                            <td><code>11.56</code></td>
+                            <td><code>PLACEHOLDER</code> (C)</td>
+                        </tr>
+                        <tr>
+                            <td><code>D_desal</code></td>
+                            <td><code>0.017</code></td>
+                            <td><code>0.036</code></td>
+                            <td><code>+0.019</code></td>
+                            <td><code>3.96</code></td>
+                            <td>Sourced (A)</td>
+                        </tr>
+                        <tr>
+                            <td><code>p_solar_food</code></td>
+                            <td><code>0.001</code></td>
+                            <td>n/a</td>
+                            <td><code>+0.275</code></td>
+                            <td><code>137.12</code></td>
+                            <td><code>PLACEHOLDER</code> (C)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="prose">
+                <p>*Trips <code>breakeven_dominance_warning</code> (&gt; 0.85). All continuous parameters remain below
+                    0.85 on
+                    <code>abs_prcc</code> (<code>dominance_warning = False</code>).
+                </p>
+            </div>
+        </section>
+
+        <section id="audits">
+            <div class="prose">
+                <h2><span class="secnum">11.</span>What the code and citation audits resolved</h2>
+                <p>Pre-freeze source audits between baseline revision <code>7c5b862</code> and frozen tag
+                    <code>0.2.0</code>
+                    (<code>bfcfffc</code>) repaired several silent analytical and provenance defects without changing
+                    underlying
+                    Monte Carlo distributions:</p>
+                <ul>
+                    <li><code>plot_threshold_map</code> previously ignored <code>--log</code> and crashed or warned when
+                        probability ceilings fell below hardcoded <code>0.5</code> and <code>0.9</code> contour levels;
+                        log axes
+                        and data-range contour filtering were added.</li>
+                    <li><code>compute_threshold_map</code> gained <code>--conditional</code> and
+                        <code>--eval-horizon</code> so
+                        physical thresholds can be evaluated free of random deployment caps and checked for post-30-year
+                        reversals.</li>
+                    <li><code>compute_sourcing_priority</code> gained <code>abs_corr_breakeven_given_solar_food</code>
+                        and
+                        <code>breakeven_dominance_warning</code> to surface conditional timing rank correlations and
+                        binary
+                        mediation.
+                    </li>
+                    <li><code>compute_tornado</code> previously read arbitrary catalog <code>mode</code> entries on
+                        uniform
+                        distributions (<code>0.80</code> instead of <code>0.725</code> for <code>p_desal</code>;
+                        <code>0.30</code>
+                        instead of <code>0.35</code> for <code>p_solar_food</code>) and now uses distribution midpoints.
+                    </li>
+                    <li><code>cmd_knockouts</code> was converted to streaming evaluation (~8/9 peak-memory reduction),
+                        <code>cmd_figures</code> gained <code>--horizon</code> support and skipped redundant global
+                        <code>k = 1</code>
+                        runs, <code>cmd_reproduce</code> capped threshold horizon leakage, and file descriptors were
+                        closed via
+                        context managers.
+                    </li>
+                    <li><code>data/parameters.csv</code> and <code>docs/model.md</code> were updated to cite Bento and
+                        Wilson
+                        (2016) for the 22-year formative-phase mean, Jones et al. (2019) for global desalinated output
+                        <code>D_desal</code>, Shehabi et al. (2024) and IEA (2025) water figures on growth rows, and
+                        GitHub-compatible
+                        MathJax blocks.
+                    </li>
+                    <li>Visual inspection of generated PNG figures confirmed readable axes, legends, and log ticks,
+                        while flagging
+                        a cosmetic layout overlap where the red <code>PLACEHOLDER INPUTS - NOT FOR PUBLICATION</code>
+                        footer stamp
+                        intersects x-axis labels and threshold grid interiors.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="limitations">
+            <div class="prose">
+                <h2><span class="secnum">12.</span>Limitations</h2>
+                <p>The thirteen model boundaries documented in <code>docs/model.md</code> constrain interpretation
+                    across every
+                    simulated table:</p>
+            </div>
+            <div class="wide table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Limitation</th>
+                            <th>Implication for interpreting model outputs</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Spatial aggregation</td>
+                            <td>Global volumetric balances cannot match agricultural savings in one watershed to
+                                data-center cooling
+                                consumption in a different stressed basin</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>No scarcity weighting</td>
+                            <td>Cubic meters are summed equally without weighting by baseline water stress, aquifer
+                                depletion, or
+                                seasonal flows</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Excluded Scope 3 water</td>
+                            <td>Upstream water embedded in semiconductor fabrication, server supply chains, and facility
+                                construction
+                                is omitted from <code>C(t)</code></td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Post-2035 growth gap</td>
+                            <td>No empirical projection supports <code>g2_global</code> between 2035 and 2077, which
+                                spans most of the
+                                50-year horizon</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>Static baselines</td>
+                            <td>Crop blue-water use <code>A</code> (2020) and desalinated output <code>D</code> (2019)
+                                remain constant
+                                without climate, population, or dietary feedbacks</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>Exploratory boundary</td>
+                            <td>Outputs represent conditional distributions under exploratory priors rather than
+                                forecasts</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>No discounting</td>
+                            <td>Future cubic meters and early deficits carry equal volumetric weight</td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>Independent sampling</td>
+                            <td>Latin hypercube sampling omits cross-parameter correlations (such as faster growth
+                                driving higher
+                                rebound or R&amp;D spending)</td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td>Zero-benefit notice</td>
+                            <td>A <code>basis_notice</code> flags any pathway whose gross benefit is identically zero;
+                                none triggers
+                                under active consumption inputs</td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>Unmodeled AI-system footprint</td>
+                            <td>Water embedded in sensors, inference, or desalination power beyond
+                                <code>r_solar_food_consumption</code>
+                                is excluded</td>
+                        </tr>
+                        <tr>
+                            <td>11</td>
+                            <td>Binary deployment ceiling</td>
+                            <td>One Bernoulli draw per pathway bounds unconditional break-even by the joint deployment
+                                probability,
+                                omitting partial regional adoption</td>
+                        </tr>
+                        <tr>
+                            <td>12</td>
+                            <td>Desalination supply credit</td>
+                            <td>Desalination adds coastal supply rather than cutting consumption; use
+                                <code>solar_food_only</code> to
+                                isolate consumptive savings</td>
+                        </tr>
+                        <tr>
+                            <td>13</td>
+                            <td>Energy-diffusion analogies</td>
+                            <td><code>L_solar_food</code> and <code>R_solar_food</code> transfer energy-sector diffusion
+                                timescales to
+                                food systems, while <code>&phi;</code> maps cropland share onto blue water</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="prose">
+                <p>Two additional empirical caveats apply to the underlying catalog: cropland area displacement from
+                    Pikaar et al.
+                    (2018) overstates blue-water savings wherever displaced feed crops rely on green rainwater (~88% of
+                    total crop
+                    water footprint in Mekonnen and Hoekstra, 2011), and the full corrected reference table in Sillman
+                    et al.
+                    (2022) was not directly inspected beyond the corrected soybean comparator.</p>
+            </div>
+        </section>
+
+        <section id="scientific-status">
+            <div class="prose">
+                <h2><span class="secnum">13.</span>Scientific status and interpretive bounds</h2>
+                <p>Because deployment probabilities, counterfactual AI attribution shares, rebound fractions, and
+                    desalination
+                    cost-driven expansion rates remain unverified placeholders, this study does not support any claim
+                    about:</p>
+                <ul>
+                    <li>The real-world probability that AI will repay or offset its operational water consumption</li>
+                    <li>Whether AI causally accelerates desalination or solar-food commercialization</li>
+                    <li>Basin-level hydrological adequacy or local cooling water neutrality</li>
+                    <li>Realized water intensity of commercial solar-food plants beyond the single <code>160 t/yr</code>
+                        initial
+                        factory benchmark</li>
+                </ul>
+                <p>What the frozen model establishes structurally is narrower: given the physical scale of global
+                    desalination
+                    (<code>35 km&sup3;/yr</code>) versus crop blue water (<code>1,080 km&sup3;/yr</code>), desalinated
+                    efficiency
+                    gains alone cannot offset multi-cubic-kilometer compute demand under plausible attribution shares,
+                    whereas
+                    agricultural displacement depends critically on arriving within roughly <code>20-24 yr</code> and
+                    achieving an
+                    attributed displacement product <code>&alpha; &middot; &phi;</code> near <code>0.014</code>.</p>
+            </div>
+        </section>
+
+        <section id="reproducibility">
+            <div class="prose">
+                <h2><span class="secnum">14.</span>Reproducibility, code, and AI disclosure</h2>
+                <p>All code, parameter catalogs, and 55 automated tests are archived at
+                    <code>tazwaryayyyy/ai-water-breakeven</code> on <code>main</code> at commit
+                    <code>bfcfffc25eeec55ecd6995ba21e9b60ae2192a37</code> (tag <code>0.2.0</code>). GitHub Actions CI
+                    passed on
+                    that commit across Python <code>3.11</code> and <code>3.12</code> (<code>ruff check .</code>,
+                    <code>ruff format --check .</code>, and <code>pytest -v</code>). All manuscript tables were
+                    generated from the
+                    clean tagged tree under Python <code>3.13.7</code> (<code>NumPy 2.5.4</code>,
+                    <code>SciPy 1.18.1</code>,
+                    <code>pandas 3.1.1</code>, <code>Matplotlib 3.11.2</code>, <code>seed = 42</code>), matching SHA-256
+                    <code>e06ec215696363b0f887fd910396703e4590d28c2ffed8f2b521e7ce75f76f3c</code> for
+                    <code>data/parameters.csv</code> and
+                    <code>6ab04a3e4cef2eba0d04d4407d10a7dbd288d59a95f1e58ad2c180aaec89fcc7</code> for
+                    <code>configs/base.toml</code>. The separate TypeScript/React branch
+                    (<code>showcase/ai-water-break-even-demo</code>) uses an independent simulation engine and
+                    contributes no
+                    figures or numbers to this study.
+                </p>
+                <p>AI coding and auditing assistants were used during software refactoring, test writing, provenance
+                    checks, and
+                    manuscript preparation. All mathematical definitions, source mappings, code edits, and simulation
+                    outputs were
+                    reviewed and verified by the author.</p>
+            </div>
+        </section>
+
+        <section id="references">
+            <div class="prose">
+                <h2><span class="secnum">15.</span>References</h2>
+                <ul class="ref-list">
+                    <li>Bento, N., and Wilson, C. (2016). Measuring the duration of formative phases for energy
+                        technologies.
+                        <em>Environmental Innovation and Societal Transitions</em>, 21, 95-112.
+                        https://doi.org/10.1016/j.eist.2016.04.004
+                    </li>
+                    <li>Chukalla, A. D., Mekonnen, M. M., Gunathilake, D., Wolkeba, F. T., Gunasekara, B., and Vanham,
+                        D. (2025).
+                        Global spatially explicit crop water consumption shows an overall increase of 9% for 46
+                        agricultural crops
+                        from 2010 to 2020. <em>Nature Food</em>, 6(10), 983-994.
+                        https://doi.org/10.1038/s43016-025-01231-x</li>
+                    <li>Elimelech, M., and Phillip, W. A. (2011). The future of seawater desalination: energy,
+                        technology, and the
+                        environment. <em>Science</em>, 333(6043), 712-717. https://doi.org/10.1126/science.1200488</li>
+                    <li>Gross, R., Hanna, R., Gambhir, A., Heptonstall, P., and Speirs, J. (2018). How long does
+                        innovation and
+                        commercialisation in the energy sectors take? Historical case studies of the timescale from
+                        invention to
+                        widespread commercialisation in energy supply and end use technology. <em>Energy Policy</em>,
+                        123, 682-699.
+                        https://doi.org/10.1016/j.enpol.2018.08.061</li>
+                    <li>Grubler, A., Wilson, C., and Nemet, G. (2016). Apples, oranges, and consistent comparisons of
+                        the temporal
+                        dynamics of energy transitions. <em>Energy Research &amp; Social Science</em>, 22, 18-25.
+                        https://doi.org/10.1016/j.erss.2016.08.015</li>
+                    <li>International Energy Agency. (2025). <em>Energy and AI</em>. Paris: IEA.</li>
+                    <li>Jones, E., Qadir, M., van Vliet, M. T. H., Smakhtin, V., and Kang, S. M. (2019). The state of
+                        desalination
+                        and brine production: a global outlook. <em>Science of the Total Environment</em>, 657,
+                        1343-1356.
+                        https://doi.org/10.1016/j.scitotenv.2018.12.076</li>
+                    <li>Li, P., Yang, J., Islam, M. A., and Ren, S. (2025). Making AI less "thirsty": uncovering and
+                        addressing
+                        the secret water footprint of AI models. <em>Communications of the ACM</em>, 68(7), 54-61.
+                        https://doi.org/10.1145/3724499</li>
+                    <li>Mekonnen, M. M., and Hoekstra, A. Y. (2011). The green, blue and grey water footprint of crops
+                        and derived
+                        crop products. <em>Hydrology and Earth System Sciences</em>, 15, 1577-1600.
+                        https://doi.org/10.5194/hess-15-1577-2011</li>
+                    <li>Pikaar, I., Matassa, S., Bodirsky, B. L., Weindl, I., Humpen&ouml;der, F., Rabaey, K., Boon, N.,
+                        Bruschi,
+                        M., Yuan, Z., van Zanten, H., Herrero, M., Verstraete, W., and Popp, A. (2018). Decoupling
+                        livestock from
+                        land use through industrial feed production pathways. <em>Environmental Science &amp;
+                            Technology</em>, 52(13),
+                        7351-7359. https://doi.org/10.1021/acs.est.8b00216</li>
+                    <li>Shehabi, A., Smith, S. J., Hubbard, A., Newkirk, A., Lei, N., Siddik, M. A. B., Holecek, B.,
+                        Koomey, J.,
+                        Masanet, E., and Sartor, D. (2024). <em>2024 United States Data Center Energy Usage Report</em>.
+                        Lawrence
+                        Berkeley National Laboratory, LBNL-2001637. https://doi.org/10.71468/P1WC7Q</li>
+                    <li>Sillman, J., Uusitalo, V., Ruuskanen, V., Ojala, L., Kahiluoto, H., Soukka, R., and Ahola, J.
+                        (2020). A
+                        life cycle environmental sustainability analysis of microbial protein production via
+                        power-to-food
+                        approaches. <em>The International Journal of Life Cycle Assessment</em>, 25(11), 2190-2203.
+                        https://doi.org/10.1007/s11367-020-01771-3</li>
+                    <li>Sillman, J., Uusitalo, V., Ruuskanen, V., Ojala, L., Kahiluoto, H., Soukka, R., and Ahola, J.
+                        (2022).
+                        Correction to: A life cycle environmental sustainability analysis of microbial protein
+                        production via
+                        power-to-food approaches. <em>The International Journal of Life Cycle Assessment</em>, 27, 189.
+                        https://doi.org/10.1007/s11367-021-01962-6</li>
+                    <li>Solar Foods Oyj. (2025, October 20). <em>Solar Foods' Factory 01 has reached its productivity
+                            targets</em>
+                        [Press release].</li>
+                    <li>Xylem and Global Water Intelligence. (2026). <em>Watering the New Economy: Managing the Impacts
+                            of the AI
+                            Revolution</em>.</li>
+                </ul>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="prose">
+            <p>Documentation compiled from the frozen tag <code>0.2.0</code> outputs of
+                <code>tazwaryayyyy/ai-water-breakeven</code>. Placeholder priors and unverified ranges are reported
+                explicitly.
+            </p>
+            <p>Contact: <a href="mailto:tazwardevp@gmail.com">tazwardevp@gmail.com</a></p>
+        </div>
+    </footer>
+
+</body>
+
+</html>
